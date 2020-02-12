@@ -1,0 +1,26 @@
+#:import utils kivy.utils
+
+
+<ThirdScreen>:
+	GridLayout:
+		rows: 1			
+		canvas:
+			Color:
+				rgb:utils.get_color_from_hex("#67697C")
+			Rectangle:
+				size: self.size
+				pos:self.pos
+		pos_hint: {"top": 0.1, "left" : 1}
+		size_hint:1,0.1
+		ImageButton:
+			source:"icons/home.png"
+			on_release:
+				app.change_screen("home_screen")
+		ImageButton:
+			source:"icons/OpenGalleryButton.png"
+			on_release:
+				app.change_screen("third_screen")
+		ImageButton:
+			source: "icons/photoshopButton.png"
+			on_release:
+				app.change_screen("second_screen")
