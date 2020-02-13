@@ -11,8 +11,8 @@
 		
 		GridLayout:
 			rows: 1
-			pos_hint: {"top":1, "left":1}
-			size_hint: 1, 0.05
+			pos_hint: {"top":1, "right": 0.95}
+			size_hint: 0.1, 0.05
 			ImageButton:
 				source: "icons/icons8-settings-64.png"
 				on_release:
@@ -30,29 +30,24 @@
 				Rectangle:
 					size: self.size
 					pos:self.pos
-			pos_hint: {"top":0.95, "left":1}
+			pos_hint: {"top":0.95}
 			size_hint: 1,.1
 
 			
-		GridLayout:
-			rows: 1
-			pos_hint: {"top" : 0.8, "left" : 1}
-			size_hint: 1, 0.2
-			Image:
-				source: "icons/icons8-spine-48.png"
-				size_hint_x: 0.5
-				allow_stretch: True
+
 		Label:
-			pos_hint: {"top" : 0.7, "left" : 1}
-			size_hint: 1, 0
+			pos_hint: {"top" : 0.8}
+			size_hint: 1, 0.3
 			text: "ChiroView"
+
+			font_size: self.height * 0.2
 			bold: True
 			color: 0,0,0,1
 			id: app_label
 		
 		GridLayout:
 			rows: 1
-			pos_hint: {"top": 0.4, "left" : 1}
+			pos_hint: {"top": 0.4}
 			size_hint: 1, 0.2
 			ImageButton:
 				source: "icons/icons8-slr-camera-64.png"
@@ -71,7 +66,7 @@
 				Rectangle:
 					size: self.size
 					pos:self.pos
-			pos_hint: {"top": 0.1, "left" : 1}
+			pos_hint: {"top": 0.1}
 			size_hint:1,0.1
 			ImageButton:
 				source:"icons/home.png"
