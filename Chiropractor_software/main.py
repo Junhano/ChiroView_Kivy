@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.uix.screenmanager import Screen
+from kivy.uix.screenmanager import Screen, NoTransition
 from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 
@@ -28,6 +28,7 @@ class MainApp(App):
     
     def change_screen(self,screen_name):
         screen_manager = self.root.ids['screen_manager']
+        screen_manager.transition = NoTransition()
         screen_manager.current = screen_name 
 
 MainApp().run()
