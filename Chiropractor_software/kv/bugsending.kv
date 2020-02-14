@@ -1,0 +1,62 @@
+#:import utils kivy.utils
+
+<BugSending>:
+	FloatLayout:
+		canvas:
+			Color:
+				rgb: utils.get_color_from_hex("#FFFFFF")
+			Rectangle:
+				size: self.size
+				pos: self.pos
+		
+		GridLayout:
+			rows: 1
+			canvas:
+				Color:
+					rgb: utils.get_color_from_hex("#929292")
+				Rectangle:
+					size: self.size
+					pos: self.pos
+			pos_hint: {"top": 1}
+			size_hint: 1, 0.1
+		
+		Label:
+			pos_hint: {"top" : 1}
+			size_hint: 1, 0.1
+			text: "Please write out the bug as clear as possible in the input box below"
+
+			font_size: self.height * 0.38
+			bold: True
+			color: 0,0,0,1
+			id: bug_label
+		
+		GridLayout:
+			rows: 1
+			pos_hint:{"top": 0.9}
+			size_hint: 1, 0.8
+			TextInput: 
+				hint_text: "Please type the bug below"
+				id: bug_content
+
+		
+		
+		GridLayout:
+			rows: 1
+			canvas:
+				Color:
+					rgb: utils.get_color_from_hex("#929292")
+				Rectangle:
+					size: self.size
+					pos: self.pos
+			pos_hint:{"top": 0.1}
+			size_hint: 1, 0.1
+			ImageButton:
+				source:"icons/close.png"
+				on_release:
+					app.show_popup(False)
+			ImageButton:
+				source:"icons/send.png"
+				on_release:
+					app.send_message(bug_content.text)
+
+				

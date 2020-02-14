@@ -1,0 +1,24 @@
+#:import utils kivy.utils
+
+<BugSetting>:
+	FloatLayout:
+		canvas:
+			Color:
+				rgb: utils.get_color_from_hex("#D8B5AE")
+			Rectangle:
+				size: self.size
+				pos: self.pos
+				
+		Button:
+			text: "Send Bug Report"
+			pos_hint: {"top": 0.7, "x": 0.25}
+			size_hint: 0.5,0.1
+			on_release:
+				app.show_popup()
+	
+		Button:
+			text: "Return home"
+			pos_hint: {"top": 0.4, "x": 0.25}
+			size_hint: 0.5,0.1
+			on_release:
+				app.change_screen("home_screen")
