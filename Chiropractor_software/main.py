@@ -1,3 +1,4 @@
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen, NoTransition
@@ -5,17 +6,18 @@ from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 from kivy.uix.popup import Popup
 from kivy.graphics import Line, Color
+from kivy.properties import ObjectProperty
 import smtplib
 
-
-class HomeScreen(Screen):
-    pass
 
 class ImageButton(ButtonBehavior,Image):
     pass
 
-class SecondScreen(Screen):
+class HomeScreen(Screen):
     pass
+
+class SecondScreen(Screen):
+    image_change = ObjectProperty(None)
 
 class ThirdScreen(Screen):
     pass
@@ -24,6 +26,9 @@ class BugSetting(Screen):
     pass
 
 class BugSending(Screen):
+    pass
+
+class CameraScreen(Screen):
     pass
 
 
@@ -38,14 +43,7 @@ class MainApp(App):
         screen_manager.transition = NoTransition()
         screen_manager.current = screen_name 
     
-    def show_popup(self, logic_bool = True):
-        if logic_bool:
-            show = BugSending()
-            global popupWindow
-            popupWindow = Popup(title = "Bug sending", content = show, size_hint = (None,None), size = (400,400))
-            popupWindow.open()
-        else:
-            popupWindow.dismiss()
+
             
     def send_message(self, text):
         try:
@@ -56,11 +54,10 @@ class MainApp(App):
             server.sendmail('jimmybugreport@gmail.com','junhano@uci.edu',text)
         except:
             print('Something went wrong')
-        finally:
-            popupWindow.dismiss()
-        
+       
 
     def modify_image(self,vertical,horizontal,objectname):
+        self.clean_image(objectname)
         global remove_list
         remove_list = []
         try:
@@ -78,9 +75,25 @@ class MainApp(App):
             print("Error in getting num lines")
     
     def clean_image(self,objectname):
-        for i in remove_list:
-            objectname.canvas.remove(i)
-        remove_list.clear()
-
+        try:
+            for i in remove_list:
+                objectname.canvas.remove(i)
+            remove_list.clear()
+        except:
+            pass
+        
+    def change_picture(self):
+        self.root.ids.second_screen.image_change.source = "icons/home.png"
+        self.root.ids.second_screen.image_change.default_image = False
+        
+    def clear_all(self,objectname):
+        try:
+            for i in remove_list:
+                objectname.canvas.remove(i)
+            remove_list.clear()
+        except:
+            pass
+        objectname.source = "icons/no-camera.png"
+        objectname.default_image = True
         
 MainApp().run()
