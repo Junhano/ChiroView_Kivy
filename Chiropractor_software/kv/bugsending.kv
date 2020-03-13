@@ -23,7 +23,7 @@
 		Label:
 			pos_hint: {"top" : 1}
 			size_hint: 1, 0.1
-			text: "Please write out the bug as clear as possible in the input box below"
+			text: "Bug report"
 
 			font_size: self.height * 0.38
 			bold: True
@@ -53,10 +53,14 @@
 			ImageButton:
 				source:"icons/close.png"
 				on_release:
-					app.show_popup(False)
+					bug_content.text = ""
+					app.change_screen("home_screen")
 			ImageButton:
 				source:"icons/send.png"
 				on_release:
-					app.send_message(bug_content.text)
+					if bug_content.text != "":app.change_screen("home_screen")
+					if bug_content.text != "":app.send_message(bug_content.text)
+					bug_content.text = ""
+					
 
 				
