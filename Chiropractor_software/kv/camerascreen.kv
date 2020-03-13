@@ -1,0 +1,53 @@
+#:import utils kivy.utils
+
+<CameraScreen>:
+	FloatLayout:
+		canvas:
+			Color:
+				rgb: utils.get_color_from_hex("#D8B5AE")
+			Rectangle:
+				size: self.size
+				pos: self.pos
+		
+		GridLayout:
+			rows: 1
+			pos_hint:{'top': 1}
+			size_hint: 1, 0.85
+			id: proxy
+			Camera:
+				allow_stretch: True
+				center: self.size and proxy.center
+				size: proxy.height, proxy.width
+				resolution: 640,480
+				canvas.before:
+					PushMatrix
+					Rotate:
+						angle: -90
+						origin: self.center
+				canvas.after:
+					PopMatrix	
+				id: camera
+
+
+		BoxLayout:
+			orientation: 'horizontal'
+			size_hint_y: None
+			height: '48dp'
+			Button:
+				text: 'Start'
+				on_release: camera.play = True
+			
+			Button:
+				text: 'Stop'
+				on_release: camera.play = False
+			Button:
+				text: 'Return'
+				on_release: app.change_screen("home_screen")
+			Button:
+				text: "Captured"
+				on_release:
+					app.change_screen("second_screen") 
+					app.change_picture()
+		
+	
+		
