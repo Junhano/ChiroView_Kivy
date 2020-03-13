@@ -1,6 +1,7 @@
 #:import utils kivy.utils
 
 <SecondScreen>:
+	image_change: modifyimage
 	FloatLayout:
 		canvas:
 			Color:
@@ -20,13 +21,20 @@
 			pos_hint: {"top": 1}
 			size_hint:1,0.1
 		
+
+		
 		Image:
-			source:"icons/home.png"
+			source:"icons/no-camera.png"
+			default_image: True
 			pos_hint: {"top": 0.9, "x": 0.1}
 			size_hint:0.8,0.55
 			id: modifyimage
 			
-				
+		Button:
+			pos_hint: {"top": 0.97, "x": 0.3}
+			size_hint: 0.4, 0.06
+			text: "Clear all Canvas"
+			on_release: app.clear_all(modifyimage)
 
 			
 		
@@ -51,11 +59,12 @@
 		Button: 
 			pos_hint: {"top": 0.19, "x": 0.1}
 			size_hint: 0.2, 0.07
-			text: "Submit"
+			text: "Draw"
 			on_release:
-				if verticalLine.text != "" and horizontalLine.text != "": app.modify_image(verticalLine.text, horizontalLine.text,modifyimage) 
+				if not modifyimage.default_image and verticalLine.text != "" and horizontalLine.text != "": app.modify_image(verticalLine.text, horizontalLine.text,modifyimage) 
 				verticalLine.text = ""
 				horizontalLine.text = ""
+				
 
 	
 		Button:
@@ -72,7 +81,7 @@
 			size_hint: 0.2, 0.07
 			text: "Save"
 			on_release:
-				print("Saved")
+				print(modifyimage.default_image)
 		
 		
 		
