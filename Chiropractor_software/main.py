@@ -1,10 +1,8 @@
-
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen, NoTransition
 from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
-from kivy.uix.popup import Popup
 from kivy.graphics import Line, Color
 from kivy.properties import ObjectProperty
 import smtplib
