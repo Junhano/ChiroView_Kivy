@@ -1,0 +1,72 @@
+#:import utils kivy.utils
+
+<ThirdScreen>:
+	FloatLayout:
+		canvas:
+			Color:
+				rgb: utils.get_color_from_hex("#D8B5AE")
+			Rectangle:
+				size: self.size
+				pos: self.pos
+		
+		GridLayout:
+			rows:1
+			canvas:
+				Color:
+					rgb:utils.get_color_from_hex("#E7DCDA")
+				Rectangle:
+					size: self.size
+					pos:self.pos
+			pos_hint: {"top" : 1}
+			size_hint: 1,0.1
+		
+		
+		
+		GridLayout:	
+			rows:1
+			pos_hint:{"top" : 0.95, "x": 0.85}
+			size_hint: 0.05, 0.045
+			ImageButton:
+				source:"icons/search.png"
+				on_release:
+					print(filename.text)
+				
+		
+		GridLayout:	
+			rows:1
+			canvas:
+				Color:
+					rgb:utils.get_color_from_hex("#FFFFFF")
+				Rectangle:
+					size: self.size
+					pos:self.pos
+			pos_hint:{"top" : 0.95, "x": 0.15}
+			size_hint: 0.7, 0.045
+			TextInput:
+				hint_text: "Search File"
+				multiline: False
+				id:filename
+		
+
+		GridLayout:
+			rows: 1			
+			canvas:
+				Color:
+					rgb:utils.get_color_from_hex("#67697C")
+				Rectangle:
+					size: self.size
+					pos:self.pos
+			pos_hint: {"top": 0.1}
+			size_hint:1,0.1
+			ImageButton:
+				source:"icons/home.png"
+				on_release:
+					app.change_screen("home_screen")
+			ImageButton:
+				source:"icons/OpenGalleryButton.png"
+				on_release:
+					app.change_screen("third_screen")
+			ImageButton:
+				source: "icons/photoshopButton.png"
+				on_release:
+					app.change_screen("second_screen")

@@ -1,0 +1,81 @@
+#:import utils kivy.utils
+
+<HomeScreen>:
+	FloatLayout:
+		canvas:
+			Color:
+				rgb: utils.get_color_from_hex("#D8B5AE")
+			Rectangle:
+				size: self.size
+				pos: self.pos
+		
+		GridLayout:
+			rows: 1
+			pos_hint: {"top":1, "right": 0.95}
+			size_hint: 0.1, 0.05
+			ImageButton:
+				source: "icons/icons8-settings-64.png"
+				on_release:
+					app.change_screen("bug_setting")
+							
+		
+		GridLayout:
+			rows: 1
+			canvas:
+				Color:
+					rgb:utils.get_color_from_hex("#67697C")
+				Rectangle:
+					size: self.size
+					pos:self.pos
+			pos_hint: {"top":0.95}
+			size_hint: 1,.1
+
+			
+
+		Label:
+			pos_hint: {"top" : 0.8}
+			size_hint: 1, 0.3
+			text: "ChiroView"
+
+			font_size: self.height * 0.2
+			bold: True
+			color: 0,0,0,1
+			id: app_label
+		
+		GridLayout:
+			rows: 1
+			pos_hint: {"top": 0.4}
+			size_hint: 1, 0.2
+			ImageButton:
+				source: "icons/icons8-slr-camera-64.png"
+				on_release:
+					app.change_screen("camera_screen")
+			ImageButton: 
+				source: "icons/icons8-photo-gallery-100.png"
+				on_release:
+					print("Open picture gallery")
+		
+		GridLayout:
+			rows: 1
+			canvas:
+				Color:
+					rgb:utils.get_color_from_hex("#67697C")
+				Rectangle:
+					size: self.size
+					pos:self.pos
+			pos_hint: {"top": 0.1}
+			size_hint:1,0.1
+			ImageButton:
+				source:"icons/home.png"
+				on_release:
+					app.change_screen("home_screen")
+			ImageButton:
+				source:"icons/OpenGalleryButton.png"
+				on_release:
+					app.change_screen("third_screen")
+			ImageButton:
+				source: "icons/photoshopButton.png"
+				on_release:
+					app.change_screen("second_screen")
+			
+		
