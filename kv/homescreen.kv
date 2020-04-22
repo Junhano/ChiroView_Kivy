@@ -49,11 +49,11 @@
 			ImageButton:
 				source: "icons/icons8-slr-camera-64.png"
 				on_release:
-					app.change_screen("camera_screen")
+					app.capture()
 			ImageButton: 
 				source: "icons/icons8-photo-gallery-100.png"
 				on_release:
-					print("Open picture gallery")
+					app.open_photos()
 		
 		GridLayout:
 			rows: 1

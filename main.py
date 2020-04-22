@@ -5,6 +5,11 @@ from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 from kivy.graphics import Line, Color
 from kivy.properties import ObjectProperty
+from plyer import camera
+from plyer import filechooser
+from os.path import exists
+
+
 import smtplib
 
 
@@ -26,8 +31,7 @@ class BugSetting(Screen):
 class BugSending(Screen):
     pass
 
-class CameraScreen(Screen):
-    pass
+
 
 
 GUI = Builder.load_file("chiro.kv")
@@ -80,10 +84,39 @@ class MainApp(App):
         except:
             pass
         
-    def change_picture(self):
-        self.root.ids.second_screen.image_change.source = "icons/home.png"
+    def change_picture(self, source):
+
+        self.root.ids.second_screen.image_change.source = source
         self.root.ids.second_screen.image_change.default_image = False
-        
+        self.change_screen("second_screen")
+
+    def capture(self):
+        try:
+            file_name = "test.png"
+            camera.take_picture(filename = file_name,on_complete = self.camera_callback)
+
+        except NotImplementedError:
+            pass
+
+    def camera_callback(self, filename):
+        if (exists(filename)):
+            print('Hello')
+        else:
+            pass
+
+    def open_photos(self):
+        filechooser.open_file(on_selection=self.handle_selection)
+
+    def handle_selection(self,selection):
+        try:
+            self.selection = selection
+            print(self.selection[0])
+            self.change_picture(self.selection[0])
+        except NotImplementedError:
+            pass
+
+    
+
     def clear_all(self,objectname):
         try:
             for i in remove_list:
