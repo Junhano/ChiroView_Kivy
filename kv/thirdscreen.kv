@@ -1,5 +1,8 @@
 #:import utils kivy.utils
+#:import languageDict1 languageDict.LanguageDict
 
+<TextInput>:
+	font_name: 'Font/NotoSansSC-Black.otf'
 <ThirdScreen>:
 	FloatLayout:
 		canvas:
@@ -43,7 +46,7 @@
 			pos_hint:{"top" : 0.95, "x": 0.15}
 			size_hint: 0.7, 0.045
 			TextInput:
-				hint_text: "Search File"
+				hint_text: languageDict1.langDict["SearchFile"][app.state]
 				multiline: False
 				id:filename
 		

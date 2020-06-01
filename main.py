@@ -4,10 +4,11 @@ from kivy.uix.screenmanager import Screen, NoTransition
 from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 from kivy.graphics import Line, Color
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, NumericProperty
 from plyer import camera
 from plyer import filechooser
 from os.path import exists
+
 
 
 import smtplib
@@ -34,10 +35,12 @@ class BugSending(Screen):
 
 
 
-GUI = Builder.load_file("chiro.kv")
+
 
 class MainApp(App):
+    state = NumericProperty(0)
     def build(self):
+        GUI = Builder.load_file("chiro.kv")
         return GUI
     
     def change_screen(self,screen_name):
@@ -83,7 +86,15 @@ class MainApp(App):
             remove_list.clear()
         except:
             pass
-        
+
+    def switchLanguage(self):
+        if self.state == 1:
+            self.state = 0
+        else:
+            self.state = 1
+
+
+
     def change_picture(self, source):
 
         self.root.ids.second_screen.image_change.source = source
@@ -105,7 +116,11 @@ class MainApp(App):
             pass
 
     def open_photos(self):
-        filechooser.open_file(on_selection=self.handle_selection)
+        try:
+            filechooser.open_file(on_selection=self.handle_selection)
+        except NotImplementedError:
+            pass
+
 
     def handle_selection(self,selection):
         try:

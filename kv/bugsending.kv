@@ -1,5 +1,11 @@
 #:import utils kivy.utils
+#:import languageDict1 languageDict.LanguageDict
 
+<Label>:
+	font_name: 'Font/NotoSansSC-Regular.otf'
+
+<TextInput>:
+	font_name: 'Font/NotoSansSC-Regular.otf'
 <BugSending>:
 	FloatLayout:
 		canvas:
@@ -23,7 +29,7 @@
 		Label:
 			pos_hint: {"top" : 1}
 			size_hint: 1, 0.1
-			text: "Bug report"
+			text: languageDict1.langDict["BugReport"][app.state]
 
 			font_size: self.height * 0.38
 			bold: True
@@ -35,7 +41,7 @@
 			pos_hint:{"top": 0.9}
 			size_hint: 1, 0.8
 			TextInput: 
-				hint_text: "Please type the bug below"
+				hint_text:languageDict1.langDict["TypeBugBelow"][app.state] 
 				id: bug_content
 
 		

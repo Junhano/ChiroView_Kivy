@@ -1,4 +1,8 @@
 #:import utils kivy.utils
+#:import languageDict1 languageDict.LanguageDict
+
+<Button>:
+	font_name: 'Font/NotoSansSC-Regular.otf'
 
 <BugSetting>:
 	FloatLayout:
@@ -8,17 +12,28 @@
 			Rectangle:
 				size: self.size
 				pos: self.pos
-				
+
+
 		Button:
-			text: "Send Bug Report"
+			text: languageDict1.langDict["BugSending"][app.state]
+			id: switch_lang
 			pos_hint: {"top": 0.7, "x": 0.25}
 			size_hint: 0.5,0.1
 			on_release:
 				app.change_screen("bug_sending")
+
+		
+		Button:
+			text: languageDict1.langDict["SwitchLang"][app.state]			                
+			pos_hint: {"top": 0.5, "x": 0.25}
+			size_hint: 0.5,0.1
+			on_release:
+				app.switchLanguage()
+		
 	
 		Button:
-			text: "Return home"
-			pos_hint: {"top": 0.4, "x": 0.25}
+			text: languageDict1.langDict["ReturnHome"][app.state]
+			pos_hint: {"top": 0.3, "x": 0.25}
 			size_hint: 0.5,0.1
 			on_release:
 				app.change_screen("home_screen")
