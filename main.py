@@ -51,9 +51,7 @@ class MainApp(App):
             location = join(savepath, location)
 
         parser.read(location)
-        if len(parser.sections()) == 0:
-            Lang = 0
-        else:
+        if len(parser.sections()) != 0:
             Lang = int(parser.get('LangSetting', 'lang'))
 
         self.state = Lang
@@ -134,7 +132,9 @@ class MainApp(App):
     def capture(self):
         try:
             file_name = "test.png"
-
+            if platform == 'ios':
+                savepath = App.get_running_app().user_data_dir
+                file_name = join(savepath, file_name)
             camera.take_picture(filename = file_name,on_complete = self.camera_callback)
 
         except NotImplementedError:
@@ -142,9 +142,7 @@ class MainApp(App):
 
     def camera_callback(self, filename):
         if (exists(filename)):
-            print('Hello')
-        else:
-            print('lol')
+            self.change_picture(filename)
 
     def open_photos(self):
         try:
