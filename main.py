@@ -5,13 +5,15 @@ from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 from kivy.graphics import Line, Color
 from kivy.properties import ObjectProperty, NumericProperty
-from plyer import camera
-from plyer import filechooser
-from os.path import exists
-
-
-
+from plyer import camera, filechooser
+from os.path import exists, join
+from configparser import ConfigParser
+from kivy.utils import platform
 import smtplib
+
+
+
+
 
 
 class ImageButton(ButtonBehavior,Image):
@@ -38,8 +40,24 @@ class BugSending(Screen):
 
 
 class MainApp(App):
+
     state = NumericProperty(0)
+
     def build(self):
+        parser = ConfigParser()
+        location = 'dev.ini'
+        if platform == 'ios':
+            savepath = App.get_running_app().user_data_dir
+            location = join(savepath, location)
+
+        parser.read(location)
+        if len(parser.sections()) == 0:
+            Lang = 0
+        else:
+            Lang = int(parser.get('LangSetting', 'lang'))
+
+        self.state = Lang
+
         GUI = Builder.load_file("chiro.kv")
         return GUI
     
@@ -88,11 +106,23 @@ class MainApp(App):
             pass
 
     def switchLanguage(self):
+        parser = ConfigParser()
         if self.state == 1:
             self.state = 0
+            parser['LangSetting'] = {
+                'lang': '0'
+            }
         else:
             self.state = 1
-
+            parser['LangSetting'] = {
+                'lang': '1'
+            }
+        savefileName = 'dev.ini'
+        if platform == 'ios':
+            savepath = App.get_running_app().user_data_dir
+            savefileName = join(savepath, savefileName)
+        with open(savefileName, 'w') as f:
+            parser.write(f)
 
 
     def change_picture(self, source):
@@ -104,6 +134,7 @@ class MainApp(App):
     def capture(self):
         try:
             file_name = "test.png"
+
             camera.take_picture(filename = file_name,on_complete = self.camera_callback)
 
         except NotImplementedError:
@@ -113,7 +144,7 @@ class MainApp(App):
         if (exists(filename)):
             print('Hello')
         else:
-            pass
+            print('lol')
 
     def open_photos(self):
         try:
@@ -125,12 +156,9 @@ class MainApp(App):
     def handle_selection(self,selection):
         try:
             self.selection = selection
-            print(self.selection[0])
             self.change_picture(self.selection[0])
         except NotImplementedError:
             pass
-
-    
 
     def clear_all(self,objectname):
         try:
@@ -141,5 +169,6 @@ class MainApp(App):
             pass
         objectname.source = "icons/no-camera.png"
         objectname.default_image = True
-        
+
+
 MainApp().run()
