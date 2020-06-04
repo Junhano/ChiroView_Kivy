@@ -53,8 +53,7 @@ class MainApp(App):
         parser.read(location)
         if len(parser.sections()) != 0:
             Lang = int(parser.get('LangSetting', 'lang'))
-
-        self.state = Lang
+            self.state = Lang
 
         GUI = Builder.load_file("chiro.kv")
         return GUI
