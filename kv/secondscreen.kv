@@ -7,6 +7,17 @@
 <Label>:
 	font_name: 'Font/NotoSansSC-Regular.otf'
 
+<Image>:
+	angle: 0
+	canvas.before:
+		PushMatrix
+		Rotate:
+			angle: root.angle
+			axis: 0, 0, 1
+			origin: root.center
+	canvas.after:
+		PopMatrix
+
 <SecondScreen>:
 	image_change: modifyimage
 	FloatLayout:
@@ -29,20 +40,27 @@
 			size_hint:1,0.1
 		
 
-		
 		Image:
 			source:"icons/no-camera.png"
 			default_image: True
+			angle: -90 if self.width > self.height and not self.default_image else 0
 			pos_hint: {"top": 0.9, "x": 0.1}
-			size_hint:0.8,0.55
+			size_hint: 0.8, 0.55
 			id: modifyimage
+
 			
 		Button:
-			pos_hint: {"top": 0.97, "x": 0.3}
-			size_hint: 0.4, 0.06
+			pos_hint: {"top": 0.97, "x": 0.1}
+			size_hint: 0.35, 0.06
 			text: languageDict1.langDict["ClearAllCanvas"][app.state]
 			on_release: app.clear_all(modifyimage)
 
+		Button:
+			pos_hint: {"top": 0.97, "x": 0.6}
+			size_hint: 0.35, 0.06
+			text: "Rotate"
+			on_release:
+				if not root.image_change.default_image: root.image_change.angle -= 90
 			
 		
 		GridLayout:

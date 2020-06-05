@@ -10,7 +10,7 @@ from os.path import exists, join
 from configparser import ConfigParser
 from kivy.utils import platform
 import smtplib
-from os import remove
+
 
 
 
@@ -140,6 +140,7 @@ class MainApp(App):
 
         except NotImplementedError:
             pass
+
 
     def camera_callback(self, filename):
         if (exists(filename)):
