@@ -10,7 +10,7 @@ from os.path import exists, join
 from configparser import ConfigParser
 from kivy.utils import platform
 import smtplib
-
+from os import remove
 
 
 
@@ -53,8 +53,7 @@ class MainApp(App):
         parser.read(location)
         if len(parser.sections()) != 0:
             Lang = int(parser.get('LangSetting', 'lang'))
-
-        self.state = Lang
+            self.state = Lang
 
         GUI = Builder.load_file("chiro.kv")
         return GUI
@@ -126,6 +125,7 @@ class MainApp(App):
     def change_picture(self, source):
 
         self.root.ids.second_screen.image_change.source = source
+        self.root.ids.second_screen.image_change.reload()
         self.root.ids.second_screen.image_change.default_image = False
         self.change_screen("second_screen")
 
@@ -134,6 +134,7 @@ class MainApp(App):
             file_name = "test.png"
             if platform == 'ios':
                 savepath = App.get_running_app().user_data_dir
+                savepath = savepath[:len(savepath) - 4]
                 file_name = join(savepath, file_name)
             camera.take_picture(filename = file_name,on_complete = self.camera_callback)
 
