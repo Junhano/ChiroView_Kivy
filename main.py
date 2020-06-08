@@ -9,8 +9,6 @@ from plyer import camera, filechooser
 from os.path import exists, join
 from configparser import ConfigParser
 from kivy.utils import platform
-import smtplib
-
 
 
 
@@ -34,10 +32,17 @@ class BugSetting(Screen):
 class BugSending(Screen):
     pass
 
+class Help(Screen):
+    pass
 
+class About(Screen):
+    pass
 
+class Contact(Screen):
+    pass
 
-
+class GeneralSetting(Screen):
+    pass
 
 class MainApp(App):
 
@@ -67,11 +72,7 @@ class MainApp(App):
             
     def send_message(self, text):
         try:
-            server = smtplib.SMTP('smtp.gmail.com', 587)
-            server.ehlo()
-            server.starttls()
-            server.login('jimmybugreport@gmail.com','20000620oyjhwork')
-            server.sendmail('jimmybugreport@gmail.com','junhano@uci.edu',text)
+            print(text)
         except:
             print('Something went wrong')
        
@@ -83,6 +84,10 @@ class MainApp(App):
         try:
             vertical = int(vertical)
             horizontal = int(horizontal)
+            if vertical > 20:
+                vertical = 20
+            if horizontal > 20:
+                horizontal = 20
             with objectname.canvas:
                 Color(0, 0, 0)
                 for k in range(vertical):

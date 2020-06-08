@@ -1,0 +1,16 @@
+#:import utils kivy.utils
+#:import languageDict1 languageDict.LanguageDict
+
+<Label>:
+	font_name: 'Font/NotoSansSC-Regular.otf'
+
+
+<GeneralSetting>:
+	FloatLayout:
+		canvas:
+			Color:
+				rgb: utils.get_color_from_hex("#D8B5AE")
+			Rectangle:
+				size: self.size
+				pos: self.pos
+		

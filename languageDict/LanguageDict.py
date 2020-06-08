@@ -24,8 +24,8 @@ langDict = {
         1: "画线"
     },
     "Clear":{
-        0: "Clear",
-        1: "清空线"
+        0: "Clear Edit",
+        1: "清空编辑"
     },
     "Save":{
         0: "Save",
@@ -50,7 +50,26 @@ langDict = {
     "TypeBugBelow":{
         0: "Please Type the bug below",
         1: "请把反馈打在这里"
+    },
+    "Rotate":{
+        0: "Rotate",
+        1:  "图片旋转"
+    },
+    "GeneralSetting":{
+        0: "General Setting",
+        1: "设定"
+    },
+    "Help":{
+        0: "Help",
+        1: "帮助"
+    },
+    "About":{
+        0: "About",
+        1: "关于"
+    },
+    "Contact":{
+        0: "Contact",
+        1: "联系方式"
     }
-
 }
 

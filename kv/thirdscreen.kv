@@ -16,18 +16,26 @@
 			rows:1
 			canvas:
 				Color:
-					rgb:utils.get_color_from_hex("#E7DCDA")
+					rgb:utils.get_color_from_hex("#67697C")
 				Rectangle:
 					size: self.size
 					pos:self.pos
 			pos_hint: {"top" : 1}
 			size_hint: 1,0.1
 		
+		GridLayout:
+			rows: 1
+			pos_hint:{"top": 1, "x": 0.05}
+			size_hint: 0.1, 0.1
+			ImageButton:
+				source:"icons/home.png"
+				on_release:
+					app.change_screen("home_screen")
 		
 		
 		GridLayout:	
 			rows:1
-			pos_hint:{"top" : 0.95, "x": 0.85}
+			pos_hint:{"top" : 0.95, "x": 0.83}
 			size_hint: 0.05, 0.045
 			ImageButton:
 				source:"icons/search.png"
@@ -43,10 +51,11 @@
 				Rectangle:
 					size: self.size
 					pos:self.pos
-			pos_hint:{"top" : 0.95, "x": 0.15}
-			size_hint: 0.7, 0.045
+			pos_hint:{"top" : 0.95, "x": 0.25}
+			size_hint: 0.58, 0.045
 			TextInput:
 				hint_text: languageDict1.langDict["SearchFile"][app.state]
+				font_size: 0.4 * self.height if root.width > root.height else 0.06 * self.width
 				multiline: False
 				id:filename
 		
@@ -61,10 +70,7 @@
 					pos:self.pos
 			pos_hint: {"top": 0.1}
 			size_hint:1,0.1
-			ImageButton:
-				source:"icons/home.png"
-				on_release:
-					app.change_screen("home_screen")
+
 			ImageButton:
 				source:"icons/OpenGalleryButton.png"
 				on_release:

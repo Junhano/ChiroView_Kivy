@@ -3,6 +3,10 @@
 #:include kv/thirdscreen.kv
 #:include kv/bugsetting.kv
 #:include kv/bugsending.kv
+#:include kv/help.kv
+#:include kv/about.kv
+#:include kv/contact.kv
+#:include kv/generalsetting.kv
 
 GridLayout:
 	cols: 1
@@ -23,4 +27,15 @@ GridLayout:
 		BugSending:
 			name: "bug_sending"
 			id:bug_sending
-	
+		Help:
+			name: "help"
+			id:help
+		About: 
+			name: "about"
+			id:about
+		Contact:
+			name: "contact"
+			id:contact
+		GeneralSetting:
+			name: "general_setting"
+			id: general_setting
