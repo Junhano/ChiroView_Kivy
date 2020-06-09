@@ -1,8 +1,8 @@
 #:import utils kivy.utils
 
-
 <HomeScreen>:
-	FloatLayout:
+	BoxLayout:
+		orientation: "vertical"
 		canvas:
 			Color:
 				rgb: utils.get_color_from_hex("#D8B5AE")
@@ -10,43 +10,23 @@
 				size: self.size
 				pos: self.pos
 		
-		GridLayout:
-			rows: 1
-			pos_hint: {"top":1, "right": 0.95}
-			size_hint: 0.1, 0.05
-			ImageButton:
-				source: "icons/icons8-settings-64.png"
-				on_release:
-					app.change_screen("bug_setting")
-							
-		
-		GridLayout:
-			rows: 1
-			canvas:
-				Color:
-					rgb:utils.get_color_from_hex("#67697C")
-				Rectangle:
-					size: self.size
-					pos:self.pos
-			pos_hint: {"top":0.95}
-			size_hint: 1,.1
-
+		MDToolbar:
+			id: toolbar
+			md_bg_color: utils.get_color_from_hex("#67697C")
+			right_action_items:[["dots-vertical", lambda x: app.change_screen("bug_setting")]]
 			
-
-		Label:
-			pos_hint: {"top" : 0.8}
-			size_hint: 1, 0.3
+			
+		MDLabel:
 			text: "ChiroView"
-
-			font_size: self.height * 0.2
-			bold: True
-			color: 0,0,0,1
-			id: app_label
+			font_style: 'H3'
+			halign: "center"
+			valign: "center"
 		
+
 		GridLayout:
 			rows: 1
-			pos_hint: {"top": 0.4}
-			size_hint: 1, 0.2
+			pos_hint: {"top": 0.3}
+			size_hint: 1, 0.1
 			ImageButton:
 				source: "icons/icons8-slr-camera-64.png"
 				on_release:
@@ -55,9 +35,9 @@
 				source: "icons/icons8-photo-gallery-100.png"
 				on_release:
 					app.open_photos()
-		
+
 		GridLayout:
-			rows: 1
+			rows: 1			
 			canvas:
 				Color:
 					rgb:utils.get_color_from_hex("#67697C")
@@ -66,7 +46,6 @@
 					pos:self.pos
 			pos_hint: {"top": 0.1}
 			size_hint:1,0.1
-
 			ImageButton:
 				source:"icons/OpenGalleryButton.png"
 				on_release:
@@ -74,6 +53,7 @@
 			ImageButton:
 				source: "icons/photoshopButton.png"
 				on_release:
-					app.change_screen("second_screen")
+					app.change_screen("second_screen") if app.mode == 0 else app.change_screen("second_screen_b")
+
 			
 		

@@ -1,8 +1,6 @@
 #:import utils kivy.utils
 #:import languageDict1 languageDict.LanguageDict
 
-<Label>:
-	font_name: 'Font/NotoSansSC-Regular.otf'
 
 
 <GeneralSetting>:
@@ -13,4 +11,38 @@
 			Rectangle:
 				size: self.size
 				pos: self.pos
+
+		GridLayout:
+			rows:1
+			canvas:
+				Color:
+					rgb:utils.get_color_from_hex("#67697C")
+				Rectangle:
+					size: self.size
+					pos:self.pos
+			pos_hint: {"top" : 1}
+			size_hint: 1,0.1
 		
+		GridLayout:
+			rows: 1
+			pos_hint:{"top": 1, "x": 0.05}
+			size_hint: 0.1, 0.1
+			ImageButton:
+				source:"icons/home.png"
+				on_release:
+					app.change_screen("home_screen")
+
+		MyButton:
+			text: languageDict1.langDict["SwitchLang"][app.state]
+			id: switch_lang
+			pos_hint: {"top": 0.85, "x": 0.25}
+			size_hint: 0.5,0.1
+			on_release:
+				app.switchLanguage()
+		MyButton:
+			text: languageDict1.langDict["SwitchMode"][app.state] + " " + str(app.mode)
+			id: switch_mode
+			pos_hint:{"top": 0.7, "x":0.25}
+			size_hint: 0.5, 0.1
+			on_release:
+				app.switchMode()

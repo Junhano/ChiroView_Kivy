@@ -1,9 +1,7 @@
 #:import utils kivy.utils
 #:import languageDict1 languageDict.LanguageDict
 
-<Button>:
-	font_name: 'Font/NotoSansSC-Regular.otf'
-	font_size: 0.05 * self.width if root.width > root.height else 0.3 * self.height
+
 
 <BugSetting>:
 	FloatLayout:
@@ -14,7 +12,7 @@
 				size: self.size
 				pos: self.pos
 
-		Button:
+		MyButton:
 			text: languageDict1.langDict["BugSending"][app.state]
 			id: switch_lang
 			pos_hint: {"top": 0.9, "x": 0.25}
@@ -23,7 +21,7 @@
 				app.change_screen("bug_sending")
 
 
-		Button:
+		MyButton:
 			text: languageDict1.langDict["GeneralSetting"][app.state]
 			id: switch_lang
 			pos_hint: {"top": 0.75, "x": 0.25}
@@ -32,14 +30,14 @@
 				app.change_screen("general_setting")
 
 		
-		Button:
+		MyButton:
 			text: languageDict1.langDict["Help"][app.state]			                
 			pos_hint: {"top": 0.6, "x": 0.25}
 			size_hint: 0.5,0.1
 			on_release:
 				app.change_screen("help")
 		
-		Button:
+		MyButton:
 			text: languageDict1.langDict["About"][app.state]
 			id: switch_lang
 			pos_hint: {"top": 0.45, "x": 0.25}
@@ -47,7 +45,7 @@
 			on_release:
 				app.change_screen("about")
 
-		Button:
+		MyButton:
 			text: languageDict1.langDict["Contact"][app.state]
 			id: switch_lang
 			pos_hint: {"top": 0.3, "x": 0.25}
@@ -56,7 +54,7 @@
 				app.change_screen("contact")
 
 	
-		Button:
+		MyButton:
 			text: languageDict1.langDict["ReturnHome"][app.state]
 			pos_hint: {"top": 0.15, "x": 0.25}
 			size_hint: 0.5,0.1

@@ -70,6 +70,18 @@ langDict = {
     "Contact":{
         0: "Contact",
         1: "联系方式"
+    },
+    "SwitchMode":{
+        0: "Switch Mode",
+        1: "切换模式"
+    },
+    "Points":{
+        0: "Points",
+        1: "点"
+    },
+    "Cancel":{
+        0: "Cancel",
+        1: "取消"
     }
 }
 

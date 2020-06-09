@@ -78,4 +78,4 @@
 			ImageButton:
 				source: "icons/photoshopButton.png"
 				on_release:
-					app.change_screen("second_screen")
+					app.change_screen("second_screen") if app.mode == 0 else app.change_screen("second_screen_b")

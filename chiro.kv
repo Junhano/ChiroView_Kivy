@@ -1,3 +1,4 @@
+#:import utils kivy.utils
 #:include kv/homescreen.kv
 #:include kv/secondscreen.kv
 #:include kv/thirdscreen.kv
@@ -7,7 +8,30 @@
 #:include kv/about.kv
 #:include kv/contact.kv
 #:include kv/generalsetting.kv
+#:include kv/secondscreenb.kv
+#:import languageDict1 languageDict.LanguageDict
 
+<MyButton@MDFillRoundFlatButton>:
+	font_name: 'Font/NotoSansSC-Regular.otf'
+	text_size: self.size
+	md_bg_color: utils.get_color_from_hex("#696969")
+
+
+<Label>:
+	font_name: 'Font/NotoSansSC-Regular.otf'
+
+<NumberInputNew@MDTextField>:
+	input_filter: 'int'
+
+<LineContent>
+	orientation: 'vertical'
+	spacing: '12dp'
+	height: '120dp'
+
+	NumberInputNew:
+		hint_text: languageDict1.langDict["VerticalLine"][app.state]
+	NumberInputNew:
+		hint_text: languageDict1.langDict["HorizontalLine"][app.state]
 GridLayout:
 	cols: 1
 	ScreenManager:
@@ -39,3 +63,6 @@ GridLayout:
 		GeneralSetting:
 			name: "general_setting"
 			id: general_setting
+		SecondScreenB:
+			name: "second_screen_b"
+			id: second_screen_b

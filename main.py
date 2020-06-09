@@ -1,7 +1,8 @@
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen, NoTransition
 from kivy.uix.button import ButtonBehavior
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.graphics import Line, Color
 from kivy.properties import ObjectProperty, NumericProperty
@@ -9,7 +10,10 @@ from plyer import camera, filechooser
 from os.path import exists, join
 from configparser import ConfigParser
 from kivy.utils import platform
-
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.textfield import MDTextField
+from languageDict.LanguageDict import langDict
 
 
 
@@ -44,22 +48,33 @@ class Contact(Screen):
 class GeneralSetting(Screen):
     pass
 
-class MainApp(App):
+class SecondScreenB(Screen):
+    pass
+
+class LineContent(BoxLayout):
+    pass
+
+
+class MainApp(MDApp):
 
     state = NumericProperty(0)
+    mode = NumericProperty(0)
+    dialog = None
 
     def build(self):
         parser = ConfigParser()
         location = 'dev.ini'
         if platform == 'ios':
-            savepath = App.get_running_app().user_data_dir
+            savepath = MDApp.get_running_app().user_data_dir
             location = join(savepath, location)
 
         parser.read(location)
-        if len(parser.sections()) != 0:
-            Lang = int(parser.get('LangSetting', 'lang'))
-            self.state = Lang
-
+        try:
+            if len(parser.sections()) != 0:
+                self.state = int(parser.get('Setting', 'lang'))
+                self.mode = int(parser.get('Setting', 'mode'))
+        except:
+            pass
         GUI = Builder.load_file("chiro.kv")
         return GUI
     
@@ -111,21 +126,35 @@ class MainApp(App):
         parser = ConfigParser()
         if self.state == 1:
             self.state = 0
-            parser['LangSetting'] = {
-                'lang': '0'
-            }
         else:
             self.state = 1
-            parser['LangSetting'] = {
-                'lang': '1'
-            }
+        parser['Setting'] = {
+            'lang': str(self.state),
+            'mode': str(self.mode)
+        }
         savefileName = 'dev.ini'
         if platform == 'ios':
-            savepath = App.get_running_app().user_data_dir
+            savepath = MDApp.get_running_app().user_data_dir
             savefileName = join(savepath, savefileName)
         with open(savefileName, 'w') as f:
             parser.write(f)
 
+    def switchMode(self):
+        parser = ConfigParser()
+        if self.mode == 0:
+            self.mode = 1
+        else:
+            self.mode = 0
+        parser['Setting'] = {
+            'lang': str(self.state),
+            'mode': str(self.mode)
+        }
+        savefileName = 'dev.ini'
+        if platform == 'ios':
+            savepath = MDApp.get_running_app().user_data_dir
+            savefileName = join(savepath, savefileName)
+        with open(savefileName, 'w') as f:
+            parser.write(f)
 
     def change_picture(self, source):
 
@@ -138,7 +167,7 @@ class MainApp(App):
         try:
             file_name = "test.png"
             if platform == 'ios':
-                savepath = App.get_running_app().user_data_dir
+                savepath = MDApp.get_running_app().user_data_dir
                 savepath = savepath[:len(savepath) - 4]
                 file_name = join(savepath, file_name)
             camera.take_picture(filename = file_name,on_complete = self.camera_callback)
@@ -174,6 +203,41 @@ class MainApp(App):
             pass
         objectname.source = "icons/no-camera.png"
         objectname.default_image = True
+
+    def AnalysisWithPoints(self):
+        print('OK')
+
+    def line_draw_setting(self):
+        if not self.dialog or True:
+            self.dialog = MDDialog(
+                title= "Enter Name",
+                type="custom",
+                content_cls=LineContent(),
+                buttons=[
+                    MDFlatButton(
+                        text=langDict["Cancel"][self.state], text_color=self.theme_cls.primary_color, on_release= self.closeDialog
+                    ),
+                    MDFlatButton(
+                        text=langDict["Draw"][self.state],text_color=self.theme_cls.primary_color, on_release=self.grabText
+                    ),
+                ],
+            )
+        self.dialog.set_normal_height()
+        self.dialog.open()
+
+
+    def grabText(self, inst):
+        lista = []
+        for obj in self.dialog.content_cls.children:
+            if isinstance(obj, MDTextField):
+                lista.append(obj.text)
+                obj.text = ""
+        if not self.root.ids.second_screen.image_change.default_image:
+            self.modify_image(lista[0],lista[1],self.root.ids.second_screen.image_change)
+        self.dialog.dismiss()
+
+    def closeDialog(self, inst):
+        self.dialog.dismiss()
 
 
 MainApp().run()
