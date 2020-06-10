@@ -23,15 +23,6 @@
 			pos_hint: {"top" : 1}
 			size_hint: 1,0.1
 		
-		GridLayout:
-			rows: 1
-			pos_hint:{"top": 1, "x": 0.05}
-			size_hint: 0.1, 0.1
-			ImageButton:
-				source:"icons/home.png"
-				on_release:
-					app.change_screen("home_screen")
-		
 		
 		GridLayout:	
 			rows:1
@@ -70,6 +61,10 @@
 					pos:self.pos
 			pos_hint: {"top": 0.1}
 			size_hint:1,0.1
+			ImageButton:
+				source:"icons/home.png"
+				on_release:
+					app.change_screen("home_screen")
 
 			ImageButton:
 				source:"icons/OpenGalleryButton.png"

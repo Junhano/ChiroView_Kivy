@@ -16,15 +16,15 @@ langDict = {
         1: "搜查文件"
     },
     "ClearAllCanvas":{
-        0: "Clear All Canvas",
-        1: "清空窗口"
+        0: "Delete",
+        1: "删除"
     },
     "Draw":{
         0: "Draw",
         1: "画线"
     },
     "Clear":{
-        0: "Clear Edit",
+        0: "Clear",
         1: "清空编辑"
     },
     "Save":{
@@ -40,7 +40,7 @@ langDict = {
         1: "水平线数量"
     },
     "EnterNumber":{
-        0: "Enter the number",
+        0: "Enter the Line number",
         1: "输入数字"
     },
     "BugReport": {
@@ -82,6 +82,26 @@ langDict = {
     "Cancel":{
         0: "Cancel",
         1: "取消"
+    },
+    "ConfirmRemoveMessage":{
+        0: "Are you sure to remove the picture and line from Canvas?",
+        1: "你确定删除图片和画的线吗？"
+    },
+    "CANCEL":{
+        0: "CANCEL",
+        1: "取消"
+    },
+    "CONFIRM":{
+        0: "CONFIRM",
+        1: "确认"
+    },
+    "CantClearCanvasWhenNoPicture":{
+        0: "Sorry, cannot clear Canvas when there are no pictures",
+        1: "对不起，因为你还没有选择图片所以你不能删除图片和画的线"
+    },
+    "CannotRotateDefaultImage":{
+        0: "Sorry, you cannot rotate image where you haven't select the image",
+        1: "对不起，因为你还没有选择图片所以你还不能旋转图片"
     }
 }
 

@@ -60,6 +60,8 @@ class MainApp(MDApp):
     state = NumericProperty(0)
     mode = NumericProperty(0)
     dialog = None
+    remove_confirm = None
+    error_dialog = None
 
     def build(self):
         parser = ConfigParser()
@@ -208,23 +210,58 @@ class MainApp(MDApp):
         print('OK')
 
     def line_draw_setting(self):
-        if not self.dialog or True:
+        if not self.dialog:
             self.dialog = MDDialog(
-                title= "Enter Name",
+                title= '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict["EnterNumber"][self.state]),
                 type="custom",
                 content_cls=LineContent(),
                 buttons=[
-                    MDFlatButton(
-                        text=langDict["Cancel"][self.state], text_color=self.theme_cls.primary_color, on_release= self.closeDialog
-                    ),
-                    MDFlatButton(
-                        text=langDict["Draw"][self.state],text_color=self.theme_cls.primary_color, on_release=self.grabText
-                    ),
-                ],
-            )
+                        MDFlatButton(
+                            text=langDict["Cancel"][self.state], text_color=self.theme_cls.primary_color, on_release= self.closeDialog
+                        ),
+                        MDFlatButton(
+                            text=langDict["Draw"][self.state],text_color=self.theme_cls.primary_color, on_release=self.grabText
+                        ),
+                    ],
+                )
         self.dialog.set_normal_height()
         self.dialog.open()
 
+    def confirm_remove_setting(self):
+        if not self.remove_confirm:
+            self.remove_confirm = MDDialog(
+                text= '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict["ConfirmRemoveMessage"][self.state]),
+                type="custom",
+                buttons=[
+                        MDFlatButton(
+                            text=langDict["CANCEL"][self.state], text_color=self.theme_cls.primary_color, on_release= self.dismissRemoveConfirm
+                        ),
+                        MDFlatButton(
+                            text=langDict["CONFIRM"][self.state],text_color=self.theme_cls.primary_color, on_release=self.action
+                        ),
+                    ],
+                )
+        self.remove_confirm.set_normal_height()
+        self.remove_confirm.open()
+
+    def errorDialog(self, keyString):
+        self.error_dialog = None
+        if not self.error_dialog:
+            self.error_dialog = MDDialog(
+                text='[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict[keyString][self.state]),
+                radius = [20, 7, 20, 7]
+            )
+        self.error_dialog.open()
+
+
+    def action(self, inst):
+        self.clear_all(self.root.ids.second_screen.image_change)
+        self.remove_confirm.dismiss()
+        self.remove_confirm = None
+
+    def dismissRemoveConfirm(self, inst):
+        self.remove_confirm.dismiss()
+        self.remove_confirm = None
 
     def grabText(self, inst):
         lista = []
@@ -235,9 +272,10 @@ class MainApp(MDApp):
         if not self.root.ids.second_screen.image_change.default_image:
             self.modify_image(lista[0],lista[1],self.root.ids.second_screen.image_change)
         self.dialog.dismiss()
+        self.dialog = None
 
     def closeDialog(self, inst):
         self.dialog.dismiss()
-
+        self.dialog = None
 
 MainApp().run()

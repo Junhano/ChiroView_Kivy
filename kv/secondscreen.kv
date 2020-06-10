@@ -14,6 +14,8 @@
 	canvas.after:
 		PopMatrix
 
+
+
 <NumberInput@TextInput>:
 	hint_text: languageDict1.langDict["EnterNumber"][app.state]
 	font_size: 0.03 * self.width if root.width > root.height else self.height
@@ -25,7 +27,7 @@
 	FloatLayout:
 		canvas:
 			Color:
-				rgb: utils.get_color_from_hex("#D8B5AE")
+				rgb: utils.get_color_from_hex("##D8B5AE")
 			Rectangle:
 				size: self.size
 				pos: self.pos
@@ -40,21 +42,12 @@
 					pos:self.pos
 			pos_hint: {"top": 1}
 			size_hint:1,0.1
-
-		GridLayout:
-			rows: 1
-			pos_hint:{"top": 1, "x": 0.05}
-			size_hint: 0.1, 0.1
-			ImageButton:
-				source:"icons/home.png"
-				on_release:
-					app.change_screen("home_screen")
 		
 
 		Image:
 			source:"icons/no-camera.png"
 			default_image: True
-			angle: -90 if self.width > self.height and not self.default_image else 0
+			angle: -90 if not self.default_image else 0
 			pos_hint: {"top": 0.9, "x": 0.1}
 			size_hint: 0.8, 0.7
 			id: modifyimage
@@ -64,15 +57,19 @@
 			pos_hint: {"top": 0.97, "x": 0.22}
 			size_hint: 0.28, 0.06
 			text: languageDict1.langDict["ClearAllCanvas"][app.state]
+			padding: dp(12), dp(12)
+			font_size: self.height * 0.5
 			on_release: 
-				app.clear_all(modifyimage)
+				app.confirm_remove_setting() if not root.image_change.default_image else app.errorDialog('CantClearCanvasWhenNoPicture')
 
 		MyButton:
 			pos_hint: {"top": 0.97, "x": 0.52}
 			size_hint:0.28,0.06
 			text: languageDict1.langDict["Clear"][app.state]
+			padding: dp(12),dp(12)
+			font_size: self.height * 0.5
 			on_release:
-				app.clean_image(modifyimage)
+				app.clean_image(modifyimage) 
 
 		MyButton:
 			pos_hint:{"top": 0.97, "x": 0.84}
@@ -82,25 +79,24 @@
 				print('safe')
 			
 
-		MyButton: 
+		InvisbleButton: 
 			pos_hint: {"top": 0.19, "x": 0.2}
-			size_hint: 0.2, 0.07
+			size_hint: 0.25, 0.1
 			text: languageDict1.langDict["Draw"][app.state]
+			font_size: self.height * 0.7
 			on_release:
 				app.line_draw_setting()
 				
 
 	
-		MyButton:
+		InvisbleButton:
 			pos_hint: {"top":0.19, "x": 0.6}
-			size_hint: 0.2, 0.07
+			size_hint: 0.25, 0.1
 			text: languageDict1.langDict["Rotate"][app.state]
+			font_size: self.height * 0.7
 			on_release:
-				if not root.image_change.default_image: root.image_change.angle -= 90		
-		
-		
-
-		
+				if not root.image_change.default_image: root.image_change.angle -= 90 
+				if root.image_change.default_image: app.errorDialog('CannotRotateDefaultImage')		
 		
 		
 		
@@ -114,6 +110,11 @@
 					pos:self.pos
 			pos_hint: {"top": 0.1}
 			size_hint:1,0.1
+
+			ImageButton:
+				source:"icons/home.png"
+				on_release:
+					app.change_screen("home_screen")
 			ImageButton:
 				source:"icons/OpenGalleryButton.png"
 				on_release:
