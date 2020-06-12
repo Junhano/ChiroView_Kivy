@@ -15,7 +15,6 @@
 			md_bg_color: utils.get_color_from_hex("#67697C")
 			right_action_items:[["dots-vertical", lambda x: app.change_screen("bug_setting")]]
 			
-			
 		MDLabel:
 			text: "ChiroView"
 			font_style: 'H3'
@@ -57,6 +56,7 @@
 				source: "icons/photoshopButton.png"
 				on_release:
 					app.change_screen("second_screen") if app.mode == 0 else app.change_screen("second_screen_b")
+
 
 			
 		

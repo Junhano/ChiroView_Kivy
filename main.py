@@ -5,7 +5,7 @@ from kivy.uix.button import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.graphics import Line, Color
-from kivy.properties import ObjectProperty, NumericProperty
+from kivy.properties import ObjectProperty, NumericProperty,BooleanProperty, StringProperty
 from plyer import camera, filechooser
 from os.path import exists, join
 from configparser import ConfigParser
@@ -14,6 +14,7 @@ from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.textfield import MDTextField
 from languageDict.LanguageDict import langDict
+from kivy.config import ConfigParser
 
 
 
@@ -49,7 +50,7 @@ class GeneralSetting(Screen):
     pass
 
 class SecondScreenB(Screen):
-    pass
+    image_change_B = ObjectProperty(None)
 
 class LineContent(BoxLayout):
     pass
@@ -62,7 +63,8 @@ class MainApp(MDApp):
     dialog = None
     remove_confirm = None
     error_dialog = None
-
+    image_source = StringProperty("icons/no-camera.png")
+    default_image = BooleanProperty(True)
     def build(self):
         parser = ConfigParser()
         location = 'dev.ini'
@@ -72,9 +74,8 @@ class MainApp(MDApp):
 
         parser.read(location)
         try:
-            if len(parser.sections()) != 0:
-                self.state = int(parser.get('Setting', 'lang'))
-                self.mode = int(parser.get('Setting', 'mode'))
+            self.state = int(parser.get('Setting', 'lang'))
+            self.mode = int(parser.get('Setting', 'mode'))
         except:
             pass
         GUI = Builder.load_file("chiro.kv")
@@ -160,9 +161,9 @@ class MainApp(MDApp):
 
     def change_picture(self, source):
 
-        self.root.ids.second_screen.image_change.source = source
+        self.image_source = source
         self.root.ids.second_screen.image_change.reload()
-        self.root.ids.second_screen.image_change.default_image = False
+        self.default_image = False
         self.change_screen("second_screen")
 
     def capture(self):
@@ -203,8 +204,8 @@ class MainApp(MDApp):
             remove_list.clear()
         except:
             pass
-        objectname.source = "icons/no-camera.png"
-        objectname.default_image = True
+        self.image_source = "icons/no-camera.png"
+        self.default_image = True
 
     def AnalysisWithPoints(self):
         print('OK')

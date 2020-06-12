@@ -3,28 +3,13 @@
 
 
 
-<Image>:
-	angle: 0
-	canvas.before:
-		PushMatrix
-		Rotate:
-			angle: root.angle
-			axis: 0, 0, 1
-			origin: root.center
-	canvas.after:
-		PopMatrix
 
 
 
 <SecondScreenB>:
-	image_change: modifyimage
-	FloatLayout:
-		canvas:
-			Color:
-				rgb: utils.get_color_from_hex("#D8B5AE")
-			Rectangle:
-				size: self.size
-				pos: self.pos
+	image_change_B: modifyimageB
+	MDFloatLayout:
+		md_bg_color: utils.get_color_from_hex("#D8B5AE")
 		
 		GridLayout:
 			rows:1 
@@ -39,13 +24,12 @@
 
 		
 
-		Image:
-			source:"icons/no-camera.png"
-			default_image: True
-			angle: -90 if self.width > self.height and not self.default_image else 0
+		RotationImage:
+			source:app.image_source
+			angle: -90 if self.width > self.height and not app.default_image else 0
 			pos_hint: {"top": 0.9, "x": 0.1}
 			size_hint: 0.8, 0.55
-			id: modifyimage
+			id: modifyimageB
 
 			
 		MyButton:
@@ -53,21 +37,21 @@
 			size_hint: 0.28, 0.06
 			text: languageDict1.langDict["ClearAllCanvas"][app.state]
 			on_release: 
-				app.clear_all(modifyimage)
+				app.clear_all(modifyimageB)
 
 		MyButton:
 			pos_hint: {"top": 0.97, "x": 0.52}
 			size_hint: 0.28, 0.06
 			text: languageDict1.langDict["Clear"][app.state]
 			on_release:
-				app.clean_image(modifyimage)
+				app.clean_image(modifyimageB)
 
 		MyButton:
 			pos_hint:{"top": 0.97, "x": 0.84}
 			size_hint: 0.14, 0.06
 			text: languageDict1.langDict["Save"][app.state]
 			on_release:
-				print(modifyimage.default_image)
+				print(modifyimageB.default_image)
 		
 		
 		
@@ -85,7 +69,7 @@
 			size_hint: 0.2, 0.07
 			text: languageDict1.langDict["Rotate"][app.state]
 			on_release:
-				if not root.image_change.default_image: root.image_change.angle -= 90		
+				if not app.default_image: root.image_change.angle -= 90		
 		
 		
 

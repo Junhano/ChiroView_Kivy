@@ -12,7 +12,6 @@
 #:import languageDict1 languageDict.LanguageDict
 
 
-	
 
 <-MyButton@Button>:
 	font_name: 'Font/NotoSansSC-Regular.otf'
@@ -64,20 +63,32 @@
 		PopMatrix
 
 
-	
-<MLabel>:
+<RotationImage@Image>:
+	angle: 0
+	canvas.before:
+		PushMatrix
+		Rotate:
+			angle: root.angle
+			axis: 0, 0, 1
+			origin: root.center
+	canvas.after:
+		PopMatrix
+
+
+
+
+<MDFlatButton>:
 	font_name: 'Font/NotoSansSC-Regular.otf'
 
-
-
-<NumberInputNew@MDTextField>:
+<NumberInputNew@TextInput>:
 	input_filter: 'int'
+	font_name: 'Font/NotoSansSC-Regular.otf'	
 
-<LineContent>
+<LineContent>	
 	orientation: 'vertical'
 	spacing: '12dp'
 	height: '120dp'
-
+	font_name: 'Font/NotoSansSC-Regular.otf'
 	NumberInputNew:
 		hint_text: languageDict1.langDict["VerticalLine"][app.state]
 	NumberInputNew:
