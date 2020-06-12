@@ -12,9 +12,9 @@ from configparser import ConfigParser
 from kivy.utils import platform
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.textfield import MDTextField
+from kivy.uix.textinput import TextInput
 from languageDict.LanguageDict import langDict
-from kivy.config import ConfigParser
+from os import remove
 
 
 
@@ -176,7 +176,7 @@ class MainApp(MDApp):
             camera.take_picture(filename = file_name,on_complete = self.camera_callback)
 
         except NotImplementedError:
-            pass
+            self.errorDialog('ErrorOpeningCamera')
 
 
     def camera_callback(self, filename):
@@ -187,7 +187,7 @@ class MainApp(MDApp):
         try:
             filechooser.open_file(on_selection=self.handle_selection)
         except NotImplementedError:
-            pass
+            self.errorDialog('ErrorOpeningFileChooser')
 
 
     def handle_selection(self,selection):
@@ -196,6 +196,19 @@ class MainApp(MDApp):
             self.change_picture(self.selection[0])
         except NotImplementedError:
             pass
+
+    def resetDefaultSetting(self, inst):
+        location = 'dev.ini'
+        if platform == 'ios':
+            savepath = MDApp.get_running_app().user_data_dir
+            location = join(savepath, location)
+        if exists(location):
+            remove(location)
+        self.state = 0
+        self.mode = 0
+        self.remove_confirm.dismiss()
+        self.remove_confirm = None
+
 
     def clear_all(self,objectname):
         try:
@@ -228,17 +241,17 @@ class MainApp(MDApp):
         self.dialog.set_normal_height()
         self.dialog.open()
 
-    def confirm_remove_setting(self):
+    def confirm_remove_setting(self, func, keyStr):
         if not self.remove_confirm:
             self.remove_confirm = MDDialog(
-                text= '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict["ConfirmRemoveMessage"][self.state]),
+                text= '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict[keyStr][self.state]),
                 type="custom",
                 buttons=[
                         MDFlatButton(
                             text=langDict["CANCEL"][self.state], text_color=self.theme_cls.primary_color, on_release= self.dismissRemoveConfirm
                         ),
                         MDFlatButton(
-                            text=langDict["CONFIRM"][self.state],text_color=self.theme_cls.primary_color, on_release=self.action
+                            text=langDict["CONFIRM"][self.state],text_color=self.theme_cls.primary_color, on_release= func
                         ),
                     ],
                 )
@@ -267,10 +280,11 @@ class MainApp(MDApp):
     def grabText(self, inst):
         lista = []
         for obj in self.dialog.content_cls.children:
-            if isinstance(obj, MDTextField):
+            if isinstance(obj, TextInput):
                 lista.append(obj.text)
                 obj.text = ""
-        if not self.root.ids.second_screen.image_change.default_image:
+
+        if not self.default_image:
             self.modify_image(lista[0],lista[1],self.root.ids.second_screen.image_change)
         self.dialog.dismiss()
         self.dialog = None

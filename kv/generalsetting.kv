@@ -42,3 +42,10 @@
 			size_hint: 0.5, 0.1
 			on_release:
 				app.switchMode()
+		MyButton:
+			text: languageDict1.langDict["ResetFactorySetting"][app.state]
+			id: reset_setting
+			pos_hint:{"top": 0.55, "x":0.25}
+			size_hint: 0.5, 0.1
+			on_release:
+				app.confirm_remove_setting(app.resetDefaultSetting, "ResetFactorySetting")

@@ -102,6 +102,26 @@ langDict = {
     "CannotRotateDefaultImage":{
         0: "Sorry, you cannot rotate image where you haven't select the image",
         1: "对不起，因为你还没有选择图片所以你还不能旋转图片"
+    },
+    "CannotSaveImage":{
+        0: "Sorry, Cannot save image when you haven't select the image",
+        1: "对不起，因为你还没有选择图片所以你不能保存图片"
+    },
+    "CannotClearLine":{
+        0: "Sorry, Cannot clear line when you haven't select the image",
+        1: "对不起， 因为你还没有选择图片所以你不能清理在图片画的线"
+    },
+    "ErrorOpeningCamera":{
+        0: "Sorry, there is a problem opening the camera, please try another way to select image",
+        1: "对不起，系统尝试打开相机时出现问题，请尝试另外一种方式选择图片"
+    },
+    "ErrorOpeningFileChooser":{
+        0: "Sorry, there is a problem opening the photo gallery, please try another way to select image",
+        1: "对不起，系统尝试打开相册时出现问题，请尝试另外一种方式选择图片"
+    },
+    "ResetFactorySetting":{
+        0: "Reset Setting",
+        1: "还原设定"
     }
 }
 
