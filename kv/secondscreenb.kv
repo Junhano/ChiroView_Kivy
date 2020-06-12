@@ -26,7 +26,7 @@
 
 		RotationImage:
 			source:app.image_source
-			angle: -90 if self.width > self.height and not app.default_image else 0
+			angle: -90 if not app.default_image else 0
 			pos_hint: {"top": 0.9, "x": 0.1}
 			size_hint: 0.8, 0.55
 			id: modifyimageB
@@ -69,7 +69,7 @@
 			size_hint: 0.2, 0.07
 			text: languageDict1.langDict["Rotate"][app.state]
 			on_release:
-				if not app.default_image: root.image_change.angle -= 90	
+				if not app.default_image: root.image_change_B.angle -= 90	
 				if app.default_image: app.errorDialog('CannotRotateDefaultImage')	
 		
 		
