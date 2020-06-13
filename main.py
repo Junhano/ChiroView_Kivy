@@ -14,8 +14,20 @@ from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivy.uix.textinput import TextInput
 from languageDict.LanguageDict import langDict
+from kivymd.uix.list import OneLineAvatarIconListItem
+from PostureCalculation import Posture
 from os import remove
 
+
+class ItemConfirm(OneLineAvatarIconListItem):
+    divider = None
+
+    def set_icon(self, instance_check):
+        instance_check.active = True
+        check_list = instance_check.get_widgets(instance_check.group)
+        for check in check_list:
+            if check != instance_check:
+                check.active = False
 
 
 
@@ -29,9 +41,6 @@ class SecondScreen(Screen):
     image_change = ObjectProperty(None)
 
 class ThirdScreen(Screen):
-    pass
-
-class BugSetting(Screen):
     pass
 
 class BugSending(Screen):
@@ -55,16 +64,26 @@ class SecondScreenB(Screen):
 class LineContent(BoxLayout):
     pass
 
+class BugSetting(BoxLayout):
+    pass
+
+class Helper(BoxLayout):
+    pass
 
 class MainApp(MDApp):
 
-    state = NumericProperty(0)
-    mode = NumericProperty(0)
+    state = NumericProperty(0) #which language, 0 is English, 1 is Chinese
+    mode = NumericProperty(0) #Point mode or line mode
+    View = NumericProperty(0) #0 is front body view while 1 is side body view
     dialog = None
     remove_confirm = None
     error_dialog = None
+    BugSetting_dialog = None
+    HelperDialog = None
+    PointDrawDialog = None
     image_source = StringProperty("icons/no-camera.png")
     default_image = BooleanProperty(True)
+
     def build(self):
         parser = ConfigParser()
         location = 'dev.ini'
@@ -164,7 +183,10 @@ class MainApp(MDApp):
         self.image_source = source
         self.root.ids.second_screen.image_change.reload()
         self.default_image = False
-        self.change_screen("second_screen")
+        if self.mode == 0:
+            self.change_screen("second_screen")
+        else:
+            self.change_screen("second_screen_b")
 
     def capture(self):
         try:
@@ -220,8 +242,6 @@ class MainApp(MDApp):
         self.image_source = "icons/no-camera.png"
         self.default_image = True
 
-    def AnalysisWithPoints(self):
-        print('OK')
 
     def line_draw_setting(self):
         if not self.dialog:
@@ -258,12 +278,39 @@ class MainApp(MDApp):
         self.remove_confirm.set_normal_height()
         self.remove_confirm.open()
 
+    def BugSettingDialog(self):
+        if not self.BugSetting_dialog:
+            self.BugSetting_dialog = MDDialog(
+                type = "custom",
+                size_hint = (0.5, 0.5),
+                pos_hint = {'x': 0.52, 'top': 1},
+                content_cls = BugSetting()
+            )
+
+        self.BugSetting_dialog.open()
+
+    def HelperDialogWhenNoImage(self):
+        if not self.HelperDialog:
+            self.HelperDialog = MDDialog(
+                title = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict["OptionForUserWhenNoImage"][self.state]),
+                type = "custom",
+                content_cls = Helper()
+            )
+        self.HelperDialog.set_normal_height()
+        self.HelperDialog.open()
+
+
+    def BugSettingCallBack(self, inst):
+        self.BugSetting_dialog.dismiss()
+        self.BugSetting_dialog = None
+        self.change_screen(inst)
+
     def errorDialog(self, keyString):
         self.error_dialog = None
         if not self.error_dialog:
             self.error_dialog = MDDialog(
                 text='[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict[keyString][self.state]),
-                radius = [20, 7, 20, 7]
+                radius = [20, 7, 20, 7],
             )
         self.error_dialog.open()
 
@@ -292,5 +339,67 @@ class MainApp(MDApp):
     def closeDialog(self, inst):
         self.dialog.dismiss()
         self.dialog = None
+
+    def pointDrawDialog(self):
+
+        FrontViewItem = {
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['LeftEye'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['RightEye'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['LeftEar'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['RightEar'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['NoseTip'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['SternalNotch'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['LeftShoulderTip'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['RightShoulderTip'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['Umbilicus'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['ASIS'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['LeftKneeCap'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['RightKneeCap'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['LeftAnkle'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['RightAnkle'][self.state]))
+        }
+
+        SideViewItem = {
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['EarCanal'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['CornerOfEye'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['TipOfShoulder'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['CANCEL'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['CANCEL'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['CANCEL'][self.state]))
+        }
+
+        if not self.PointDrawDialog:
+            FinalView = list(SideViewItem)
+            if self.View == 0:
+                FinalView = list(FrontViewItem)
+            self.PointDrawDialog = MDDialog(
+                title = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['PointChoosing'][self.state]),
+                type = 'confirmation',
+                items = FinalView,
+                buttons = [
+                        MDFlatButton(
+                            text=langDict["CANCEL"][self.state], text_color=self.theme_cls.primary_color, on_release= self.closePointDraw
+                        ),
+                        MDFlatButton(
+                            text=langDict["CONFIRM"][self.state],text_color=self.theme_cls.primary_color, on_release= self.continuePointDraw
+                        ),
+                    ],
+            )
+        self.PointDrawDialog.set_normal_height()
+        self.PointDrawDialog.open()
+
+    def closePointDraw(self, inst):
+        self.PointDrawDialog.dismiss()
+        self.PointDrawDialog = None
+
+    def continuePointDraw(self, inst):
+        self.PointDrawDialog.dismiss()
+        self.PointDrawDialog = None
+
+    def switchView(self):
+        if self.View == 0:
+            self.View = 1
+        else:
+            self.View = 0
 
 MainApp().run()

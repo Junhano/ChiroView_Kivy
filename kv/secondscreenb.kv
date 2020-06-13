@@ -33,6 +33,13 @@
 
 			
 		MyButton:
+			pos_hint: {"top": 0.97, "x": 0.05}
+			size_hint: 0.15, 0.06
+			text: languageDict1.langDict["FrontView"][app.state] if app.View == 0 else languageDict1.langDict["SideView"][app.state]
+			on_release:
+				app.switchView()
+
+		MyButton:
 			pos_hint: {"top": 0.97, "x": 0.22}
 			size_hint: 0.28, 0.06
 			text: languageDict1.langDict["ClearAllCanvas"][app.state]
@@ -51,7 +58,7 @@
 			size_hint: 0.14, 0.06
 			text: languageDict1.langDict["Save"][app.state]
 			on_release:
-				print(modifyimageB.default_image) if not app.default_image else app.errorDialog('CannotSaveImage')
+				print("Save") if not app.default_image else app.errorDialog('CannotSaveImage')
 		
 		
 		
@@ -61,7 +68,7 @@
 			size_hint: 0.2, 0.07
 			text: languageDict1.langDict["Points"][app.state]
 			on_release:
-				app.AnalysisWithPoints()				
+				app.pointDrawDialog() if not app.default_image else app.HelperDialogWhenNoImage()				
 
 	
 		InvisbleButton:

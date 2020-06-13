@@ -63,7 +63,7 @@
 			text: languageDict1.langDict["Draw"][app.state]
 			font_size: self.height * 0.7
 			on_release:
-				app.line_draw_setting()
+				app.line_draw_setting() if not app.default_image else app.HelperDialogWhenNoImage()
 				
 
 	

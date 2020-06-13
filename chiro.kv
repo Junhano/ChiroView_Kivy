@@ -2,12 +2,11 @@
 #:include kv/homescreen.kv
 #:include kv/secondscreen.kv
 #:include kv/thirdscreen.kv
-#:include kv/bugsetting.kv
 #:include kv/bugsending.kv
 #:include kv/help.kv
 #:include kv/about.kv
-#:include kv/contact.kv
 #:include kv/generalsetting.kv
+#:include kv/contact.kv
 #:include kv/secondscreenb.kv
 #:import languageDict1 languageDict.LanguageDict
 
@@ -95,6 +94,82 @@
 	NumberInputNew:
 		hint_text: languageDict1.langDict["HorizontalLine"][app.state]
 
+<BugSetting>:
+	orientation: 'vertical'
+	spacing: '12dp'
+	height: '240dp'
+	font_name: 'Font/NotoSansSC-Regular.otf'
+	InvisbleButton:
+		text: languageDict1.langDict["BugSending"][app.state]
+		color: 0,0,0,1
+		id: switch_lang
+		on_release:
+			app.BugSettingCallBack("bug_sending")
+
+
+	InvisbleButton:
+		text: languageDict1.langDict["GeneralSetting"][app.state]
+		color: 0,0,0,1
+		id: switch_lang
+		on_release:
+			app.BugSettingCallBack("general_setting")
+
+		
+	InvisbleButton:
+		text: languageDict1.langDict["Help"][app.state]	
+		color: 0,0,0,1		                
+		on_release:
+			app.BugSettingCallBack("help")
+		
+	InvisbleButton:
+		text: languageDict1.langDict["About"][app.state]
+		color: 0,0,0,1
+		id: switch_lang
+		on_release:
+			app.BugSettingCallBack("about")
+
+	InvisbleButton:
+		text: languageDict1.langDict["Contact"][app.state]
+		color: 0,0,0,1
+		id: switch_lang
+		on_release:
+			app.BugSettingCallBack("contact")
+
+<Helper>:
+	orientation: 'horizontal'
+	spacing: '12dp'
+	ImageButton:
+		source: "icons/icons8-slr-camera-64.png"
+		on_release:
+			app.HelperDialog.dismiss()
+			app.HelperDialog: None
+			app.capture()
+	ImageButton: 
+		source: "icons/icons8-photo-gallery-100.png"
+		on_release:
+			app.HelperDialog.dismiss()
+			app.HelperDialog: None
+			app.open_photos()
+	ImageButton:
+		source:"icons/OpenGalleryButton.png"
+		on_release:
+			app.HelperDialog.dismiss()
+			app.HelperDialog: None
+			app.change_screen("third_screen")
+	InvisbleButton:
+		text: languageDict1.langDict["CANCEL"][app.state]
+		color: 0,0,0,1
+		on_release:
+			app.HelperDialog.dismiss()
+			app.HelperDialog:None
+
+<ItemConfirm>:
+	on_release: root.set_icon(check)
+	
+	CheckboxRightWidget:
+		id: check
+		group: "check"
+
 
 GridLayout:
 	cols: 1
@@ -109,9 +184,6 @@ GridLayout:
 		ThirdScreen:
 			name: "third_screen"
 			id:third_screen
-		BugSetting:
-			name: "bug_setting"
-			id:bug_setting
 		BugSending:
 			name: "bug_sending"
 			id:bug_sending

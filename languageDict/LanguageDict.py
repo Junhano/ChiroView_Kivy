@@ -122,6 +122,90 @@ langDict = {
     "ResetFactorySetting":{
         0: "Reset Setting",
         1: "还原设定"
+    },
+    "OptionForUserWhenNoImage":{
+        0: "Please select using either camera, image gallery or previous saved image in our app to modify and analyze",
+        1: "请用相机，相册或者之前在我们软件存下来的图片中选择一个图片来进行涂改"
+    },
+    "LeftEye":{
+        0: "Left Eye",
+        1: "左眼"
+    },
+    "RightEye":{
+        0: "Right Eye",
+        1: "右眼"
+    },
+    "LeftEar":{
+        0: "Left Ear",
+        1: "左耳"
+    },
+    "RightEar":{
+        0: "Right Ear",
+        1: "右耳"
+    },
+    "NoseTip":{
+        0: "Nose tip",
+        1: "鼻尖"
+    },
+    "SternalNotch":{
+        0: "Sternal notch",
+        1: "胸骨上切迹"
+    },
+    "LeftShoulderTip":{
+        0: "Left Shoulder Tip",
+        1: "左肩尖"
+    },
+    "RightShoulderTip":{
+        0: "Right Shoulder Tip",
+        1: "右肩尖"
+    },
+    "Umbilicus":{
+        0: "umbilicus",
+        1: "肚脐眼"
+    },
+    "ASIS":{
+        0: "ASIS",
+        1: "髂前上棘"
+    },
+    "LeftKneeCap":{
+        0: "Left middle knee cap",
+        1: "左膝盖骨"
+    },
+    "RightKneeCap":{
+        0: "Right middle knee cap",
+        1: "右膝盖骨"
+    },
+    "LeftAnkle":{
+        0: "Left medial ankle",
+        1: "左内踝"
+    },
+    "RightAnkle":{
+        0:"Right medial ankle",
+        1: "右内踝"
+    },
+    "EarCanal":{
+        0: "Ear Canal",
+        1: "耳道"
+    },
+    "CornerOfEye":{
+        0: "Corner of eye",
+        1: "眼角"
+    },
+    "TipOfShoulder":{
+        0: "Tip of Shoulder",
+        1: "肩尖"
+    },
+    "PointChoosing":{
+        0: "Please choose body parts",
+        1: "请选择身体部位"
+    },
+    "FrontView":{
+        0: "Front",
+        1: "正面"
+    },
+    "SideView":{
+        0: "Side",
+        1: "侧面"
     }
 }
 

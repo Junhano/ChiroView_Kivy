@@ -10,10 +10,12 @@
 				size: self.size
 				pos: self.pos
 		
+
+		
 		MDToolbar:
 			id: toolbar
 			md_bg_color: utils.get_color_from_hex("#67697C")
-			right_action_items:[["dots-vertical", lambda x: app.change_screen("bug_setting")]]
+			right_action_items:[["dots-vertical", lambda x: app.BugSettingDialog()]]
 			
 		MDLabel:
 			text: "ChiroView"
@@ -24,7 +26,7 @@
 		GridLayout:
 			rows: 1
 			pos_hint: {"top": 0.3}
-			size_hint: 1, 0.1
+			size_hint: 1, 0.15
 			ImageButton:
 				source: "icons/icons8-slr-camera-64.png"
 				on_release:
@@ -43,7 +45,7 @@
 					size: self.size
 					pos:self.pos
 			pos_hint: {"top": 0.1}
-			size_hint:1,0.1
+			size_hint:1,0.145
 			ImageButton:
 				source:"icons/home.png"
 				on_release:
