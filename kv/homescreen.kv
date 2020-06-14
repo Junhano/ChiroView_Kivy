@@ -1,20 +1,14 @@
 #:import utils kivy.utils
 
 <HomeScreen>:
-	BoxLayout:
+	MDBoxLayout:
 		orientation: "vertical"
-		canvas:
-			Color:
-				rgb: utils.get_color_from_hex("#D8B5AE")
-			Rectangle:
-				size: self.size
-				pos: self.pos
-		
+		md_bg_color: app.theme_cls.opposite_bg_light
 
 		
 		MDToolbar:
 			id: toolbar
-			md_bg_color: utils.get_color_from_hex("#67697C")
+			md_bg_color: app.theme_cls.bg_darkest
 			right_action_items:[["dots-vertical", lambda x: app.BugSettingDialog()]]
 			
 		MDLabel:
@@ -40,7 +34,7 @@
 			rows: 1			
 			canvas:
 				Color:
-					rgb:utils.get_color_from_hex("#67697C")
+					rgb:app.theme_cls.bg_darkest
 				Rectangle:
 					size: self.size
 					pos:self.pos

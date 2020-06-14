@@ -6,7 +6,6 @@
 #:include kv/help.kv
 #:include kv/about.kv
 #:include kv/generalsetting.kv
-#:include kv/contact.kv
 #:include kv/secondscreenb.kv
 #:import languageDict1 languageDict.LanguageDict
 
@@ -137,7 +136,9 @@
 		text: languageDict1.langDict["Contact"][app.state]
 		color: 0,0,0,1
 		on_release:
-			app.BugSettingCallBack("contact")
+			app.BugSetting_dialog.dismiss()
+			app.BugSetting_dialog = None
+			app.Contact()
 
 <Helper>:
 	orientation: 'horizontal'
@@ -197,9 +198,6 @@ GridLayout:
 		About: 
 			name: "about"
 			id:about
-		Contact:
-			name: "contact"
-			id:contact
 		GeneralSetting:
 			name: "general_setting"
 			id: general_setting

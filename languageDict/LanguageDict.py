@@ -214,6 +214,10 @@ langDict = {
     "SetRotationDegreeSpecific":{
         0: "Please choose what degree what you want to rotate",
         1: "请选择你想每次旋转多少度"
+    },
+    "ErrorOpeningMail":{
+        0: "Sorry there is an error when trying to open mail, if urgent, please email to Junhano@uci.edu directly",
+        1: "对不起，系统打开邮件时出现问题。如果需要，请邮件到 Junhano@uci.edu"
     }
 }
 
