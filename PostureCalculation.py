@@ -6,12 +6,13 @@ class Posture:
 
     def frontCalculation(self):
         error_list = list()
-
+        return error_list
     def sideCalculation(self):
+        error_list = list()
         list1 = list()
         for k,v in self.coordinate_dict.items():
             list1.append((k, v[0]))
-
+        return error_list
     def displayResults(self):
         if self.view == 'FRONT':
             result = self.frontCalculation()
@@ -20,3 +21,9 @@ class Posture:
 
         for i in result:
             pass
+
+'''     
+class ImagePosture(Posture):
+    def __init__(self):
+        pass
+'''

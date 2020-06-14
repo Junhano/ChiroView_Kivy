@@ -73,7 +73,7 @@
 			text: languageDict1.langDict["Rotate"][app.state]
 			font_size: self.height * 0.7
 			on_release:
-				if not app.default_image: root.image_change.angle -= 90 
+				if not app.default_image: root.image_change.angle -= app.rotateDegree 
 				if app.default_image: app.errorDialog('CannotRotateDefaultImage')		
 		
 		

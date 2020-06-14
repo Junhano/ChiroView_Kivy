@@ -94,6 +94,14 @@
 	NumberInputNew:
 		hint_text: languageDict1.langDict["HorizontalLine"][app.state]
 
+<RotationValue>:
+
+	MDSlider:
+		id: ROValue
+		min: 1
+		max: 359
+		value: app.rotateDegree
+
 <BugSetting>:
 	orientation: 'vertical'
 	spacing: '12dp'
@@ -102,7 +110,6 @@
 	InvisbleButton:
 		text: languageDict1.langDict["BugSending"][app.state]
 		color: 0,0,0,1
-		id: switch_lang
 		on_release:
 			app.BugSettingCallBack("bug_sending")
 
@@ -110,7 +117,6 @@
 	InvisbleButton:
 		text: languageDict1.langDict["GeneralSetting"][app.state]
 		color: 0,0,0,1
-		id: switch_lang
 		on_release:
 			app.BugSettingCallBack("general_setting")
 
@@ -124,14 +130,12 @@
 	InvisbleButton:
 		text: languageDict1.langDict["About"][app.state]
 		color: 0,0,0,1
-		id: switch_lang
 		on_release:
 			app.BugSettingCallBack("about")
 
 	InvisbleButton:
 		text: languageDict1.langDict["Contact"][app.state]
 		color: 0,0,0,1
-		id: switch_lang
 		on_release:
 			app.BugSettingCallBack("contact")
 

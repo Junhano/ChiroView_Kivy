@@ -206,6 +206,14 @@ langDict = {
     "SideView":{
         0: "Side",
         1: "侧面"
+    },
+    "SetRotationDegree":{
+        0: "Rotation Degree",
+        1: "旋转角度"
+    },
+    "SetRotationDegreeSpecific":{
+        0: "Please choose what degree what you want to rotate",
+        1: "请选择你想每次旋转多少度"
     }
 }
 

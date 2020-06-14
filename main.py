@@ -70,10 +70,14 @@ class BugSetting(BoxLayout):
 class Helper(BoxLayout):
     pass
 
+class RotationValue(BoxLayout):
+    pass
+
 class MainApp(MDApp):
 
     state = NumericProperty(0) #which language, 0 is English, 1 is Chinese
     mode = NumericProperty(0) #Point mode or line mode
+    rotateDegree = NumericProperty(90) #RotateDegree for rotation image
     View = NumericProperty(0) #0 is front body view while 1 is side body view
     dialog = None
     remove_confirm = None
@@ -81,6 +85,7 @@ class MainApp(MDApp):
     BugSetting_dialog = None
     HelperDialog = None
     PointDrawDialog = None
+    RotationDegreeDialog = None
     image_source = StringProperty("icons/no-camera.png")
     default_image = BooleanProperty(True)
 
@@ -95,6 +100,7 @@ class MainApp(MDApp):
         try:
             self.state = int(parser.get('Setting', 'lang'))
             self.mode = int(parser.get('Setting', 'mode'))
+            self.rotateDegree = int(parser.get('Setting', 'rotationDegree'))
         except:
             pass
         GUI = Builder.load_file("chiro.kv")
@@ -144,32 +150,34 @@ class MainApp(MDApp):
         except:
             pass
 
+
     def switchLanguage(self):
-        parser = ConfigParser()
         if self.state == 1:
             self.state = 0
         else:
             self.state = 1
-        parser['Setting'] = {
-            'lang': str(self.state),
-            'mode': str(self.mode)
-        }
-        savefileName = 'dev.ini'
-        if platform == 'ios':
-            savepath = MDApp.get_running_app().user_data_dir
-            savefileName = join(savepath, savefileName)
-        with open(savefileName, 'w') as f:
-            parser.write(f)
+        self.UpdateConfig()
+
+    def switchRotateDegree(self, rotationDegree):
+        self.rotateDegree = rotationDegree
+        self.UpdateConfig()
+
+
 
     def switchMode(self):
-        parser = ConfigParser()
         if self.mode == 0:
             self.mode = 1
         else:
             self.mode = 0
+        self.UpdateConfig()
+
+
+    def UpdateConfig(self):
+        parser = ConfigParser()
         parser['Setting'] = {
             'lang': str(self.state),
-            'mode': str(self.mode)
+            'mode': str(self.mode),
+            'rotationDegree': str(self.rotateDegree)
         }
         savefileName = 'dev.ini'
         if platform == 'ios':
@@ -228,6 +236,7 @@ class MainApp(MDApp):
             remove(location)
         self.state = 0
         self.mode = 0
+        self.rotateDegree = 90
         self.remove_confirm.dismiss()
         self.remove_confirm = None
 
@@ -277,6 +286,8 @@ class MainApp(MDApp):
                 )
         self.remove_confirm.set_normal_height()
         self.remove_confirm.open()
+
+
 
     def BugSettingDialog(self):
         if not self.BugSetting_dialog:
@@ -401,5 +412,37 @@ class MainApp(MDApp):
             self.View = 1
         else:
             self.View = 0
+
+    def setDegreeDialog(self):
+        if not self.RotationDegreeDialog:
+            self.RotationDegreeDialog = MDDialog(
+                title = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['SetRotationDegreeSpecific'][self.state]),
+                type = 'custom',
+                content_cls = RotationValue(),
+                buttons=[
+                    MDFlatButton(
+                        text=langDict["CANCEL"][self.state], text_color=self.theme_cls.primary_color,
+                        on_release=self.closeRotateDialog
+                    ),
+                    MDFlatButton(
+                        text=langDict["CONFIRM"][self.state], text_color=self.theme_cls.primary_color,
+                        on_release=self.closeRotateDialogAction
+                    ),
+                ],
+            )
+        self.RotationDegreeDialog.set_normal_height()
+        self.RotationDegreeDialog.open()
+
+    def closeRotateDialog(self, inst):
+        self.RotationDegreeDialog.dismiss()
+        self.RotationDegreeDialog = None
+
+    def closeRotateDialogAction(self, inst):
+        self.RotationDegreeDialog.dismiss()
+        self.rotateDegree = int(self.RotationDegreeDialog.content_cls.ids.ROValue.value)
+        self.RotationDegreeDialog = None
+        self.UpdateConfig()
+
+
 
 MainApp().run()
