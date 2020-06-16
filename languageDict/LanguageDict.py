@@ -19,9 +19,9 @@ langDict = {
         0: "Delete",
         1: "删除"
     },
-    "Draw":{
-        0: "Draw",
-        1: "画线"
+    "APPLY":{
+        0: "APPLY",
+        1: "应用"
     },
     "Clear":{
         0: "Clear",
@@ -71,17 +71,9 @@ langDict = {
         0: "Contact",
         1: "联系方式"
     },
-    "SwitchMode":{
-        0: "Switch Mode",
-        1: "切换模式"
-    },
     "Points":{
         0: "Points",
         1: "点"
-    },
-    "Cancel":{
-        0: "Cancel",
-        1: "取消"
     },
     "ConfirmRemoveMessage":{
         0: "Are you sure to remove the picture and line from Canvas?",
@@ -218,6 +210,22 @@ langDict = {
     "ErrorOpeningMail":{
         0: "Sorry there is an error when trying to open mail, if urgent, please email to Junhano@uci.edu directly",
         1: "对不起，系统打开邮件时出现问题。如果需要，请邮件到 Junhano@uci.edu"
+    },
+    "ChangeLine":{
+        0: "Set Line amount",
+        1: "设定线数量"
+    },
+    "ReplaceConfirm":{
+        0: "The body part seem already been identify in the image, do you want to keep that or replace it?",
+        1: "身体部位已经被标记在图片上，你想把它替换掉吗?"
+    },
+    "SwitchViewConfirm":{
+        0: "Are you sure you want to switch View, all previous coordinates will be lost",
+        1: "你确定要换面吗，所有以前的标记将会流失"
+    },
+    "SavingCoordinateConfirm":{
+        0: "Are you sure you want to save the coordinate?",
+        1: "你确定标记这个点"
     }
 }
 

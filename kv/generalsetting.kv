@@ -6,7 +6,7 @@
 <GeneralSetting>:
 	MDFloatLayout:
 
-
+		md_bg_color: app.theme_cls.opposite_bg_light
 		GridLayout:
 			rows:1
 			canvas:
@@ -35,12 +35,12 @@
 			on_release:
 				app.switchLanguage()
 		MyButton:
-			text: languageDict1.langDict["SwitchMode"][app.state] + " " + str(app.mode)
+			text: languageDict1.langDict["ChangeLine"][app.state]
 			id: switch_mode
 			pos_hint:{"top": 0.7, "x":0.25}
 			size_hint: 0.5, 0.1
 			on_release:
-				app.switchMode()
+				app.line_draw_setting()
 
 		MyButton:
 			text: languageDict1.langDict["SetRotationDegree"][app.state]

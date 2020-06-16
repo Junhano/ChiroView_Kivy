@@ -6,7 +6,6 @@
 #:include kv/help.kv
 #:include kv/about.kv
 #:include kv/generalsetting.kv
-#:include kv/secondscreenb.kv
 #:import languageDict1 languageDict.LanguageDict
 
 
@@ -201,6 +200,26 @@ GridLayout:
 		GeneralSetting:
 			name: "general_setting"
 			id: general_setting
-		SecondScreenB:
-			name: "second_screen_b"
-			id: second_screen_b
+
+	GridLayout:
+		rows: 1			
+		canvas:
+			Color:
+				rgb:app.theme_cls.bg_darkest
+			Rectangle:
+				size: self.size
+				pos:self.pos
+		pos_hint: {"top": 0.1}
+		size_hint:1,0.145
+		ImageButton:
+			source:"icons/home.png"
+			on_release:
+				app.change_screen("home_screen")
+		ImageButton:
+			source:"icons/OpenGalleryButton.png"
+			on_release:
+				app.change_screen("third_screen")
+		ImageButton:
+			source: "icons/photoshopButton.png"
+			on_release:
+				app.change_screen("second_screen")

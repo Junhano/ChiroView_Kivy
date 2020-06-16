@@ -15,7 +15,6 @@ from kivymd.uix.dialog import MDDialog
 from kivy.uix.textinput import TextInput
 from languageDict.LanguageDict import langDict
 from kivymd.uix.list import OneLineAvatarIconListItem
-from PostureCalculation import Posture
 from os import remove
 
 
@@ -55,9 +54,6 @@ class About(Screen):
 class GeneralSetting(Screen):
     pass
 
-class SecondScreenB(Screen):
-    image_change_B = ObjectProperty(None)
-
 class LineContent(BoxLayout):
     pass
 
@@ -70,11 +66,14 @@ class Helper(BoxLayout):
 class RotationValue(BoxLayout):
     pass
 
+
 class MainApp(MDApp):
+
     state = NumericProperty(0) #which language, 0 is English, 1 is Chinese
-    mode = NumericProperty(0) #Point mode or line mode
     rotateDegree = NumericProperty(90) #RotateDegree for rotation image
     View = NumericProperty(0) #0 is front body view while 1 is side body view
+    HorizontalLine = NumericProperty(8)
+    VerticalLine = NumericProperty(8)
     dialog = None  #Dialog that prompt user for how many lines to draw both vertically and horizontally
     remove_confirm = None      #Dialog that confirm user to remove the picture from the canvas
     error_dialog = None          #Dialog that give user error alert when things go wrong
@@ -84,6 +83,12 @@ class MainApp(MDApp):
     RotationDegreeDialog = None  #Dialog that give user the ability to choose how many degree they want to rotate
     image_source = StringProperty("icons/no-camera.png")
     default_image = BooleanProperty(True)
+    remove_list = list()
+
+    coordinateDict = dict()
+    coordinateKey = None
+    capturePoint = False
+    captureCoordinate = None
 
     def build(self):
         #self.theme_cls.theme_style = "Dark"
@@ -96,8 +101,9 @@ class MainApp(MDApp):
         parser.read(location)
         try:
             self.state = int(parser.get('Setting', 'lang'))
-            self.mode = int(parser.get('Setting', 'mode'))
             self.rotateDegree = int(parser.get('Setting', 'rotationDegree'))
+            self.VerticalLine = int(parser.get('Setting', 'VerticalLine'))
+            self.HorizontalLine = int(parser.get('Setting', 'HorizontalLine'))
         except:
             pass
         GUI = Builder.load_file("chiro.kv")
@@ -116,10 +122,10 @@ class MainApp(MDApp):
                 content_cls=LineContent(),
                 buttons=[
                         MDFlatButton(
-                            text=langDict["Cancel"][self.state], text_color=self.theme_cls.primary_color, on_release= self.closeDialog
+                            text=langDict["CANCEL"][self.state], text_color=self.theme_cls.primary_color, on_release= self.closeDialog
                         ),
                         MDFlatButton(
-                            text=langDict["Draw"][self.state],text_color=self.theme_cls.primary_color, on_release=self.grabText
+                            text=langDict["APPLY"][self.state],text_color=self.theme_cls.primary_color, on_release=self.grabText
                         ),
                     ],
                 )
@@ -271,11 +277,11 @@ class MainApp(MDApp):
             if isinstance(obj, TextInput):
                 lista.append(obj.text)
                 obj.text = ""
-
-        if not self.default_image:
-            self.modify_image(lista[0],lista[1],self.root.ids.second_screen.image_change)
+        self.VerticalLine = int(lista[0])
+        self.HorizontalLine = int(lista[1])
         self.dialog.dismiss()
         self.dialog = None
+        self.UpdateConfig()
 
     def closeDialog(self, inst):
         self.dialog.dismiss()
@@ -287,8 +293,17 @@ class MainApp(MDApp):
         self.PointDrawDialog = None
 
     def continuePointDraw(self, inst):
-        self.PointDrawDialog.dismiss()
-        self.PointDrawDialog = None
+        result_text = ""
+        for i in self.PointDrawDialog.items:
+            if i.ids.check.active:
+                result_text = i.text.split('[')[1].split(']')[1]
+        if result_text in self.coordinateDict:
+            self.confirm_remove_setting(self.closeReplaceDialogAction, "ReplaceConfirm")
+        else:
+            self.PointDrawDialog.dismiss()
+            self.PointDrawDialog = None
+        self.coordinateKey = result_text
+        self.capturePoint = True
 
     def closeRotateDialog(self, inst):
         self.RotationDegreeDialog.dismiss()
@@ -300,13 +315,37 @@ class MainApp(MDApp):
         self.RotationDegreeDialog = None
         self.UpdateConfig()
 
+    def closeReplaceDialogAction(self, inst):
+        del self.coordinateDict[self.coordinateKey]
+        self.remove_confirm.dismiss()
+        self.remove_confirm = None
+        self.PointDrawDialog.dismiss()
+        self.PointDrawDialog = None
+
+    def confirmSwitchView(self, inst):
+        self.remove_confirm.dismiss()
+        self.remove_confirm = None
+        if self.View == 0:
+            self.View = 1
+        else:
+            self.View = 0
+        self.coordinateDict.clear()
+
+    def storeDialogConfirm(self, inst):
+        self.remove_confirm.dismiss()
+        self.remove_confirm = None
+        self.coordinateDict[self.coordinateKey] = self.captureCoordinate
+        self.captureCoordinate = None
+        self.capturePoint = False
+        print(self.coordinateDict)
+
     #Function here about all the button callback function
 
     def clear_all(self,objectname):
         try:
-            for i in remove_list:
+            for i in self.remove_list:
                 objectname.canvas.remove(i)
-            remove_list.clear()
+            self.remove_list.clear()
         except:
             pass
         self.image_source = "icons/no-camera.png"
@@ -327,55 +366,45 @@ class MainApp(MDApp):
             print('Something went wrong')
        
 
-    def modify_image(self,vertical,horizontal,objectname):
-        self.clean_image(objectname)
-        global remove_list
-        remove_list = []
-        try:
-            vertical = int(vertical)
-            horizontal = int(horizontal)
-            if vertical > 20:
-                vertical = 20
-            if horizontal > 20:
-                horizontal = 20
-            with objectname.canvas:
-                Color(0, 0, 0)
-                for k in range(vertical):
-                    temp = Line(points=[objectname.x + objectname.width // (vertical + 1) * (k+1), objectname.y, objectname.x + objectname.width // (vertical + 1) * (k+1), objectname.y + objectname.height], width=1.2)
-                    remove_list.append(temp)
-                for i in range(horizontal):
-                    temp = Line(points=[objectname.x, objectname.y + (objectname.height //(horizontal + 1) * (i + 1)), objectname.x + objectname.width, objectname.y + (objectname.height // (horizontal + 1) * (i+1))], width=1.2)
-                    remove_list.append(temp)
-        except:
-            print("Error in getting num lines")
-    
-    def clean_image(self,objectname):
-        try:
-            for i in remove_list:
-                objectname.canvas.remove(i)
-            remove_list.clear()
-        except:
-            pass
+    def modify_image(self,objectname):
+        horizontal = self.HorizontalLine
+        vertical = self.VerticalLine
+        if self.VerticalLine > 20:
+            vertical = 20
+        if self.HorizontalLine > 20:
+            horizontal = 20
+        with objectname.canvas:
+            Color(0, 0, 0)
+            for k in range(vertical):
+                temp = Line(points=[objectname.x + objectname.width // (vertical + 1) * (k+1), objectname.y, objectname.x + objectname.width // (vertical + 1) * (k+1), objectname.y + objectname.height], width=1.2)
+                self.remove_list.append(temp)
+            for i in range(horizontal):
+                temp = Line(points=[objectname.x, objectname.y + (objectname.height //(horizontal + 1) * (i + 1)), objectname.x + objectname.width, objectname.y + (objectname.height // (horizontal + 1) * (i+1))], width=1.2)
+                self.remove_list.append(temp)
+
 
     def change_picture(self, source):
-
         self.image_source = source
         self.root.ids.second_screen.image_change.reload()
         self.default_image = False
-        if self.mode == 0:
-            self.change_screen("second_screen")
-        else:
-            self.change_screen("second_screen_b")
+        self.change_screen("second_screen")
+        #Clock.schedule_once(partial(self.modify_image, self.VerticalLine,self.HorizontalLine,self.root.ids.second_screen.image_change), 1)
+        #self.modify_image(self.VerticalLine, self.HorizontalLine, self.root.ids.second_screen.image_change)
 
 
     def switchView(self):
-        if self.View == 0:
-            self.View = 1
-        else:
-            self.View = 0
+        self.confirm_remove_setting(self.confirmSwitchView, "SwitchViewConfirm")
 
 
-
+    def imagePosCallBack(self, *args):
+        if self.capturePoint:
+            if args[0][1].is_double_tap:
+                if self.captureCoordinate != None:
+                    self.confirm_remove_setting(self.storeDialogConfirm, "SavingCoordinateConfirm")
+            elif args[0][1].is_triple_tap:
+                pass
+            else:
+                self.captureCoordinate = args[0][1].pos
 
     #Changing APP Setting Function
     def switchLanguage(self):
@@ -390,14 +419,6 @@ class MainApp(MDApp):
         self.UpdateConfig()
 
 
-
-    def switchMode(self):
-        if self.mode == 0:
-            self.mode = 1
-        else:
-            self.mode = 0
-        self.UpdateConfig()
-
     def resetDefaultSetting(self, inst):
         location = 'dev.ini'
         if platform == 'ios':
@@ -406,8 +427,9 @@ class MainApp(MDApp):
         if exists(location):
             remove(location)
         self.state = 0
-        self.mode = 0
         self.rotateDegree = 90
+        self.HorizontalLine = 8
+        self.VerticalLine = 8
         self.remove_confirm.dismiss()
         self.remove_confirm = None
 
@@ -416,8 +438,9 @@ class MainApp(MDApp):
         parser = ConfigParser()
         parser['Setting'] = {
             'lang': str(self.state),
-            'mode': str(self.mode),
-            'rotationDegree': str(self.rotateDegree)
+            'rotationDegree': str(self.rotateDegree),
+            'VerticalLine': str(self.VerticalLine),
+            'HorizontalLine': str(self.HorizontalLine)
         }
         savefileName = 'dev.ini'
         if platform == 'ios':
@@ -428,6 +451,7 @@ class MainApp(MDApp):
 
     #Function that calls to camera, filechooser or their associate callback function
     def capture(self):
+
         try:
             file_name = "test.png"
             if platform == 'ios':
@@ -438,6 +462,7 @@ class MainApp(MDApp):
 
         except NotImplementedError:
             self.errorDialog('ErrorOpeningCamera')
+
 
 
     def camera_callback(self, filename):
@@ -455,7 +480,7 @@ class MainApp(MDApp):
         try:
             self.selection = selection
             self.change_picture(self.selection[0])
-        except NotImplementedError:
+        except:
             pass
 
     def Contact(self):

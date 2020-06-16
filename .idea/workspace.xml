@@ -20,17 +20,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72a7a59c-73b7-4cd3-93ce-e3aaff2a69e1" name="Default Changelist" comment="adding camera and filechooser">
+      <change afterPath="$PROJECT_DIR$/Helper/BlurBackground.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PostureCalculation.py" beforeDir="false" afterPath="$PROJECT_DIR$/PostureCalculation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PostureCalculation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Helper/PostureCalculation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chiro.kv" beforeDir="false" afterPath="$PROJECT_DIR$/chiro.kv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev.ini" beforeDir="false" afterPath="$PROJECT_DIR$/dev.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kv/about.kv" beforeDir="false" afterPath="$PROJECT_DIR$/kv/about.kv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kv/bugsending.kv" beforeDir="false" afterPath="$PROJECT_DIR$/kv/bugsending.kv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kv/contact.kv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/kv/generalsetting.kv" beforeDir="false" afterPath="$PROJECT_DIR$/kv/generalsetting.kv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kv/help.kv" beforeDir="false" afterPath="$PROJECT_DIR$/kv/help.kv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kv/homescreen.kv" beforeDir="false" afterPath="$PROJECT_DIR$/kv/homescreen.kv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kv/secondscreen.kv" beforeDir="false" afterPath="$PROJECT_DIR$/kv/secondscreen.kv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kv/secondscreenb.kv" beforeDir="false" afterPath="$PROJECT_DIR$/kv/secondscreenb.kv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kv/secondscreenb.kv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/kv/thirdscreen.kv" beforeDir="false" afterPath="$PROJECT_DIR$/kv/thirdscreen.kv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/languageDict/LanguageDict.py" beforeDir="false" afterPath="$PROJECT_DIR$/languageDict/LanguageDict.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
@@ -62,17 +63,41 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/kv" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Helper" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/kv" />
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/Font" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.main">
+    <configuration name="BlurBackground" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ChiroView_IOS" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Helper" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Helper/BlurBackground.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ChiroView_IOS" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -97,6 +122,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.BlurBackground" />
       </list>
     </recent_temporary>
   </component>
@@ -142,50 +168,50 @@
       <screen x="0" y="23" width="1920" height="977" />
     </state>
     <state x="748" y="273" key="FileChooserDialogImpl/0.23.1920.977@0.23.1920.977" timestamp="1591124178968" />
-    <state width="1899" height="229" key="GridCell.Tab.0.bottom" timestamp="1592177655762">
-      <screen x="0" y="23" width="1920" height="977" />
+    <state width="1899" height="207" key="GridCell.Tab.0.bottom" timestamp="1592290063837">
+      <screen x="0" y="23" width="1920" height="978" />
     </state>
     <state width="1899" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1591037481666" />
-    <state width="1899" height="229" key="GridCell.Tab.0.bottom/0.23.1920.977@0.23.1920.977" timestamp="1592177655762" />
-    <state width="1899" height="43" key="GridCell.Tab.0.bottom/0.23.1920.978@0.23.1920.978" timestamp="1591664090747" />
-    <state width="1899" height="264" key="GridCell.Tab.0.bottom/0.23.1920.980@0.23.1920.980" timestamp="1587338785141" />
-    <state width="1899" height="229" key="GridCell.Tab.0.center" timestamp="1592177655762">
-      <screen x="0" y="23" width="1920" height="977" />
+    <state width="1899" height="207" key="GridCell.Tab.0.bottom/0.23.1920.977@0.23.1920.977" timestamp="1592284960498" />
+    <state width="1899" height="207" key="GridCell.Tab.0.bottom/0.23.1920.978@0.23.1920.978" timestamp="1592290063837" />
+    <state width="1899" height="207" key="GridCell.Tab.0.bottom/0.23.1920.980@0.23.1920.980" timestamp="1592289867837" />
+    <state width="1899" height="207" key="GridCell.Tab.0.center" timestamp="1592290063836">
+      <screen x="0" y="23" width="1920" height="978" />
     </state>
     <state width="1899" height="305" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1591037481664" />
-    <state width="1899" height="229" key="GridCell.Tab.0.center/0.23.1920.977@0.23.1920.977" timestamp="1592177655762" />
-    <state width="1899" height="43" key="GridCell.Tab.0.center/0.23.1920.978@0.23.1920.978" timestamp="1591664090746" />
-    <state width="1899" height="264" key="GridCell.Tab.0.center/0.23.1920.980@0.23.1920.980" timestamp="1587338785140" />
-    <state width="1899" height="229" key="GridCell.Tab.0.left" timestamp="1592177655762">
-      <screen x="0" y="23" width="1920" height="977" />
+    <state width="1899" height="207" key="GridCell.Tab.0.center/0.23.1920.977@0.23.1920.977" timestamp="1592284960498" />
+    <state width="1899" height="207" key="GridCell.Tab.0.center/0.23.1920.978@0.23.1920.978" timestamp="1592290063836" />
+    <state width="1899" height="207" key="GridCell.Tab.0.center/0.23.1920.980@0.23.1920.980" timestamp="1592289867836" />
+    <state width="1899" height="207" key="GridCell.Tab.0.left" timestamp="1592290063836">
+      <screen x="0" y="23" width="1920" height="978" />
     </state>
     <state width="1899" height="305" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1591037481663" />
-    <state width="1899" height="229" key="GridCell.Tab.0.left/0.23.1920.977@0.23.1920.977" timestamp="1592177655762" />
-    <state width="1899" height="43" key="GridCell.Tab.0.left/0.23.1920.978@0.23.1920.978" timestamp="1591664090746" />
-    <state width="1899" height="264" key="GridCell.Tab.0.left/0.23.1920.980@0.23.1920.980" timestamp="1587338785140" />
-    <state width="1899" height="229" key="GridCell.Tab.0.right" timestamp="1592177655762">
-      <screen x="0" y="23" width="1920" height="977" />
+    <state width="1899" height="207" key="GridCell.Tab.0.left/0.23.1920.977@0.23.1920.977" timestamp="1592284960497" />
+    <state width="1899" height="207" key="GridCell.Tab.0.left/0.23.1920.978@0.23.1920.978" timestamp="1592290063836" />
+    <state width="1899" height="207" key="GridCell.Tab.0.left/0.23.1920.980@0.23.1920.980" timestamp="1592289867836" />
+    <state width="1899" height="207" key="GridCell.Tab.0.right" timestamp="1592290063837">
+      <screen x="0" y="23" width="1920" height="978" />
     </state>
     <state width="1899" height="305" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1591037481665" />
-    <state width="1899" height="229" key="GridCell.Tab.0.right/0.23.1920.977@0.23.1920.977" timestamp="1592177655762" />
-    <state width="1899" height="43" key="GridCell.Tab.0.right/0.23.1920.978@0.23.1920.978" timestamp="1591664090746" />
-    <state width="1899" height="264" key="GridCell.Tab.0.right/0.23.1920.980@0.23.1920.980" timestamp="1587338785141" />
-    <state width="1899" height="326" key="GridCell.Tab.1.bottom" timestamp="1592013198995">
+    <state width="1899" height="207" key="GridCell.Tab.0.right/0.23.1920.977@0.23.1920.977" timestamp="1592284960498" />
+    <state width="1899" height="207" key="GridCell.Tab.0.right/0.23.1920.978@0.23.1920.978" timestamp="1592290063837" />
+    <state width="1899" height="207" key="GridCell.Tab.0.right/0.23.1920.980@0.23.1920.980" timestamp="1592289867837" />
+    <state width="1899" height="326" key="GridCell.Tab.1.bottom" timestamp="1592253401792">
       <screen x="0" y="23" width="1920" height="977" />
     </state>
-    <state width="1899" height="326" key="GridCell.Tab.1.bottom/0.23.1920.977@0.23.1920.977" timestamp="1592013198995" />
-    <state width="1899" height="326" key="GridCell.Tab.1.center" timestamp="1592013198995">
+    <state width="1899" height="326" key="GridCell.Tab.1.bottom/0.23.1920.977@0.23.1920.977" timestamp="1592253401792" />
+    <state width="1899" height="326" key="GridCell.Tab.1.center" timestamp="1592253401791">
       <screen x="0" y="23" width="1920" height="977" />
     </state>
-    <state width="1899" height="326" key="GridCell.Tab.1.center/0.23.1920.977@0.23.1920.977" timestamp="1592013198995" />
-    <state width="1899" height="326" key="GridCell.Tab.1.left" timestamp="1592013198994">
+    <state width="1899" height="326" key="GridCell.Tab.1.center/0.23.1920.977@0.23.1920.977" timestamp="1592253401791" />
+    <state width="1899" height="326" key="GridCell.Tab.1.left" timestamp="1592253401791">
       <screen x="0" y="23" width="1920" height="977" />
     </state>
-    <state width="1899" height="326" key="GridCell.Tab.1.left/0.23.1920.977@0.23.1920.977" timestamp="1592013198994" />
-    <state width="1899" height="326" key="GridCell.Tab.1.right" timestamp="1592013198995">
+    <state width="1899" height="326" key="GridCell.Tab.1.left/0.23.1920.977@0.23.1920.977" timestamp="1592253401791" />
+    <state width="1899" height="326" key="GridCell.Tab.1.right" timestamp="1592253401792">
       <screen x="0" y="23" width="1920" height="977" />
     </state>
-    <state width="1899" height="326" key="GridCell.Tab.1.right/0.23.1920.977@0.23.1920.977" timestamp="1592013198995" />
+    <state width="1899" height="326" key="GridCell.Tab.1.right/0.23.1920.977@0.23.1920.977" timestamp="1592253401792" />
     <state x="469" y="150" key="SettingsEditor" timestamp="1592009029962">
       <screen x="0" y="23" width="1920" height="977" />
     </state>
