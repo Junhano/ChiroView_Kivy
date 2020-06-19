@@ -1,16 +1,17 @@
 #:import utils kivy.utils
 #:include kv/homescreen.kv
 #:include kv/secondscreen.kv
-#:include kv/thirdscreen.kv
 #:include kv/bugsending.kv
 #:include kv/help.kv
 #:include kv/about.kv
 #:include kv/generalsetting.kv
 #:import languageDict1 languageDict.LanguageDict
+#:import MDFlatButton kivymd.uix.button.MDFlatButton
 
 
 
 <-MyButton@Button>:
+	color: 0,0,0,1
 	font_name: 'Font/NotoSansSC-Regular.otf'
 	state_image: self.background_normal if self.state == 'normal' else self.background_down
 	disabled_image: self.background_disabled_normal if self.state == 'normal' else self.background_disabled_down
@@ -36,29 +37,6 @@
 			pos: int(self.center_x - self.texture_size[0] / 2.), int(self.center_y - self.texture_size[1] / 2.)
 		PopMatrix
 	
-	
-
-<-InvisbleButton@Button>:
-	font_name: 'Font/NotoSansSC-Regular.otf'
-	state_image: self.background_normal if self.state == 'normal' else self.background_down
-	disabled_image: self.background_disabled_normal if self.state == 'normal' else self.background_disabled_down
-	_scale: 1. if self.texture_size[0] < self.width else float(self.width) / self.texture_size[0]
-	canvas:
-		Color:
-			rgba: self.background_color
-		PushMatrix
-		Scale:
-			origin: self.center
-			x: self._scale or 1.
-			y: self._scale or 1.
-		Color:
-			rgba: self.disabled_color if self.disabled else self.color
-		Rectangle:
-			texture: self.texture
-			size: self.texture_size
-			pos: int(self.center_x - self.texture_size[0] / 2.), int(self.center_y - self.texture_size[1] / 2.)
-		PopMatrix
-
 
 <RotationImage@Image>:
 	angle: 0
@@ -105,33 +83,38 @@
 	spacing: '12dp'
 	height: '240dp'
 	font_name: 'Font/NotoSansSC-Regular.otf'
-	InvisbleButton:
+	MyButton:
+		background_color: 0,0,0,0
 		text: languageDict1.langDict["BugSending"][app.state]
 		color: 0,0,0,1
 		on_release:
 			app.BugSettingCallBack("bug_sending")
 
 
-	InvisbleButton:
+	MyButton:
+		background_color: 0,0,0,0
 		text: languageDict1.langDict["GeneralSetting"][app.state]
 		color: 0,0,0,1
 		on_release:
 			app.BugSettingCallBack("general_setting")
 
 		
-	InvisbleButton:
+	MyButton:
+		background_color: 0,0,0,0
 		text: languageDict1.langDict["Help"][app.state]	
 		color: 0,0,0,1		                
 		on_release:
 			app.BugSettingCallBack("help")
 		
-	InvisbleButton:
+	MyButton:
+		background_color: 0,0,0,0
 		text: languageDict1.langDict["About"][app.state]
 		color: 0,0,0,1
 		on_release:
 			app.BugSettingCallBack("about")
 
-	InvisbleButton:
+	MyButton:
+		background_color: 0,0,0,0
 		text: languageDict1.langDict["Contact"][app.state]
 		color: 0,0,0,1
 		on_release:
@@ -145,29 +128,31 @@
 	ImageButton:
 		source: "icons/icons8-slr-camera-64.png"
 		on_release:
-			app.HelperDialog.dismiss()
-			app.HelperDialog: None
+			app.StartExamDialog.dismiss()
+			app.StartExamDialog: None
 			app.capture()
 	ImageButton: 
 		source: "icons/icons8-photo-gallery-100.png"
 		on_release:
-			app.HelperDialog.dismiss()
-			app.HelperDialog: None
+			app.StartExamDialog.dismiss()
+			app.StartExamDialog: None
 			app.open_photos()
-	ImageButton:
-		source:"icons/OpenGalleryButton.png"
-		on_release:
-			app.HelperDialog.dismiss()
-			app.HelperDialog: None
-			app.change_screen("third_screen")
-	InvisbleButton:
+	MyButton:
+		background_color: 0,0,0,0
 		text: languageDict1.langDict["CANCEL"][app.state]
 		color: 0,0,0,1
 		on_release:
-			app.HelperDialog.dismiss()
-			app.HelperDialog:None
+			app.StartExamDialog.dismiss()
+			app.StartExamDialog:None
 
 <ItemConfirm>:
+	on_release: root.set_icon(check)
+	
+	CheckboxRightWidget:
+		id: check
+		group: "check"
+
+<MultipleItemConfirm>:
 	on_release: root.set_icon(check)
 	
 	CheckboxRightWidget:
@@ -179,15 +164,14 @@ GridLayout:
 	cols: 1
 	ScreenManager:
 		id: screen_manager
+
 		HomeScreen:
 			name: "home_screen"
 			id: home_screen
+
 		SecondScreen:
 			name: "second_screen"
 			id:second_screen
-		ThirdScreen:
-			name: "third_screen"
-			id:third_screen
 		BugSending:
 			name: "bug_sending"
 			id:bug_sending
@@ -201,25 +185,3 @@ GridLayout:
 			name: "general_setting"
 			id: general_setting
 
-	GridLayout:
-		rows: 1			
-		canvas:
-			Color:
-				rgb:app.theme_cls.bg_darkest
-			Rectangle:
-				size: self.size
-				pos:self.pos
-		pos_hint: {"top": 0.1}
-		size_hint:1,0.145
-		ImageButton:
-			source:"icons/home.png"
-			on_release:
-				app.change_screen("home_screen")
-		ImageButton:
-			source:"icons/OpenGalleryButton.png"
-			on_release:
-				app.change_screen("third_screen")
-		ImageButton:
-			source: "icons/photoshopButton.png"
-			on_release:
-				app.change_screen("second_screen")

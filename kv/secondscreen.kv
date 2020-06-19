@@ -1,6 +1,6 @@
 #:import utils kivy.utils
 #:import languageDict1 languageDict.LanguageDict
-
+#:import MDFloatLayout kivymd.uix.floatlayout.MDFloatLayout
 
 
 
@@ -8,70 +8,85 @@
 
 <SecondScreen>:
 	image_change: modifyimage
-	MDFloatLayout:
-		md_bg_color: app.theme_cls.opposite_bg_light
-		GridLayout:
-			rows:1 
-			canvas:
-				Color:
-					rgb:utils.get_color_from_hex("#67697C")
-				Rectangle:
-					size: self.size
-					pos:self.pos
-			pos_hint: {"top": 1}
-			size_hint:1,0.1
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'icons/BackGround.jpeg'
+	MDFloatLayout:		
 
+
+		MDRectangleFlatIconButton:
+			md_bg_color: 0,0,0,0
+			text_color: 0,0,0,1
+			icon: "keyboard-return"
+			font_name: 'Font/NotoSansSC-Regular.otf'
+			text: languageDict1.langDict["HOME"][app.state]
+			pos_hint: {"top": 1, "x": 0.05}
+			size_hint: 0.15, 0.1
+			on_release:
+				app.confirm_setting(app.changeBackScreenWithSave, "SavePictureConfirm", app.changeBackScreenWithOutSave, "UNSAVE", "SAVE")
+		
+		MyButton:
+			background_color: 0,0,0,0
+			text: languageDict1.langDict["Rotate"][app.state]
+			pos_hint: {"top": 1, "x": 0.4}
+			size_hint: 0.15, 0.1
+			on_release:
+				root.image_change.angle -= app.rotateDegree
+
+		MyButton:
+			background_color: 0,0,0,0
+			text: "Analysis"
+			pos_hint: {"top": 1, "x": 0.75}
+			size_hint: 0.15, 0.1
+			on_release:
+				print('Analyze')
 		
 
-		RotationImage:
+		RotationImage:				
 			source:app.image_source
-			angle: -90 if not app.default_image else 0
-			pos_hint: {"top": 0.9, "x": 0.1}
-			size_hint: 0.8, 0.55
+			angle: -90 if app.image_source != 'icons/no-camera.png' else 0
+			pos_hint: {"top": 0.9}
+			size_hint: 1, 0.8
 			id: modifyimage
-			on_touch_down: if not app.default_image: app.imagePosCallBack(args)
+			on_touch_down: 
+				app.imagePosCallBack(args) 
+			canvas.before:
+				Color:
+					rgba: 0,0,0,1
+				Line:
+					width: 1
+					rectangle: self.x, self.y, self.width, self.height 
 
-			
 		MyButton:
-			pos_hint: {"top": 0.97, "x": 0.05}
-			size_hint: 0.15, 0.06
+			background_color: 0,0,0,0
+			text: languageDict1.langDict["IdentifyPart"][app.state]
+			pos_hint: {"top": 0.1, "x": 0.05}
+			size_hint: 0.15, 0.1
+			on_release:
+				app.IdentifyBodyPartDialog()
+
+		MyButton:
+			background_color: 0,0,0,0
 			text: languageDict1.langDict["FrontView"][app.state] if app.View == 0 else languageDict1.langDict["SideView"][app.state]
+			pos_hint: {"top": 0.1, "x": 0.4}
+			size_hint: 0.15, 0.1
 			on_release:
 				app.switchView()
 
 		MyButton:
-			pos_hint: {"top": 0.97, "x": 0.22}
-			size_hint: 0.28, 0.06
-			text: languageDict1.langDict["ClearAllCanvas"][app.state]
-			on_release: 
-				app.confirm_remove_setting(app.action, "ConfirmRemoveMessage") if not app.default_image else app.errorDialog('CantClearCanvasWhenNoPicture')
-
-
-		MyButton:
-			pos_hint:{"top": 0.97, "x": 0.84}
-			size_hint: 0.14, 0.06
-			text: languageDict1.langDict["Save"][app.state]
+			background_color: 0,0,0,0
+			text: languageDict1.langDict["DeletePart"][app.state]
+			pos_hint: {"top": 0.1, "x": 0.75}
+			size_hint: 0.15, 0.1
 			on_release:
-				print("Save") if not app.default_image else app.errorDialog('CannotSaveImage')
-		
-		
+				app.delete_Body_Part_Dialog()
 		
 
-		InvisbleButton: 
-			pos_hint: {"top": 0.19, "x": 0.2}
-			size_hint: 0.2, 0.07
-			text: languageDict1.langDict["Points"][app.state]
-			on_release:
-				app.pointDrawDialog() if not app.default_image else app.HelperDialogWhenNoImage()				
 
-	
-		InvisbleButton:
-			pos_hint: {"top":0.19, "x": 0.6}
-			size_hint: 0.2, 0.07
-			text: languageDict1.langDict["Rotate"][app.state]
-			on_release:
-				if not app.default_image: root.image_change.angle -= app.rotateDegree	
-				if app.default_image: app.errorDialog('CannotRotateDefaultImage')	
+			
+
 		
 		
 

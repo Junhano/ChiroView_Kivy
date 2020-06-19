@@ -11,14 +11,6 @@ langDict = {
         0: "Return Home",
         1: "回到主菜单"
     },
-    "SearchFile": {
-        0: "Search the file",
-        1: "搜查文件"
-    },
-    "ClearAllCanvas":{
-        0: "Delete",
-        1: "删除"
-    },
     "APPLY":{
         0: "APPLY",
         1: "应用"
@@ -71,13 +63,9 @@ langDict = {
         0: "Contact",
         1: "联系方式"
     },
-    "Points":{
-        0: "Points",
-        1: "点"
-    },
-    "ConfirmRemoveMessage":{
-        0: "Are you sure to remove the picture and line from Canvas?",
-        1: "你确定删除图片和画的线吗？"
+    "IdentifyPart":{
+        0: "Identify Parts",
+        1: "选择部位"
     },
     "CANCEL":{
         0: "CANCEL",
@@ -86,22 +74,6 @@ langDict = {
     "CONFIRM":{
         0: "CONFIRM",
         1: "确认"
-    },
-    "CantClearCanvasWhenNoPicture":{
-        0: "Sorry, cannot clear Canvas when there are no pictures",
-        1: "对不起，因为你还没有选择图片所以你不能删除图片和画的线"
-    },
-    "CannotRotateDefaultImage":{
-        0: "Sorry, you cannot rotate image where you haven't select the image",
-        1: "对不起，因为你还没有选择图片所以你还不能旋转图片"
-    },
-    "CannotSaveImage":{
-        0: "Sorry, Cannot save image when you haven't select the image",
-        1: "对不起，因为你还没有选择图片所以你不能保存图片"
-    },
-    "CannotClearLine":{
-        0: "Sorry, Cannot clear line when you haven't select the image",
-        1: "对不起， 因为你还没有选择图片所以你不能清理在图片画的线"
     },
     "ErrorOpeningCamera":{
         0: "Sorry, there is a problem opening the camera, please try another way to select image",
@@ -226,6 +198,34 @@ langDict = {
     "SavingCoordinateConfirm":{
         0: "Are you sure you want to save the coordinate?",
         1: "你确定标记这个点"
+    },
+    "StartDiagosis":{
+        0: "Start the Diagnosis",
+        1: "开始检测"
+    },
+    "HOME":{
+        0: "HOME",
+        1: "主页"
+    },
+    "SavePictureConfirm":{
+        0: "Do you want to save picture or not",
+        1: "你想保存图片还是不要"
+    },
+    "DeleteCord":{
+        0: "Choose the coordinate you want to delete",
+        1: "请选择想要删除的坐标"
+    },
+    "DeletePart":{
+        0: "Delete Parts",
+        1: "删除部位"
+    },
+    "UNSAVE":{
+        0: "UNSAVE",
+        1: "不保存"
+    },
+    "SAVE":{
+        0: "SAVE",
+        1: "保存"
     }
 }
 

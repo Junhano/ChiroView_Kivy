@@ -1,35 +1,100 @@
 #:import utils kivy.utils
+#:import languageDict1 languageDict.LanguageDict
+#:import MDFloatLayout kivymd.uix.floatlayout.MDFloatLayout
+#:import MDBoxLayout kivymd.uix.boxlayout.MDBoxLayout
+#:import MDFillRoundFlatIconButton kivymd.uix.button.MDFillRoundFlatIconButton
+<HomeScreen>:	
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'icons/BackGround.jpeg'
 
-<HomeScreen>:
-	MDBoxLayout:
-		orientation: "vertical"
-		md_bg_color: app.theme_cls.opposite_bg_light
+	MDFloatLayout:
+		md_bg_color: 0,0,0,0
+	
+		MDBoxLayout:
+			orientation: "horizontal"
+		
+			pos_hint: {"top": 1}
+			size_hint: 1, 0.1
+			canvas.before:
+				Color:
+					rgba: 0,0,0,1
+				Line:
+					width: 1
+					rectangle: self.x, self.y, self.width, self.height 
+			MyButton:
+				background_color: 0,0,0,0
+				size_hint: 0.2, 1
+				text: "Test"
+				on_release:
+					app.change_picture('icons/home.png')
+			Label:
+				size_hint: 0.6, 1
+				text: "ChiroView"
+			
+			MyButton:
+				background_color: 0,0,0,0
+				size_hint: 0.2, 1
+				text: "Upgrade"
+				on_release:
+					print('Upgrade')
+			
+		MDBoxLayout:
+			
+			pos_hint: {"top": 0.9}
+			size_hint: 1, 0.78
+			canvas.before:
+				Color:
+					rgba: 0,0,0,1
+				Line:
+					width: 1
+					rectangle: self.x, self.y, self.width, self.height
+		
+		MDFillRoundFlatIconButton:
+			text_color: 0,0,0,1
+			icon: "microscope"
+			font_name: 'Font/NotoSansSC-Regular.otf'
+			text: languageDict1.langDict["StartDiagosis"][app.state]
+			md_bg_color: utils.get_color_from_hex('#00c7ff')
+			pos_hint: {"top": 0.75, "x" : 0.25}
+			size_hint: 0.5, 0.1
+			on_release:
+				app.BeginDialog()
+				
+		
+		MyButton:
+			background_color: 0,0,0,0
+			text: "Saved"
+			pos_hint: {"top": 0.5, "x": 0.25}
+			size_hint: 0.1, 0.1	
+			on_release:		
+				print('Saved image')
+		
+		MyButton:
+			background_color: 0,0,0,0
+			text: "Setting"
+			pos_hint: {"top": 0.5, "x": 0.75}
+			size_hint: 0.1, 0.1
+			on_release:
+				app.change_screen("general_setting")	
 
 		
-		MDToolbar:
-			id: toolbar
-			md_bg_color: app.theme_cls.bg_darkest
-			right_action_items:[["dots-vertical", lambda x: app.BugSettingDialog()]]
-			
-		MDLabel:
-			text: "ChiroView"
-			font_style: 'H3'
-			halign: "center"
-			valign: "center"
-
 		GridLayout:
 			rows: 1
-			pos_hint: {"top": 0.3}
-			size_hint: 1, 0.15
-			ImageButton:
-				source: "icons/icons8-slr-camera-64.png"
+			pos_hint: {"top": 0.12}
+			size_hint: 1, 0.12
+			MyButton:
+				background_color: 0,0,0,0
+				text: languageDict1.langDict["About"][app.state]
 				on_release:
-					app.capture()
-			ImageButton: 
-				source: "icons/icons8-photo-gallery-100.png"
+					app.change_screen('help')
+
+			MyButton:
+				background_color: 0,0,0,0
+				text: languageDict1.langDict["Contact"][app.state]
 				on_release:
-					app.open_photos()
+					app.Contact()
 
 
-			
-		

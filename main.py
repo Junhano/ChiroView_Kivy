@@ -4,7 +4,6 @@ from kivy.uix.screenmanager import Screen, NoTransition
 from kivy.uix.button import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
-from kivy.graphics import Line, Color
 from kivy.properties import ObjectProperty, NumericProperty,BooleanProperty, StringProperty
 from plyer import camera, filechooser, email
 from os.path import exists, join
@@ -16,7 +15,12 @@ from kivy.uix.textinput import TextInput
 from languageDict.LanguageDict import langDict
 from kivymd.uix.list import OneLineAvatarIconListItem
 from os import remove
+import functools
 
+valuetoKeyDict = dict()
+for k,v in langDict.items():
+    for x, y in v.items():
+        valuetoKeyDict[y] = k
 
 class ItemConfirm(OneLineAvatarIconListItem):
     divider = None
@@ -27,6 +31,18 @@ class ItemConfirm(OneLineAvatarIconListItem):
         for check in check_list:
             if check != instance_check:
                 check.active = False
+
+class MultipleItemConfirm(OneLineAvatarIconListItem):
+    divider = None
+
+
+    def set_icon(self, instance_check):
+        instance_check.active = True
+        check_list = instance_check.get_widgets(instance_check.group)
+        for check in check_list:
+            if check != instance_check:
+                check.active = False
+
 
 
 
@@ -39,8 +55,6 @@ class HomeScreen(Screen):
 class SecondScreen(Screen):
     image_change = ObjectProperty(None)
 
-class ThirdScreen(Screen):
-    pass
 
 class BugSending(Screen):
     pass
@@ -74,21 +88,31 @@ class MainApp(MDApp):
     View = NumericProperty(0) #0 is front body view while 1 is side body view
     HorizontalLine = NumericProperty(8)
     VerticalLine = NumericProperty(8)
-    dialog = None  #Dialog that prompt user for how many lines to draw both vertically and horizontally
-    remove_confirm = None      #Dialog that confirm user to remove the picture from the canvas
+    default_image = BooleanProperty(True)
+
+    NumberLineChoosedialog = None  #Dialog that prompt user for how many lines to draw both vertically and horizontally
+    cancelconfirm = None      #Dialog that confirm user to remove the picture from the canvas
     error_dialog = None          #Dialog that give user error alert when things go wrong
     BugSetting_dialog = None    #Dialog that give user to choose what option they want to enter to either change setting, contact or get help etc
-    HelperDialog = None      #Dialog that give user to choose picture when they haven't choose it yet
-    PointDrawDialog = None     #Dialog that give user to choose what kind of body part they want to points
+    StartExamDialog = None      #Dialog that give user to choose picture when they haven't choose it yet
+    ChooseBodyPartDialog = None     #Dialog that give user to choose what kind of body part they want to points
     RotationDegreeDialog = None  #Dialog that give user the ability to choose how many degree they want to rotate
+    DeleteBodyPartDialog = None
+
     image_source = StringProperty("icons/no-camera.png")
-    default_image = BooleanProperty(True)
-    remove_list = list()
 
     coordinateDict = dict()
     coordinateKey = None
     capturePoint = False
     captureCoordinate = None
+
+    @staticmethod
+    def compareFuncAlreadyChose(Item1, Item2):
+        if Item1.text.split('[')[1].split(']')[1] > Item2.text.split('[')[1].split(']')[1]:
+            return 1
+        else:
+            return -1
+
 
     def build(self):
         #self.theme_cls.theme_style = "Dark"
@@ -113,10 +137,30 @@ class MainApp(MDApp):
 
     #Function here that about declear of different MD Dialog
 
-    def line_draw_setting(self):
+    def delete_Body_Part_Dialog(self):
+        if not self.DeleteBodyPartDialog:
+            self.DeleteBodyPartDialog = MDDialog(
+                title = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict["DeleteCord"][self.state]),
+                type = "custom",
+                items = [],
+                buttons=[
+                    MDFlatButton(
+                        text=langDict["CANCEL"][self.state], text_color=self.theme_cls.primary_color,
+                        on_release=self.closeDeleteCoordinateDialog
+                    ),
+                    MDFlatButton(
+                        text=langDict["CONFIRM"][self.state], text_color=self.theme_cls.primary_color,
+                        on_release=self.continueDeleteCoordinateDialog
+                    ),
+                ],
+            )
+        self.DeleteBodyPartDialog.set_normal_height()
+        self.DeleteBodyPartDialog.open()
+
+    def grid_image_create_setting(self):
         #Dialog that about line draw setting, how many lines
-        if not self.dialog:
-            self.dialog = MDDialog(
+        if not self.NumberLineChoosedialog:
+            self.NumberLineChoosedialog = MDDialog(
                 title= '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict["EnterNumber"][self.state]),
                 type="custom",
                 content_cls=LineContent(),
@@ -125,30 +169,36 @@ class MainApp(MDApp):
                             text=langDict["CANCEL"][self.state], text_color=self.theme_cls.primary_color, on_release= self.closeDialog
                         ),
                         MDFlatButton(
-                            text=langDict["APPLY"][self.state],text_color=self.theme_cls.primary_color, on_release=self.grabText
+                            text=langDict["APPLY"][self.state],text_color=self.theme_cls.primary_color, on_release=self.setLineAmount
                         ),
                     ],
                 )
-        self.dialog.set_normal_height()
-        self.dialog.open()
+        self.NumberLineChoosedialog.set_normal_height()
+        self.NumberLineChoosedialog.open()
 
-    def confirm_remove_setting(self, func, keyStr):
+    def confirm_setting(self, func, keyStr, cancelFunc = None, left_button = None, right_button = None):
+        if cancelFunc is None:
+            cancelFunc = self.dismissRemoveConfirm
+        if left_button is None:
+            left_button = "CANCEL"
+        if right_button is None:
+            right_button = "CONFIRM"
         #Dialog that about remove picture from canvas
-        if not self.remove_confirm:
-            self.remove_confirm = MDDialog(
+        if not self.cancelconfirm:
+            self.cancelconfirm = MDDialog(
                 text= '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict[keyStr][self.state]),
                 type="custom",
                 buttons=[
                         MDFlatButton(
-                            text=langDict["CANCEL"][self.state], text_color=self.theme_cls.primary_color, on_release= self.dismissRemoveConfirm
+                            text=langDict[left_button][self.state], text_color=self.theme_cls.primary_color, on_release= cancelFunc
                         ),
                         MDFlatButton(
-                            text=langDict["CONFIRM"][self.state],text_color=self.theme_cls.primary_color, on_release= func
+                            text=langDict[right_button][self.state],text_color=self.theme_cls.primary_color, on_release= func
                         ),
                     ],
                 )
-        self.remove_confirm.set_normal_height()
-        self.remove_confirm.open()
+        self.cancelconfirm.set_normal_height()
+        self.cancelconfirm.open()
 
     def BugSettingDialog(self):
         #Dialog that about bug setting in home page
@@ -162,19 +212,18 @@ class MainApp(MDApp):
 
         self.BugSetting_dialog.open()
 
-    def HelperDialogWhenNoImage(self):
+    def BeginDialog(self):
         #Dialog that give user choice to choose picture when they haven't choose it yet
-        if not self.HelperDialog:
-            self.HelperDialog = MDDialog(
+        if not self.StartExamDialog:
+            self.StartExamDialog = MDDialog(
                 title = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict["OptionForUserWhenNoImage"][self.state]),
                 type = "custom",
                 content_cls = Helper()
             )
-        self.HelperDialog.set_normal_height()
-        self.HelperDialog.open()
+        self.StartExamDialog.set_normal_height()
+        self.StartExamDialog.open()
 
-
-    def pointDrawDialog(self):
+    def IdentifyBodyPartDialog(self):
         #Dialog that give user to choose what point they want to identify
         FrontViewItem = {
             ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['LeftEye'][self.state])),
@@ -202,11 +251,12 @@ class MainApp(MDApp):
             ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['CANCEL'][self.state]))
         }
 
-        if not self.PointDrawDialog:
+        if not self.ChooseBodyPartDialog:
             FinalView = list(SideViewItem)
             if self.View == 0:
-                FinalView = list(FrontViewItem)
-            self.PointDrawDialog = MDDialog(
+                cmp = functools.cmp_to_key(MainApp.compareFuncAlreadyChose)
+                FinalView = sorted(list(FrontViewItem), key = cmp)
+            self.ChooseBodyPartDialog = MDDialog(
                 title = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['PointChoosing'][self.state]),
                 type = 'confirmation',
                 items = FinalView,
@@ -219,8 +269,8 @@ class MainApp(MDApp):
                         ),
                     ],
             )
-        self.PointDrawDialog.set_normal_height()
-        self.PointDrawDialog.open()
+        self.ChooseBodyPartDialog.set_normal_height()
+        self.ChooseBodyPartDialog.open()
 
     def setDegreeDialog(self):
         #Dialog that give user ability to choose what degree they want to rotate
@@ -255,54 +305,75 @@ class MainApp(MDApp):
 
 
     #Function here that execute about all dialog button callback
+
+    def continueDeleteCoordinateDialog(self, inst):
+        self.DeleteBodyPartDialog.dismiss()
+        self.DeleteBodyPartDialog = None
+        for i in self.DeleteBodyPartDialog.items:
+            if i.ids.check.active:
+                result_text = i.text.split('[')[1].split(']')[1]
+                del self.coordinateDict[result_text]
+
+    def closeDeleteCoordinateDialog(self, inst):
+        self.DeleteBodyPartDialog.dismiss()
+        self.DeleteBodyPartDialog = None
+
+    def changeBackScreenWithOutSave(self, inst):
+        self.image_source = "icons/no-camera.png"
+        self.default_image = True
+        self.cancelconfirm.dismiss()
+        self.cancelconfirm = None
+        self.coordinateDict.clear()
+        self.change_screen('home_screen')
+
+    def changeBackScreenWithSave(self, inst):
+        self.cancelconfirm.dismiss()
+        self.cancelconfirm = None
+        self.change_screen('home_screen')
+
+
     def BugSettingCallBack(self, inst):
         self.BugSetting_dialog.dismiss()
         self.BugSetting_dialog = None
         self.change_screen(inst)
 
 
-
-    def action(self, inst):
-        self.clear_all(self.root.ids.second_screen.image_change)
-        self.remove_confirm.dismiss()
-        self.remove_confirm = None
-
     def dismissRemoveConfirm(self, inst):
-        self.remove_confirm.dismiss()
-        self.remove_confirm = None
+        self.cancelconfirm.dismiss()
+        self.cancelconfirm = None
 
-    def grabText(self, inst):
+    def setLineAmount(self, inst):
         lista = []
-        for obj in self.dialog.content_cls.children:
+        for obj in self.NumberLineChoosedialog.content_cls.children:
             if isinstance(obj, TextInput):
                 lista.append(obj.text)
                 obj.text = ""
         self.VerticalLine = int(lista[0])
         self.HorizontalLine = int(lista[1])
-        self.dialog.dismiss()
-        self.dialog = None
+        self.NumberLineChoosedialog.dismiss()
+        self.NumberLineChoosedialog = None
         self.UpdateConfig()
 
     def closeDialog(self, inst):
-        self.dialog.dismiss()
-        self.dialog = None
+        self.NumberLineChoosedialog.dismiss()
+        self.NumberLineChoosedialog = None
 
 
     def closePointDraw(self, inst):
-        self.PointDrawDialog.dismiss()
-        self.PointDrawDialog = None
+        self.ChooseBodyPartDialog.dismiss()
+        self.ChooseBodyPartDialog = None
 
     def continuePointDraw(self, inst):
         result_text = ""
-        for i in self.PointDrawDialog.items:
+        for i in self.ChooseBodyPartDialog.items:
             if i.ids.check.active:
                 result_text = i.text.split('[')[1].split(']')[1]
-        if result_text in self.coordinateDict:
-            self.confirm_remove_setting(self.closeReplaceDialogAction, "ReplaceConfirm")
+        if valuetoKeyDict[result_text] in self.coordinateDict:
+            self.confirm_setting(self.closeReplaceDialogAction, "ReplaceConfirm")
         else:
-            self.PointDrawDialog.dismiss()
-            self.PointDrawDialog = None
-        self.coordinateKey = result_text
+            self.ChooseBodyPartDialog.dismiss()
+            self.ChooseBodyPartDialog = None
+        self.coordinateKey = valuetoKeyDict[result_text]
         self.capturePoint = True
 
     def closeRotateDialog(self, inst):
@@ -317,14 +388,14 @@ class MainApp(MDApp):
 
     def closeReplaceDialogAction(self, inst):
         del self.coordinateDict[self.coordinateKey]
-        self.remove_confirm.dismiss()
-        self.remove_confirm = None
+        self.cancelconfirm.dismiss()
+        self.cancelconfirm = None
         self.PointDrawDialog.dismiss()
         self.PointDrawDialog = None
 
     def confirmSwitchView(self, inst):
-        self.remove_confirm.dismiss()
-        self.remove_confirm = None
+        self.cancelconfirm.dismiss()
+        self.cancelconfirm = None
         if self.View == 0:
             self.View = 1
         else:
@@ -332,25 +403,14 @@ class MainApp(MDApp):
         self.coordinateDict.clear()
 
     def storeDialogConfirm(self, inst):
-        self.remove_confirm.dismiss()
-        self.remove_confirm = None
+        self.cancelconfirm.dismiss()
+        self.cancelconfirm = None
         self.coordinateDict[self.coordinateKey] = self.captureCoordinate
         self.captureCoordinate = None
         self.capturePoint = False
         print(self.coordinateDict)
 
     #Function here about all the button callback function
-
-    def clear_all(self,objectname):
-        try:
-            for i in self.remove_list:
-                objectname.canvas.remove(i)
-            self.remove_list.clear()
-        except:
-            pass
-        self.image_source = "icons/no-camera.png"
-        self.default_image = True
-
 
     def change_screen(self,screen_name):
         screen_manager = self.root.ids['screen_manager']
@@ -364,47 +424,32 @@ class MainApp(MDApp):
             print(text)
         except:
             print('Something went wrong')
-       
-
-    def modify_image(self,objectname):
-        horizontal = self.HorizontalLine
-        vertical = self.VerticalLine
-        if self.VerticalLine > 20:
-            vertical = 20
-        if self.HorizontalLine > 20:
-            horizontal = 20
-        with objectname.canvas:
-            Color(0, 0, 0)
-            for k in range(vertical):
-                temp = Line(points=[objectname.x + objectname.width // (vertical + 1) * (k+1), objectname.y, objectname.x + objectname.width // (vertical + 1) * (k+1), objectname.y + objectname.height], width=1.2)
-                self.remove_list.append(temp)
-            for i in range(horizontal):
-                temp = Line(points=[objectname.x, objectname.y + (objectname.height //(horizontal + 1) * (i + 1)), objectname.x + objectname.width, objectname.y + (objectname.height // (horizontal + 1) * (i+1))], width=1.2)
-                self.remove_list.append(temp)
 
 
     def change_picture(self, source):
         self.image_source = source
         self.root.ids.second_screen.image_change.reload()
-        self.default_image = False
         self.change_screen("second_screen")
-        #Clock.schedule_once(partial(self.modify_image, self.VerticalLine,self.HorizontalLine,self.root.ids.second_screen.image_change), 1)
-        #self.modify_image(self.VerticalLine, self.HorizontalLine, self.root.ids.second_screen.image_change)
 
 
     def switchView(self):
-        self.confirm_remove_setting(self.confirmSwitchView, "SwitchViewConfirm")
+        self.confirm_setting(self.confirmSwitchView, "SwitchViewConfirm")
 
 
     def imagePosCallBack(self, *args):
+
         if self.capturePoint:
             if args[0][1].is_double_tap:
                 if self.captureCoordinate != None:
-                    self.confirm_remove_setting(self.storeDialogConfirm, "SavingCoordinateConfirm")
+                    self.confirm_setting(self.storeDialogConfirm, "SavingCoordinateConfirm")
             elif args[0][1].is_triple_tap:
                 pass
             else:
                 self.captureCoordinate = args[0][1].pos
+
+        else:
+            self.captureCoordinate = args[0][1].pos
+
 
     #Changing APP Setting Function
     def switchLanguage(self):
@@ -430,8 +475,8 @@ class MainApp(MDApp):
         self.rotateDegree = 90
         self.HorizontalLine = 8
         self.VerticalLine = 8
-        self.remove_confirm.dismiss()
-        self.remove_confirm = None
+        self.cancelconfirm.dismiss()
+        self.cancelconfirm = None
 
 
     def UpdateConfig(self):

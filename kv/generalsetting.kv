@@ -1,6 +1,6 @@
 #:import utils kivy.utils
 #:import languageDict1 languageDict.LanguageDict
-
+#:import MDFloatLayout kivymd.uix.floatlayout.MDFloatLayout
 
 
 <GeneralSetting>:
@@ -40,7 +40,7 @@
 			pos_hint:{"top": 0.7, "x":0.25}
 			size_hint: 0.5, 0.1
 			on_release:
-				app.line_draw_setting()
+				app.grid_image_create_setting()
 
 		MyButton:
 			text: languageDict1.langDict["SetRotationDegree"][app.state]
@@ -56,5 +56,5 @@
 			pos_hint:{"top": 0.4, "x":0.25}
 			size_hint: 0.5, 0.1
 			on_release:
-				app.confirm_remove_setting(app.resetDefaultSetting, "ResetFactorySetting")
+				app.confirm_setting(app.resetDefaultSetting, "ResetFactorySetting")
 	
