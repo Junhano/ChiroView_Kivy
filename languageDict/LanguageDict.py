@@ -226,6 +226,10 @@ langDict = {
     "SAVE":{
         0: "SAVE",
         1: "保存"
+    },
+    "DeleteAll":{
+        0: "Delete All BodyPart",
+        1: "清除所有标记"
     }
 }
 

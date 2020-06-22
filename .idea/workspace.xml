@@ -20,21 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72a7a59c-73b7-4cd3-93ce-e3aaff2a69e1" name="Default Changelist" comment="adding camera and filechooser">
-      <change afterPath="$PROJECT_DIR$/icons/BackGround.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TestImage/Human.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TestImage/HumanFront.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Helper/BlurBackground.py" beforeDir="false" afterPath="$PROJECT_DIR$/Helper/BlurBackground.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chiro.kv" beforeDir="false" afterPath="$PROJECT_DIR$/chiro.kv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev.ini" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/icons/OpenGalleryButton.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/icons/photoshopButton.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/icons/search.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kv/about.kv" beforeDir="false" afterPath="$PROJECT_DIR$/kv/about.kv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kv/bugsending.kv" beforeDir="false" afterPath="$PROJECT_DIR$/kv/bugsending.kv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kv/generalsetting.kv" beforeDir="false" afterPath="$PROJECT_DIR$/kv/generalsetting.kv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kv/help.kv" beforeDir="false" afterPath="$PROJECT_DIR$/kv/help.kv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kv/homescreen.kv" beforeDir="false" afterPath="$PROJECT_DIR$/kv/homescreen.kv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kv/secondscreen.kv" beforeDir="false" afterPath="$PROJECT_DIR$/kv/secondscreen.kv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kv/thirdscreen.kv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/languageDict/LanguageDict.py" beforeDir="false" afterPath="$PROJECT_DIR$/languageDict/LanguageDict.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -65,20 +57,22 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/icons" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/TestImage" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/TestImage" />
       <recent name="$PROJECT_DIR$/icons" />
       <recent name="$PROJECT_DIR$/kv" />
       <recent name="$PROJECT_DIR$/Helper" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/TestImage" />
+      <recent name="$PROJECT_DIR$/Helper" />
       <recent name="$PROJECT_DIR$/icons" />
       <recent name="$PROJECT_DIR$/kv" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/Font" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
@@ -173,32 +167,32 @@
       <screen x="0" y="23" width="1920" height="977" />
     </state>
     <state x="748" y="273" key="FileChooserDialogImpl/0.23.1920.977@0.23.1920.977" timestamp="1591124178968" />
-    <state width="1899" height="231" key="GridCell.Tab.0.bottom" timestamp="1592556736333">
+    <state width="1899" height="231" key="GridCell.Tab.0.bottom" timestamp="1592817207772">
       <screen x="0" y="23" width="1920" height="977" />
     </state>
     <state width="1899" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1591037481666" />
-    <state width="1899" height="231" key="GridCell.Tab.0.bottom/0.23.1920.977@0.23.1920.977" timestamp="1592556736333" />
+    <state width="1899" height="231" key="GridCell.Tab.0.bottom/0.23.1920.977@0.23.1920.977" timestamp="1592817207772" />
     <state width="1899" height="53" key="GridCell.Tab.0.bottom/0.23.1920.978@0.23.1920.978" timestamp="1592456786030" />
     <state width="1899" height="207" key="GridCell.Tab.0.bottom/0.23.1920.980@0.23.1920.980" timestamp="1592356219835" />
-    <state width="1899" height="231" key="GridCell.Tab.0.center" timestamp="1592556736333">
+    <state width="1899" height="231" key="GridCell.Tab.0.center" timestamp="1592817207771">
       <screen x="0" y="23" width="1920" height="977" />
     </state>
     <state width="1899" height="305" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1591037481664" />
-    <state width="1899" height="231" key="GridCell.Tab.0.center/0.23.1920.977@0.23.1920.977" timestamp="1592556736333" />
+    <state width="1899" height="231" key="GridCell.Tab.0.center/0.23.1920.977@0.23.1920.977" timestamp="1592817207771" />
     <state width="1899" height="53" key="GridCell.Tab.0.center/0.23.1920.978@0.23.1920.978" timestamp="1592456786029" />
     <state width="1899" height="207" key="GridCell.Tab.0.center/0.23.1920.980@0.23.1920.980" timestamp="1592356219834" />
-    <state width="1899" height="231" key="GridCell.Tab.0.left" timestamp="1592556736332">
+    <state width="1899" height="231" key="GridCell.Tab.0.left" timestamp="1592817207770">
       <screen x="0" y="23" width="1920" height="977" />
     </state>
     <state width="1899" height="305" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1591037481663" />
-    <state width="1899" height="231" key="GridCell.Tab.0.left/0.23.1920.977@0.23.1920.977" timestamp="1592556736332" />
+    <state width="1899" height="231" key="GridCell.Tab.0.left/0.23.1920.977@0.23.1920.977" timestamp="1592817207770" />
     <state width="1899" height="53" key="GridCell.Tab.0.left/0.23.1920.978@0.23.1920.978" timestamp="1592456786029" />
     <state width="1899" height="207" key="GridCell.Tab.0.left/0.23.1920.980@0.23.1920.980" timestamp="1592356219834" />
-    <state width="1899" height="231" key="GridCell.Tab.0.right" timestamp="1592556736333">
+    <state width="1899" height="231" key="GridCell.Tab.0.right" timestamp="1592817207771">
       <screen x="0" y="23" width="1920" height="977" />
     </state>
     <state width="1899" height="305" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1591037481665" />
-    <state width="1899" height="231" key="GridCell.Tab.0.right/0.23.1920.977@0.23.1920.977" timestamp="1592556736333" />
+    <state width="1899" height="231" key="GridCell.Tab.0.right/0.23.1920.977@0.23.1920.977" timestamp="1592817207771" />
     <state width="1899" height="53" key="GridCell.Tab.0.right/0.23.1920.978@0.23.1920.978" timestamp="1592456786030" />
     <state width="1899" height="207" key="GridCell.Tab.0.right/0.23.1920.980@0.23.1920.980" timestamp="1592356219834" />
     <state width="1899" height="326" key="GridCell.Tab.1.bottom" timestamp="1592253401792">
@@ -226,10 +220,10 @@
       <screen x="0" y="23" width="1920" height="977" />
     </state>
     <state x="763" y="432" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.1920.977@0.23.1920.977" timestamp="1587533209216" />
-    <state x="625" y="238" width="670" height="676" key="search.everywhere.popup" timestamp="1592359685272">
+    <state x="625" y="238" width="670" height="676" key="search.everywhere.popup" timestamp="1592778956607">
       <screen x="0" y="23" width="1920" height="977" />
     </state>
-    <state x="625" y="238" width="670" height="676" key="search.everywhere.popup/0.23.1920.977@0.23.1920.977" timestamp="1592359685272" />
+    <state x="625" y="238" width="670" height="676" key="search.everywhere.popup/0.23.1920.977@0.23.1920.977" timestamp="1592778956607" />
     <state x="625" y="238" key="search.everywhere.popup/0.23.1920.978@0.23.1920.978" timestamp="1587454422944" />
   </component>
 </project>

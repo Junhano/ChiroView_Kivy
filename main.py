@@ -14,8 +14,11 @@ from kivymd.uix.dialog import MDDialog
 from kivy.uix.textinput import TextInput
 from languageDict.LanguageDict import langDict
 from kivymd.uix.list import OneLineAvatarIconListItem
+from kivy.graphics import Line, Color, Ellipse
+from kivy.clock import Clock
 from os import remove
 import functools
+from collections import defaultdict
 
 valuetoKeyDict = dict()
 for k,v in langDict.items():
@@ -32,18 +35,24 @@ class ItemConfirm(OneLineAvatarIconListItem):
             if check != instance_check:
                 check.active = False
 
-class MultipleItemConfirm(OneLineAvatarIconListItem):
-    divider = None
+
+ConnectBodyPart = {
+    'LeftEye': ['RightEye', 'NoseTip'],
+    'RightEye': ['LeftEye', 'NoseTip'],
+    'LeftEar': ['RightEar'],
+    'RightEar': ['LeftEar'],
+    'NoseTip': ['LeftEye', 'RightEye', 'SternalNotch'],
+
+            #...
+
+}
 
 
-    def set_icon(self, instance_check):
-        instance_check.active = True
-        check_list = instance_check.get_widgets(instance_check.group)
-        for check in check_list:
-            if check != instance_check:
-                check.active = False
-
-
+def tuple_coordinate_key_generate(coordinate1, coordinate2):
+    if coordinate1[0] > coordinate2[0] or (coordinate1[0] == coordinate2[0] and coordinate1[1] > coordinate2[1]):
+        return coordinate2, coordinate1
+    elif coordinate1[0] < coordinate1[1] or (coordinate1[0] == coordinate2[0] and coordinate1[1] < coordinate2[1]):
+        return coordinate1, coordinate2
 
 
 class ImageButton(ButtonBehavior,Image):
@@ -102,9 +111,13 @@ class MainApp(MDApp):
     image_source = StringProperty("icons/no-camera.png")
 
     coordinateDict = dict()
-    coordinateKey = None
-    capturePoint = False
-    captureCoordinate = None
+    coordinateKey = None #Key from the bodypart list
+    userChooseCord = False   #Did system chose the point or not, if no user cannot double tap to save image
+    captureCoordinate = None     #What's the point that user captured
+
+    CanvasDrawingCoordinate = dict()  #Dictionary that store each point coordinate, for future deletion reference
+    CanvasConnectionInfo = defaultdict(list)  #Dictionary that store the line content, for bodypart connection line check
+    CanvasLineDrawingContent = dict() #Dictionary that store the lines and for future deletion reference
 
     @staticmethod
     def compareFuncAlreadyChose(Item1, Item2):
@@ -112,6 +125,9 @@ class MainApp(MDApp):
             return 1
         else:
             return -1
+
+
+
 
 
     def build(self):
@@ -139,10 +155,16 @@ class MainApp(MDApp):
 
     def delete_Body_Part_Dialog(self):
         if not self.DeleteBodyPartDialog:
+            BodyList = []
+            for k in self.coordinateDict.keys():
+                BodyList.append(ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict[k][self.state])))
+            cmp = functools.cmp_to_key(MainApp.compareFuncAlreadyChose)
+            FinalView = sorted(BodyList, key = cmp)
+            FinalView.append(ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['DeleteAll'][self.state])))
             self.DeleteBodyPartDialog = MDDialog(
                 title = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict["DeleteCord"][self.state]),
-                type = "custom",
-                items = [],
+                type = "confirmation",
+                items = FinalView,
                 buttons=[
                     MDFlatButton(
                         text=langDict["CANCEL"][self.state], text_color=self.theme_cls.primary_color,
@@ -252,10 +274,11 @@ class MainApp(MDApp):
         }
 
         if not self.ChooseBodyPartDialog:
-            FinalView = list(SideViewItem)
-            if self.View == 0:
-                cmp = functools.cmp_to_key(MainApp.compareFuncAlreadyChose)
-                FinalView = sorted(list(FrontViewItem), key = cmp)
+            FinalView = list(FrontViewItem)
+            if self.View == 1:
+                FinalView = list(SideViewItem)
+            cmp = functools.cmp_to_key(MainApp.compareFuncAlreadyChose)
+            FinalView = sorted(FinalView, key = cmp)
             self.ChooseBodyPartDialog = MDDialog(
                 title = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['PointChoosing'][self.state]),
                 type = 'confirmation',
@@ -307,12 +330,25 @@ class MainApp(MDApp):
     #Function here that execute about all dialog button callback
 
     def continueDeleteCoordinateDialog(self, inst):
-        self.DeleteBodyPartDialog.dismiss()
-        self.DeleteBodyPartDialog = None
         for i in self.DeleteBodyPartDialog.items:
             if i.ids.check.active:
                 result_text = i.text.split('[')[1].split(']')[1]
-                del self.coordinateDict[result_text]
+                if valuetoKeyDict[result_text] != 'DeleteAll':
+                    self.deletePoint(self.root.ids.second_screen.image_change, self.coordinateDict[valuetoKeyDict[result_text]])
+                    self.deleteConnectedLine(self.root.ids.second_screen.image_change, valuetoKeyDict[result_text])
+                    del self.coordinateDict[valuetoKeyDict[result_text]]
+                else:
+                    for v in self.CanvasDrawingCoordinate.values():
+                        self.root.ids.second_screen.image_change.canvas.remove(v)
+                    for z in self.CanvasLineDrawingContent.values():
+                        self.root.ids.second_screen.image_change.canvas.remove(z)
+                    self.CanvasConnectionInfo.clear()
+                    self.CanvasLineDrawingContent.clear()
+                    self.coordinateDict.clear()
+                    self.CanvasDrawingCoordinate.clear()
+        self.DeleteBodyPartDialog.dismiss()
+        self.DeleteBodyPartDialog = None
+        print(self.coordinateDict)
 
     def closeDeleteCoordinateDialog(self, inst):
         self.DeleteBodyPartDialog.dismiss()
@@ -323,6 +359,13 @@ class MainApp(MDApp):
         self.default_image = True
         self.cancelconfirm.dismiss()
         self.cancelconfirm = None
+        for v in self.CanvasDrawingCoordinate.values():
+            self.root.ids.second_screen.image_change.canvas.remove(v)
+        for z in self.CanvasLineDrawingContent.values():
+            self.root.ids.second_screen.image_change.canvas.remove(z)
+        self.CanvasConnectionInfo.clear()
+        self.CanvasLineDrawingContent.clear()
+        self.CanvasDrawingCoordinate.clear()
         self.coordinateDict.clear()
         self.change_screen('home_screen')
 
@@ -374,7 +417,7 @@ class MainApp(MDApp):
             self.ChooseBodyPartDialog.dismiss()
             self.ChooseBodyPartDialog = None
         self.coordinateKey = valuetoKeyDict[result_text]
-        self.capturePoint = True
+        #self.capturePoint = True
 
     def closeRotateDialog(self, inst):
         self.RotationDegreeDialog.dismiss()
@@ -406,9 +449,10 @@ class MainApp(MDApp):
         self.cancelconfirm.dismiss()
         self.cancelconfirm = None
         self.coordinateDict[self.coordinateKey] = self.captureCoordinate
+        self.drawPoints(self.root.ids.second_screen.image_change, self.captureCoordinate[0], self.captureCoordinate[1])
         self.captureCoordinate = None
-        self.capturePoint = False
-        print(self.coordinateDict)
+        self.coordinateKey = None
+        self.drawConnectedLine(self.root.ids.second_screen.image_change)
 
     #Function here about all the button callback function
 
@@ -435,20 +479,15 @@ class MainApp(MDApp):
     def switchView(self):
         self.confirm_setting(self.confirmSwitchView, "SwitchViewConfirm")
 
-
     def imagePosCallBack(self, *args):
-
-        if self.capturePoint:
-            if args[0][1].is_double_tap:
-                if self.captureCoordinate != None:
+        if self.root.ids.second_screen.image_change.collide_point(*args[0][1].pos):
+            if self.coordinateKey is not None:
+                if args[0][1].is_double_tap:
                     self.confirm_setting(self.storeDialogConfirm, "SavingCoordinateConfirm")
-            elif args[0][1].is_triple_tap:
-                pass
+                else:
+                    self.captureCoordinate = args[0][1].pos
             else:
-                self.captureCoordinate = args[0][1].pos
-
-        else:
-            self.captureCoordinate = args[0][1].pos
+                self.IdentifyBodyPartDialog()
 
 
     #Changing APP Setting Function
@@ -535,6 +574,42 @@ class MainApp(MDApp):
             self.errorDialog('ErrorOpeningMail')
 
 
+    #Canvas update drawing function
+    def drawPoints(self, objectname, pos_x, pos_y):
+        pos1 = pos_x, pos_y
+        with objectname.canvas:
+            Color(0,0,0)
+            temp = Ellipse(pos = pos1, size = (5,5))
+            self.CanvasDrawingCoordinate[pos1] = temp
+
+    def deletePoint(self, objectname, pos):
+        objectname.canvas.remove(self.CanvasDrawingCoordinate[pos])
+        del self.CanvasDrawingCoordinate[pos]
+
+    def drawConnectedLine(self, objectname):
+
+        for k,v in ConnectBodyPart.items():
+            #loop through the connect body part dictionary where those body part if chose by user, system will
+            #automatically drew a line
+            for i in v:
+                if k in self.coordinateDict and i in self.coordinateDict:
+                    #if they both get chose
+                    if k not in self.CanvasConnectionInfo or i not in self.CanvasConnectionInfo[k]:#
+                        with objectname.canvas:
+                            temp = Line(points=[self.coordinateDict[k], self.coordinateDict[i]], width=1.2)
+                            self.CanvasConnectionInfo[k].append(i)
+                            self.CanvasConnectionInfo[i].append(k)
+                            tupleKey = tuple_coordinate_key_generate(self.coordinateDict[k], self.coordinateDict[i])
+                            self.CanvasLineDrawingContent[tupleKey] = temp
+
+    def deleteConnectedLine(self, objectname, deletepoint):
+        for c in self.CanvasConnectionInfo[deletepoint]:
+            self.CanvasConnectionInfo[c].remove(deletepoint)
+            tuplekey = tuple_coordinate_key_generate(self.coordinateDict[deletepoint], self.coordinateDict[c])
+            objectname.canvas.remove(self.CanvasLineDrawingContent[tuplekey])
+            del self.CanvasLineDrawingContent[tuplekey]
+
+        del self.CanvasConnectionInfo[deletepoint]
 
 
 

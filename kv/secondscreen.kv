@@ -43,21 +43,35 @@
 			on_release:
 				print('Analyze')
 		
-
-		RotationImage:				
-			source:app.image_source
-			angle: -90 if app.image_source != 'icons/no-camera.png' else 0
+		MDFloatLayout:
 			pos_hint: {"top": 0.9}
 			size_hint: 1, 0.8
-			id: modifyimage
-			on_touch_down: 
-				app.imagePosCallBack(args) 
 			canvas.before:
 				Color:
-					rgba: 0,0,0,1
+					rgba: 1,1,1,1
 				Line:
 					width: 1
 					rectangle: self.x, self.y, self.width, self.height 
+			
+			MDLabel:
+				pos_hint: {"top": 1, "x": 0.32}
+				size_hint: 0.6, 0.1
+				text: "Choose a point and double tap to save it"
+
+			RotationImage:				
+				source:app.image_source
+				angle: 0
+				pos_hint: {"top": 0.9, "x": 0.1}
+				size_hint: 0.8, 0.8
+				id: modifyimage
+				on_touch_down: 
+					app.imagePosCallBack(args) 
+				canvas.before:
+					Color:
+						rgba: 0,0,0,1
+					Line:
+						width: 1
+						rectangle: self.x, self.y, self.width, self.height 
 
 		MyButton:
 			background_color: 0,0,0,0
