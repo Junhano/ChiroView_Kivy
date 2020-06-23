@@ -20,7 +20,7 @@ from os import remove
 import functools
 from collections import defaultdict
 
-valuetoKeyDict = dict()
+valuetoKeyDict = dict()   #Dictionary that make sure Each language key will map to the same original content
 for k,v in langDict.items():
     for x, y in v.items():
         valuetoKeyDict[y] = k
@@ -51,11 +51,12 @@ ConnectBodyPart = {
 def tuple_coordinate_key_generate(coordinate1, coordinate2):
     if coordinate1[0] > coordinate2[0] or (coordinate1[0] == coordinate2[0] and coordinate1[1] > coordinate2[1]):
         return coordinate2, coordinate1
-    elif coordinate1[0] < coordinate1[1] or (coordinate1[0] == coordinate2[0] and coordinate1[1] < coordinate2[1]):
+    else:
         return coordinate1, coordinate2
 
 
-class ImageButton(ButtonBehavior,Image):
+
+class ImageButton(ButtonBehavior, Image):
     pass
 
 class HomeScreen(Screen):
@@ -64,9 +65,6 @@ class HomeScreen(Screen):
 class SecondScreen(Screen):
     image_change = ObjectProperty(None)
 
-
-class BugSending(Screen):
-    pass
 
 class Help(Screen):
     pass
@@ -80,14 +78,15 @@ class GeneralSetting(Screen):
 class LineContent(BoxLayout):
     pass
 
-class BugSetting(BoxLayout):
-    pass
-
 class Helper(BoxLayout):
     pass
 
 class RotationValue(BoxLayout):
     pass
+
+class PCCamera(Screen):
+    p_camera = ObjectProperty(None)
+
 
 
 class MainApp(MDApp):
@@ -97,7 +96,9 @@ class MainApp(MDApp):
     View = NumericProperty(0) #0 is front body view while 1 is side body view
     HorizontalLine = NumericProperty(8)
     VerticalLine = NumericProperty(8)
+    TimeCountDown = NumericProperty(5)
     default_image = BooleanProperty(True)
+    camera_activate = BooleanProperty(False)
 
     NumberLineChoosedialog = None  #Dialog that prompt user for how many lines to draw both vertically and horizontally
     cancelconfirm = None      #Dialog that confirm user to remove the picture from the canvas
@@ -107,6 +108,7 @@ class MainApp(MDApp):
     ChooseBodyPartDialog = None     #Dialog that give user to choose what kind of body part they want to points
     RotationDegreeDialog = None  #Dialog that give user the ability to choose how many degree they want to rotate
     DeleteBodyPartDialog = None
+    schedule = None
 
     image_source = StringProperty("icons/no-camera.png")
 
@@ -222,18 +224,6 @@ class MainApp(MDApp):
         self.cancelconfirm.set_normal_height()
         self.cancelconfirm.open()
 
-    def BugSettingDialog(self):
-        #Dialog that about bug setting in home page
-        if not self.BugSetting_dialog:
-            self.BugSetting_dialog = MDDialog(
-                type = "custom",
-                size_hint = (0.5, 0.5),
-                pos_hint = {'x': 0.52, 'top': 1},
-                content_cls = BugSetting()
-            )
-
-        self.BugSetting_dialog.open()
-
     def BeginDialog(self):
         #Dialog that give user choice to choose picture when they haven't choose it yet
         if not self.StartExamDialog:
@@ -334,18 +324,10 @@ class MainApp(MDApp):
             if i.ids.check.active:
                 result_text = i.text.split('[')[1].split(']')[1]
                 if valuetoKeyDict[result_text] != 'DeleteAll':
-                    self.deletePoint(self.root.ids.second_screen.image_change, self.coordinateDict[valuetoKeyDict[result_text]])
-                    self.deleteConnectedLine(self.root.ids.second_screen.image_change, valuetoKeyDict[result_text])
+                    self.deletePoint(self.root.ids.second_screen.image_change, self.coordinateDict[valuetoKeyDict[result_text]], valuetoKeyDict[result_text])
                     del self.coordinateDict[valuetoKeyDict[result_text]]
                 else:
-                    for v in self.CanvasDrawingCoordinate.values():
-                        self.root.ids.second_screen.image_change.canvas.remove(v)
-                    for z in self.CanvasLineDrawingContent.values():
-                        self.root.ids.second_screen.image_change.canvas.remove(z)
-                    self.CanvasConnectionInfo.clear()
-                    self.CanvasLineDrawingContent.clear()
-                    self.coordinateDict.clear()
-                    self.CanvasDrawingCoordinate.clear()
+                    self.clearAllLinePoints()
         self.DeleteBodyPartDialog.dismiss()
         self.DeleteBodyPartDialog = None
         print(self.coordinateDict)
@@ -355,30 +337,19 @@ class MainApp(MDApp):
         self.DeleteBodyPartDialog = None
 
     def changeBackScreenWithOutSave(self, inst):
+        self.resetUserCoordinateChoice()
         self.image_source = "icons/no-camera.png"
         self.default_image = True
         self.cancelconfirm.dismiss()
         self.cancelconfirm = None
-        for v in self.CanvasDrawingCoordinate.values():
-            self.root.ids.second_screen.image_change.canvas.remove(v)
-        for z in self.CanvasLineDrawingContent.values():
-            self.root.ids.second_screen.image_change.canvas.remove(z)
-        self.CanvasConnectionInfo.clear()
-        self.CanvasLineDrawingContent.clear()
-        self.CanvasDrawingCoordinate.clear()
-        self.coordinateDict.clear()
+        self.clearAllLinePoints()
         self.change_screen('home_screen')
 
     def changeBackScreenWithSave(self, inst):
+        self.resetUserCoordinateChoice()
         self.cancelconfirm.dismiss()
         self.cancelconfirm = None
         self.change_screen('home_screen')
-
-
-    def BugSettingCallBack(self, inst):
-        self.BugSetting_dialog.dismiss()
-        self.BugSetting_dialog = None
-        self.change_screen(inst)
 
 
     def dismissRemoveConfirm(self, inst):
@@ -411,13 +382,14 @@ class MainApp(MDApp):
         for i in self.ChooseBodyPartDialog.items:
             if i.ids.check.active:
                 result_text = i.text.split('[')[1].split(']')[1]
-        if valuetoKeyDict[result_text] in self.coordinateDict:
-            self.confirm_setting(self.closeReplaceDialogAction, "ReplaceConfirm")
-        else:
-            self.ChooseBodyPartDialog.dismiss()
-            self.ChooseBodyPartDialog = None
-        self.coordinateKey = valuetoKeyDict[result_text]
-        #self.capturePoint = True
+        if result_text != "":
+            if valuetoKeyDict[result_text] in self.coordinateDict:
+                self.confirm_setting(self.closeReplaceDialogAction, "ReplaceConfirm")
+            else:
+                self.ChooseBodyPartDialog.dismiss()
+                self.ChooseBodyPartDialog = None
+            self.coordinateKey = valuetoKeyDict[result_text]
+
 
     def closeRotateDialog(self, inst):
         self.RotationDegreeDialog.dismiss()
@@ -430,11 +402,12 @@ class MainApp(MDApp):
         self.UpdateConfig()
 
     def closeReplaceDialogAction(self, inst):
+        self.deletePoint(self.root.ids.second_screen.image_change, self.coordinateDict[self.coordinateKey], self.coordinateKey)
         del self.coordinateDict[self.coordinateKey]
         self.cancelconfirm.dismiss()
         self.cancelconfirm = None
-        self.PointDrawDialog.dismiss()
-        self.PointDrawDialog = None
+        self.ChooseBodyPartDialog.dismiss()
+        self.ChooseBodyPartDialog = None
 
     def confirmSwitchView(self, inst):
         self.cancelconfirm.dismiss()
@@ -443,35 +416,46 @@ class MainApp(MDApp):
             self.View = 1
         else:
             self.View = 0
-        self.coordinateDict.clear()
+        self.clearAllLinePoints()
 
     def storeDialogConfirm(self, inst):
         self.cancelconfirm.dismiss()
         self.cancelconfirm = None
+        #storeTuple = self.captureCoordinate[0] / self.root.ids.second_screen.size[0], self.captureCoordinate[1] / self.root.ids.second_screen.size[1]
+        #self.coordinateDict[self.coordinateKey] = storeTuple
+
         self.coordinateDict[self.coordinateKey] = self.captureCoordinate
-        self.drawPoints(self.root.ids.second_screen.image_change, self.captureCoordinate[0], self.captureCoordinate[1])
+        self.drawPoints(self.root.ids.second_screen.image_change, self.captureCoordinate)
+        #self.drawPoints(self.root.ids.second_screen.image_change, self.captureCoordinate, storeTuple)
         self.captureCoordinate = None
         self.coordinateKey = None
         self.drawConnectedLine(self.root.ids.second_screen.image_change)
 
+    def sampleReplace(self, inst):
+        self.cancelconfirm.dismiss()
+        self.cancelconfirm = None
+        self.clearAllLinePoints()
+        self.change_picture("TestImage/HumanFront.png")
+
+
     #Function here about all the button callback function
 
     def change_screen(self,screen_name):
+        if self.schedule is not None:
+            self.schedule.cancel()
+            self.TimeCountDown = 5
+            self.schedule = None
+        self.camera_activate = False
+        self.resetUserCoordinateChoice()
         screen_manager = self.root.ids['screen_manager']
         screen_manager.transition = NoTransition()
         screen_manager.current = screen_name 
-    
-
-            
-    def send_message(self, text):
-        try:
-            print(text)
-        except:
-            print('Something went wrong')
-
 
     def change_picture(self, source):
+        self.resetUserCoordinateChoice()
         self.image_source = source
+        self.default_image = False
+        self.camera_activate = False
         self.root.ids.second_screen.image_change.reload()
         self.change_screen("second_screen")
 
@@ -510,6 +494,8 @@ class MainApp(MDApp):
             location = join(savepath, location)
         if exists(location):
             remove(location)
+        if (platform == 'win' or platform == 'macosx') and exists('PCCamera.PNG'):
+            remove('PCCamera.PNG')
         self.state = 0
         self.rotateDegree = 90
         self.HorizontalLine = 8
@@ -535,19 +521,20 @@ class MainApp(MDApp):
 
     #Function that calls to camera, filechooser or their associate callback function
     def capture(self):
+        if platform == 'win' or platform == 'macosx':
+            self.change_screen("pc_camera")
+            self.camera_activate = True
+        else:
+            try:
+                file_name = "test.png"
+                if platform == 'ios':
+                    savepath = MDApp.get_running_app().user_data_dir
+                    savepath = savepath[:len(savepath) - 4]
+                    file_name = join(savepath, file_name)
+                camera.take_picture(filename = file_name,on_complete = self.camera_callback)
 
-        try:
-            file_name = "test.png"
-            if platform == 'ios':
-                savepath = MDApp.get_running_app().user_data_dir
-                savepath = savepath[:len(savepath) - 4]
-                file_name = join(savepath, file_name)
-            camera.take_picture(filename = file_name,on_complete = self.camera_callback)
-
-        except NotImplementedError:
-            self.errorDialog('ErrorOpeningCamera')
-
-
+            except NotImplementedError:
+                self.errorDialog('ErrorOpeningCamera')
 
     def camera_callback(self, filename):
         if (exists(filename)):
@@ -562,8 +549,7 @@ class MainApp(MDApp):
 
     def handle_selection(self,selection):
         try:
-            self.selection = selection
-            self.change_picture(self.selection[0])
+            self.change_picture(selection[0])
         except:
             pass
 
@@ -573,29 +559,47 @@ class MainApp(MDApp):
         except NotImplementedError:
             self.errorDialog('ErrorOpeningMail')
 
+    def pcCameraCapture(self):
+        self.schedule = Clock.schedule_interval(self.countDown, 1)
+        Clock.schedule_once(self.cancelInterval, 5)
+
+    def countDown(self, *args):
+        self.TimeCountDown -= 1
+
+    def cancelInterval(self, *args):
+        if self.schedule is not None:
+            self.schedule.cancel()
+            camera = self.root.ids.pc_camera.p_camera
+            camera.export_to_png("PCCamera.PNG")
+            self.change_picture("PCCamera.PNG")
+            self.TimeCountDown = 5
+            self.schedule = None
 
     #Canvas update drawing function
-    def drawPoints(self, objectname, pos_x, pos_y):
-        pos1 = pos_x, pos_y
+    def drawPoints(self, objectname, pos1):
+        #objectname.bind(size=self.updateSize)
         with objectname.canvas:
-            Color(0,0,0)
+            Color(0,1,0)
             temp = Ellipse(pos = pos1, size = (5,5))
             self.CanvasDrawingCoordinate[pos1] = temp
 
-    def deletePoint(self, objectname, pos):
+
+    def deletePoint(self, objectname, pos, deletepoint):
         objectname.canvas.remove(self.CanvasDrawingCoordinate[pos])
+        self.deleteConnectedLine(objectname,deletepoint)
         del self.CanvasDrawingCoordinate[pos]
 
     def drawConnectedLine(self, objectname):
-
+        #objectname.bind(size = self.updateSize)
         for k,v in ConnectBodyPart.items():
             #loop through the connect body part dictionary where those body part if chose by user, system will
             #automatically drew a line
             for i in v:
                 if k in self.coordinateDict and i in self.coordinateDict:
                     #if they both get chose
-                    if k not in self.CanvasConnectionInfo or i not in self.CanvasConnectionInfo[k]:#
+                    if k not in self.CanvasConnectionInfo or i not in self.CanvasConnectionInfo[k]:
                         with objectname.canvas:
+                            Color(0, 1, 0)
                             temp = Line(points=[self.coordinateDict[k], self.coordinateDict[i]], width=1.2)
                             self.CanvasConnectionInfo[k].append(i)
                             self.CanvasConnectionInfo[i].append(k)
@@ -611,7 +615,28 @@ class MainApp(MDApp):
 
         del self.CanvasConnectionInfo[deletepoint]
 
+    def updateSize(self, *args):
+        size = args[1]
+        '''
+        for k,v in self.CanvasLineDrawingContent.items():
+            v.pos = k[0] * size[0], k[1] * size[1]
+        '''
+        for a, b in self.CanvasDrawingCoordinate.items():
+            b.pos = a[0] * size[0], a[1] * size[1]
 
+    def clearAllLinePoints(self):
+        self.CanvasConnectionInfo.clear()
+        for v in self.CanvasDrawingCoordinate.values():
+            self.root.ids.second_screen.image_change.canvas.remove(v)
+        for z in self.CanvasLineDrawingContent.values():
+            self.root.ids.second_screen.image_change.canvas.remove(z)
+        self.CanvasDrawingCoordinate.clear()
+        self.CanvasLineDrawingContent.clear()
+        self.coordinateDict.clear()
 
+    def resetUserCoordinateChoice(self):
+        self.coordinateKey = None
+        self.userChooseCord = False
+        self.captureCoordinate = None
 
 MainApp().run()

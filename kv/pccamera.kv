@@ -1,0 +1,33 @@
+
+<PCCamera>:
+	p_camera: camera
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'icons/BackGround.jpeg'
+	orientation: 'vertical'
+	MDFloatLayout:
+		Camera:
+			id: camera
+			resolution: (640, 480)
+			play: app.camera_activate
+		
+		MDLabel:
+			text: str(app.TimeCountDown)
+			pos_hint: {"top": 1, "x": 0.9}
+			size_hint: 0.1, 0.1
+			id: countdown
+
+		MDIconButton:
+			icon: 'keyboard-return'
+			pos_hint: {"center_x": 0.05, "center_y" : 0.95}
+			user_font_size: "64sp"
+			on_release:
+				app.change_screen("home_screen")
+		MDIconButton:
+			icon: 'camera'
+			pos_hint: {"center_x": 0.5, "center_y": 0.05}
+			user_font_size: "64sp"
+			on_release:
+				app.pcCameraCapture()

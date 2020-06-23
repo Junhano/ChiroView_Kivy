@@ -1,10 +1,10 @@
 #:import utils kivy.utils
 #:include kv/homescreen.kv
 #:include kv/secondscreen.kv
-#:include kv/bugsending.kv
 #:include kv/help.kv
 #:include kv/about.kv
 #:include kv/generalsetting.kv
+#:include kv/pccamera.kv
 #:import languageDict1 languageDict.LanguageDict
 #:import MDFlatButton kivymd.uix.button.MDFlatButton
 
@@ -78,49 +78,7 @@
 		max: 359
 		value: app.rotateDegree
 
-<BugSetting>:
-	orientation: 'vertical'
-	spacing: '12dp'
-	height: '240dp'
-	font_name: 'Font/NotoSansSC-Regular.otf'
-	MyButton:
-		background_color: 0,0,0,0
-		text: languageDict1.langDict["BugSending"][app.state]
-		color: 0,0,0,1
-		on_release:
-			app.BugSettingCallBack("bug_sending")
 
-
-	MyButton:
-		background_color: 0,0,0,0
-		text: languageDict1.langDict["GeneralSetting"][app.state]
-		color: 0,0,0,1
-		on_release:
-			app.BugSettingCallBack("general_setting")
-
-		
-	MyButton:
-		background_color: 0,0,0,0
-		text: languageDict1.langDict["Help"][app.state]	
-		color: 0,0,0,1		                
-		on_release:
-			app.BugSettingCallBack("help")
-		
-	MyButton:
-		background_color: 0,0,0,0
-		text: languageDict1.langDict["About"][app.state]
-		color: 0,0,0,1
-		on_release:
-			app.BugSettingCallBack("about")
-
-	MyButton:
-		background_color: 0,0,0,0
-		text: languageDict1.langDict["Contact"][app.state]
-		color: 0,0,0,1
-		on_release:
-			app.BugSetting_dialog.dismiss()
-			app.BugSetting_dialog = None
-			app.Contact()
 
 <Helper>:
 	orientation: 'horizontal'
@@ -164,9 +122,6 @@ GridLayout:
 		SecondScreen:
 			name: "second_screen"
 			id:second_screen
-		BugSending:
-			name: "bug_sending"
-			id:bug_sending
 		Help:
 			name: "help"
 			id:help
@@ -176,4 +131,6 @@ GridLayout:
 		GeneralSetting:
 			name: "general_setting"
 			id: general_setting
-
+		PCCamera:
+			name: "pc_camera"
+			id: pc_camera

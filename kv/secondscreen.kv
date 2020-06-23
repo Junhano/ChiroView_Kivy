@@ -37,7 +37,7 @@
 
 		MyButton:
 			background_color: 0,0,0,0
-			text: "Analysis"
+			text: languageDict1.langDict["Evaluate"][app.state]
 			pos_hint: {"top": 1, "x": 0.75}
 			size_hint: 0.15, 0.1
 			on_release:
@@ -54,9 +54,11 @@
 					rectangle: self.x, self.y, self.width, self.height 
 			
 			MDLabel:
-				pos_hint: {"top": 1, "x": 0.32}
-				size_hint: 0.6, 0.1
-				text: "Choose a point and double tap to save it"
+				pos_hint: {"top": 1}
+				halign: "center"
+				size_hint: 1, 0.1
+				font_name: 'Font/NotoSansSC-Regular.otf'
+				text: languageDict1.langDict["HintForSavingCoordinate"][app.state]
 
 			RotationImage:				
 				source:app.image_source

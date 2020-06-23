@@ -48,7 +48,7 @@ langDict = {
         1:  "图片旋转"
     },
     "GeneralSetting":{
-        0: "General Setting",
+        0: "Setting",
         1: "设定"
     },
     "Help":{
@@ -230,6 +230,34 @@ langDict = {
     "DeleteAll":{
         0: "Delete All BodyPart",
         1: "清除所有标记"
+    },
+    "Sample":{
+        0: "Sample",
+        1: "样版"
+    },
+    "Login":{
+        0: "Login",
+        1: "登陆"
+    },
+    "Saved":{
+        0: "Saved",
+        1: "保存"
+    },
+    "Evaluate":{
+        0: "Evaluate",
+        1: "评估"
+    },
+    "HintForSavingCoordinate":{
+        0: "Choose a point and double tap to save it",
+        1: "选择一个点然后双击来保存坐标"
+    },
+    "SampleReplace":{
+        0: "You have saved image waiting for evaulate, If you continue all saved coordinates will be delete",
+        1: "你有保存的图片等待评估， 如果继续所有保存的坐标会被删除"
+    },
+    "ChangeSecondScreen":{
+        0: "Evaulation Page",
+        1: "评估页面"
     }
 }
 
