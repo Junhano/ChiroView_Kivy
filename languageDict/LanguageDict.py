@@ -1,7 +1,7 @@
 langDict = {
     "SwitchLang": {
         0: "Switch Langauge",
-        1: "切换成英文"
+        1: "切换语言"
     },
     "BugSending":{
         0: "Send Bug Report",
@@ -280,12 +280,22 @@ langDict = {
         1: "邮件结果"
     },
     "AboutOurSoftware":{
-        0: "It is hard to overlook the importance of spinal health nowadays as more and more people start to look for ways to improve their comfort and quality of their lives. It's so important to maintain a good posture, as failure to do so leads to loss of muscle control, senses and abnormal appearances. \n\nWith this app it is easy to constantly check and improve your posture. It takes a couple minutes each time and all you have to do is take a picture of your posture and put in appropriate lines and see how good your posture really is.",
-        1: " 最近这几年越来越多的人开始关注脊柱健康和生活质量的密切联系。脊柱健康的重要性不能当一个小问题看，脊柱不好就会导致神经功能障碍，心情不好和移动困难。\n\n这个软件可以帮您了解您自己的脊柱健康和状况。每次只需要花几分钟照个照片，然后用相应线您就可以看到您的脊柱到底是好还是坏"
+        0: "It is hard to overlook the importance of spinal health nowadays as more and more people start to look for "
+           "ways to improve their comfort and quality of their lives. It's so important to maintain a good posture, "
+           "as failure to do so leads to loss of muscle control, senses and abnormal appearances. \n\nWith this app "
+           "it is easy to constantly check and improve your posture. It takes a couple minutes each time and all you "
+           "have to do is take a picture of your posture and put in appropriate lines and see how good your posture "
+           "really is.",
+        1: "最近这几年越来越多的人开始关注脊柱健康和生活质量的密切联系。脊柱健康的重要性不能当一个小问题看，脊柱不好就会导致神经功能障碍，心情不好和移动困难。\n\n"
+           "这个软件可以帮您了解您自己的脊柱健康和状况。每次只需要花几分钟照个照片，然后用相应线您就可以看到您的脊柱到底是好还是坏 "
     },
     "AboutUs":{
         0: "About us",
         1: "关于我们"
+    },
+    "SelectLangBelow":{
+        0: "Please select language you want to change",
+        1: "请选择你想切换的语言"
     }
 }
 

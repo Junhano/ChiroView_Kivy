@@ -109,6 +109,7 @@ class MainApp(MDApp):
     DeleteBodyPartDialog = None
     EvaluationResultsDialog = None
     GiveUserOptionToResultDialog = None
+    LanguageChoosingDialog = None
 
     schedule = None
     evalResult = None
@@ -158,6 +159,29 @@ class MainApp(MDApp):
 
     #Function here that about declear of different MD Dialog
 
+
+    def openChooseLanguageDialog(self):
+        if not self.LanguageChoosingDialog:
+            self.LanguageChoosingDialog = MDDialog(
+                title='[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['SelectLangBelow'][self.state]),
+                type='confirmation',
+                items=[
+                    ItemConfirm(text='[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format('English')),
+                    ItemConfirm(text='[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format('中文'))
+                ],
+                buttons=[
+                    MDFlatButton(
+                        text=langDict["CANCEL"][self.state], text_color=self.theme_cls.primary_color,
+                        on_release=self.cancelLanguageChange
+                    ),
+                    MDFlatButton(
+                        text=langDict["CONFIRM"][self.state], text_color=self.theme_cls.primary_color,
+                        on_release=self.continueLanguageChange
+                    ),
+                ],
+            )
+        self.LanguageChoosingDialog.set_normal_height()
+        self.LanguageChoosingDialog.open()
 
     def optionForEvaResults(self, inst):
         if not self.GiveUserOptionToResultDialog:
@@ -357,6 +381,18 @@ class MainApp(MDApp):
 
     #Function here that execute about all dialog button callback
 
+    def cancelLanguageChange(self, inst):
+        self.LanguageChoosingDialog.dismiss()
+        self.LanguageChoosingDialog = None
+
+    def continueLanguageChange(self, inst):
+        self.LanguageChoosingDialog.dismiss()
+        for i in range(len(self.LanguageChoosingDialog.items)):
+            if self.LanguageChoosingDialog.items[i].ids.check.active:
+                self.state = i
+                break
+        self.LanguageChoosingDialog = None
+
     def SendEmailEvalResults(self, inst):
         self.GiveUserOptionToResultDialog.dismiss()
         self.EvaluationResultsDialog.dismiss()
@@ -477,12 +513,8 @@ class MainApp(MDApp):
     def storeDialogConfirm(self, inst):
         self.cancelconfirm.dismiss()
         self.cancelconfirm = None
-        #storeTuple = self.captureCoordinate[0] / self.root.ids.second_screen.size[0], self.captureCoordinate[1] / self.root.ids.second_screen.size[1]
-        #self.coordinateDict[self.coordinateKey] = storeTuple
-
         self.coordinateDict[self.coordinateKey] = self.captureCoordinate
         self.drawPoints(self.root.ids.second_screen.image_change, self.captureCoordinate)
-        #self.drawPoints(self.root.ids.second_screen.image_change, self.captureCoordinate, storeTuple)
         self.captureCoordinate = None
         self.coordinateKey = None
         self.drawConnectedLine(self.root.ids.second_screen.image_change)
@@ -537,13 +569,6 @@ class MainApp(MDApp):
 
 
     #Changing APP Setting Function
-    def switchLanguage(self):
-        if self.state == 1:
-            self.state = 0
-        else:
-            self.state = 1
-        self.UpdateConfig()
-
     def switchRotateDegree(self, rotationDegree):
         self.rotateDegree = rotationDegree
         self.UpdateConfig()
@@ -639,7 +664,6 @@ class MainApp(MDApp):
 
     #Canvas update drawing function
     def drawPoints(self, objectname, pos1):
-        #objectname.bind(size=self.updateSize)
         with objectname.canvas:
             Color(0,1,0)
             temp = Ellipse(pos = pos1, size = (5,5))
@@ -652,7 +676,6 @@ class MainApp(MDApp):
         del self.CanvasDrawingCoordinate[pos]
 
     def drawConnectedLine(self, objectname):
-        #objectname.bind(size = self.updateSize)
         for k,v in ConnectBodyPart.items():
             #loop through the connect body part dictionary where those body part if chose by user, system will
             #automatically drew a line
@@ -677,14 +700,6 @@ class MainApp(MDApp):
 
         del self.CanvasConnectionInfo[deletepoint]
 
-    def updateSize(self, *args):
-        size = args[1]
-        '''
-        for k,v in self.CanvasLineDrawingContent.items():
-            v.pos = k[0] * size[0], k[1] * size[1]
-        '''
-        for a, b in self.CanvasDrawingCoordinate.items():
-            b.pos = a[0] * size[0], a[1] * size[1]
 
     def clearAllLinePoints(self):
         self.CanvasConnectionInfo.clear()
