@@ -1,8 +1,10 @@
+from Helper.EvaDict import ResultsDict
 
 class Posture:
-    def __init__(self, dict1, view):
+    def __init__(self, dict1, view, lang):
         self.coordinate_dict = dict1
         self.view = view
+        self.lang = lang
 
     def frontCalculation(self):
         #Algorithm is first calculate all the components that need to be at the same line,
@@ -35,7 +37,7 @@ class Posture:
         result_list = list()
         for k,v in self.coordinate_dict.items():
             result_list.append((k,v[0]))
-        while len(result_list) > 0 and max(result_list, key = lambda x: x[1]) - min(result_list, key = lambda x: x[1]) >= 10:
+        while len(result_list) > 0 and (max(result_list, key = lambda x: x[1]) - min(result_list, key = lambda x: x[1]) >= 10):
             error_list.append(max(result_list, key = lambda x:x[1])[0])
             error_list.append(min(result_list, key = lambda x:x[1])[0])
             result_list.remove(max(result_list, key = lambda x:x[1]))
@@ -49,7 +51,7 @@ class Posture:
             result = self.sideCalculation()
         result_str = ""
         if len(result) == 0:
-            result_str += "Congrats, you have no posture problem from the picture shown above"
+            result_str += ResultsDict["NoError"][self.lang]
         else:
             pass
         return result_str

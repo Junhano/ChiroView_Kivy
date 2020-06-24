@@ -4,37 +4,31 @@
 
 
 <GeneralSetting>:
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'icons/BackGround.jpeg'
 	MDFloatLayout:
 
-		md_bg_color: app.theme_cls.opposite_bg_light
-		GridLayout:
-			rows:1
-			canvas:
-				Color:
-					rgb:utils.get_color_from_hex("#67697C")
-				Rectangle:
-					size: self.size
-					pos:self.pos
-			pos_hint: {"top" : 1}
-			size_hint: 1,0.1
-		
-		GridLayout:
-			rows: 1
-			pos_hint:{"top": 1, "x": 0.05}
-			size_hint: 0.1, 0.1
-			ImageButton:
-				source:"icons/home.png"
-				on_release:
-					app.change_screen("home_screen")
+		MDIconButton:
+			icon: 'keyboard-return'
+			pos_hint: {"center_x": 0.05, "center_y" : 0.95}
+			user_font_size: "64sp"
+			on_release:
+				app.change_screen("home_screen")
 
 		MyButton:
+			background_color: 0,0,0,0
 			text: languageDict1.langDict["SwitchLang"][app.state]
 			id: switch_lang
 			pos_hint: {"top": 0.85, "x": 0.25}
 			size_hint: 0.5,0.1
 			on_release:
 				app.switchLanguage()
-		MyButton:
+		
+		MyButton:	
+			background_color: 0,0,0,0
 			text: languageDict1.langDict["ChangeLine"][app.state]
 			id: switch_mode
 			pos_hint:{"top": 0.7, "x":0.25}
@@ -43,6 +37,7 @@
 				app.grid_image_create_setting()
 
 		MyButton:
+			background_color: 0,0,0,0
 			text: languageDict1.langDict["SetRotationDegree"][app.state]
 			id: switch_rd
 			pos_hint: {"top": 0.55, "x": 0.25}
@@ -51,6 +46,7 @@
 				app.setDegreeDialog()
 
 		MyButton:
+			background_color: 0,0,0,0
 			text: languageDict1.langDict["ResetFactorySetting"][app.state]
 			id: reset_setting
 			pos_hint:{"top": 0.4, "x":0.25}

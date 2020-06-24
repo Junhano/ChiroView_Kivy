@@ -4,25 +4,36 @@
 #:import MDFloatLayout kivymd.uix.floatlayout.MDFloatLayout
 
 <About>:
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'icons/BackGround.jpeg'
+
 	MDFloatLayout:
-		md_bg_color: app.theme_cls.opposite_bg_light
-		GridLayout:
-			rows:1
-			canvas:
-				Color:
-					rgb:utils.get_color_from_hex("#67697C")
-				Rectangle:
-					size: self.size
-					pos:self.pos
-			pos_hint: {"top" : 1}
-			size_hint: 1,0.1
-		
-		GridLayout:
-			rows: 1
-			pos_hint:{"top": 1, "x": 0.05}
-			size_hint: 0.1, 0.1
-			ImageButton:
-				source:"icons/home.png"
-				on_release:
-					app.change_screen("home_screen")
+		MDIconButton:
+			icon: 'keyboard-return'
+			pos_hint: {"center_x": 0.05, "center_y" : 0.95}
+			user_font_size: "64sp"
+			on_release:
+				app.change_screen("home_screen")
+
+		MDLabel:
+			pos_hint: {"center_x": 0.5, "center_y" : 0.8}
+			size_hint: 0.1, 0.2
+			font_name: 'Font/NotoSansSC-Regular.otf'
+			text_size: self.width, None
+			text: languageDict1.langDict["AboutUs"][app.state]
+
+			
+
+
+		MDLabel:
+			pos_hint: {"top": 0.8, "x": 0.2}
+			size_hint: 0.6, 0.6
+			font_name: 'Font/NotoSansSC-Regular.otf'
+			text_size: self.width, None
+			text: languageDict1.langDict["AboutOurSoftware"][app.state]
+
+			
 

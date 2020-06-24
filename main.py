@@ -19,6 +19,7 @@ from kivy.clock import Clock
 from os import remove
 import functools
 from collections import defaultdict
+from Helper.PostureCalculation import Posture
 
 valuetoKeyDict = dict()   #Dictionary that make sure Each language key will map to the same original content
 for k,v in langDict.items():
@@ -65,15 +66,15 @@ class HomeScreen(Screen):
 class SecondScreen(Screen):
     image_change = ObjectProperty(None)
 
-
-class Help(Screen):
-    pass
-
 class About(Screen):
     pass
 
 class GeneralSetting(Screen):
     pass
+
+class PCCamera(Screen):
+    p_camera = ObjectProperty(None)
+
 
 class LineContent(BoxLayout):
     pass
@@ -84,8 +85,6 @@ class Helper(BoxLayout):
 class RotationValue(BoxLayout):
     pass
 
-class PCCamera(Screen):
-    p_camera = ObjectProperty(None)
 
 
 
@@ -108,7 +107,11 @@ class MainApp(MDApp):
     ChooseBodyPartDialog = None     #Dialog that give user to choose what kind of body part they want to points
     RotationDegreeDialog = None  #Dialog that give user the ability to choose how many degree they want to rotate
     DeleteBodyPartDialog = None
+    EvaluationResultsDialog = None
+    GiveUserOptionToResultDialog = None
+
     schedule = None
+    evalResult = None
 
     image_source = StringProperty("icons/no-camera.png")
 
@@ -154,6 +157,41 @@ class MainApp(MDApp):
 
 
     #Function here that about declear of different MD Dialog
+
+
+    def optionForEvaResults(self, inst):
+        if not self.GiveUserOptionToResultDialog:
+            self.GiveUserOptionToResultDialog = MDDialog(
+                title = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict["WhatToDoWithResults"][self.state]),
+                buttons = [
+                    MDFlatButton(
+                        text= langDict["Nothing"][self.state], text_color=self.theme_cls.primary_color,
+                        on_release=self.nothingOption
+                    ),
+                    MDFlatButton(
+                        text= langDict["Email"][self.state], text_color=self.theme_cls.primary_color,
+                        on_release=self.SendEmailEvalResults
+                    )
+                ]
+            )
+        self.GiveUserOptionToResultDialog.set_normal_height()
+        self.GiveUserOptionToResultDialog.open()
+
+    def evaluation_Dialog(self, result):
+        if not self.EvaluationResultsDialog:
+            self.EvaluationResultsDialog = MDDialog(
+                title = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict["EvaResults"][self.state]),
+                text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(result),
+                type = "custom",
+                buttons = [
+                    MDFlatButton(
+                        text = "OK", text_color=self.theme_cls.primary_color,
+                        on_release = self.optionForEvaResults
+                    )
+                ]
+            )
+        self.EvaluationResultsDialog.set_normal_height()
+        self.EvaluationResultsDialog.open()
 
     def delete_Body_Part_Dialog(self):
         if not self.DeleteBodyPartDialog:
@@ -319,6 +357,24 @@ class MainApp(MDApp):
 
     #Function here that execute about all dialog button callback
 
+    def SendEmailEvalResults(self, inst):
+        self.GiveUserOptionToResultDialog.dismiss()
+        self.EvaluationResultsDialog.dismiss()
+        self.GiveUserOptionToResultDialog = None
+        self.EvaluationResultsDialog = None
+        try:
+            email.send(subject="Results for evaluation", text=self.evalResult)
+        except NotImplementedError:
+            self.errorDialog('ErrorSendingResults')
+        self.evalResult = None
+
+    def nothingOption(self, inst):
+        self.GiveUserOptionToResultDialog.dismiss()
+        self.EvaluationResultsDialog.dismiss()
+        self.GiveUserOptionToResultDialog = None
+        self.EvaluationResultsDialog = None
+        self.evalResult = None
+
     def continueDeleteCoordinateDialog(self, inst):
         for i in self.DeleteBodyPartDialog.items:
             if i.ids.check.active:
@@ -439,6 +495,12 @@ class MainApp(MDApp):
 
 
     #Function here about all the button callback function
+
+    def evaSetup(self):
+        UserPosture = Posture(self.coordinateDict, self.View, self.state)
+        result = UserPosture.displayResults()
+        self.evalResult = result
+        self.evaluation_Dialog(result)
 
     def change_screen(self,screen_name):
         if self.schedule is not None:

@@ -258,6 +258,34 @@ langDict = {
     "ChangeSecondScreen":{
         0: "Evaulation Page",
         1: "评估页面"
+    },
+    "EvaResults":{
+        0: "Evaluation Results",
+        1: "检查结果"
+    },
+    "WhatToDoWithResults":{
+        0: "What do you want to do with the results",
+        1: "你想用结果来做什么"
+    },
+    "ErrorSendingResults":{
+        0: "Sorry. There is error when trying to email your results, System Cannot open Email",
+        1: "对不起，系统发送检查结果时出现问题，系统无法连接到邮箱"
+    },
+    "Nothing":{
+        0: "Nothing",
+        1: "不做什么"
+    },
+    "Email":{
+        0: "Email",
+        1: "邮件结果"
+    },
+    "AboutOurSoftware":{
+        0: "It is hard to overlook the importance of spinal health nowadays as more and more people start to look for ways to improve their comfort and quality of their lives. It's so important to maintain a good posture, as failure to do so leads to loss of muscle control, senses and abnormal appearances. \n\nWith this app it is easy to constantly check and improve your posture. It takes a couple minutes each time and all you have to do is take a picture of your posture and put in appropriate lines and see how good your posture really is.",
+        1: " 最近这几年越来越多的人开始关注脊柱健康和生活质量的密切联系。脊柱健康的重要性不能当一个小问题看，脊柱不好就会导致神经功能障碍，心情不好和移动困难。\n\n这个软件可以帮您了解您自己的脊柱健康和状况。每次只需要花几分钟照个照片，然后用相应线您就可以看到您的脊柱到底是好还是坏"
+    },
+    "AboutUs":{
+        0: "About us",
+        1: "关于我们"
     }
 }
 
