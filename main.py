@@ -42,9 +42,22 @@ ConnectBodyPart = {
     'RightEye': ['LeftEye', 'NoseTip'],
     'LeftEar': ['RightEar'],
     'RightEar': ['LeftEar'],
-    'NoseTip': ['LeftEye', 'RightEye', 'SternalNotch'],
-
-            #...
+    'LeftShoulderTip': ['RightShoulderTip'],
+    'RightShoulderTip': ['LeftShoulderTip'],
+    'LeftKneeCap': ['RightKneeCap'],
+    'RightKneeCap': ['LeftKneeCap'],
+    'LeftAnkle': ['RightAnkle'],
+    'RightAnkle': ['LeftAnkle'],
+    'LASIS': ['RASIS'],
+    'RASIS': ['LASIS'],
+    'NoseTip': ['LeftEye', 'RightEye', 'SternalNotch','Umbilicus'],
+    'SternalNotch': ['NoseTip', 'Umbilicus'],
+    'Umbilicus': ['SternalNotch', 'NoseTip'],
+    'EarCanal': ['TipOfShoulder', 'Trochanter', 'lateralmalleolus'],
+    'TipOfShoulder': ['EarCanal', 'Trochanter', 'lateralmalleolus'],
+    'Trochanter': ['EarCanal', 'TipOfShoulder', 'lateralmalleolus'],
+    'lateralmalleolus': ['EarCanal', 'TipOfShoulder', 'Trochanter'],
+    'CornerOfEye': []
 
 }
 
@@ -98,6 +111,7 @@ class MainApp(MDApp):
     TimeCountDown = NumericProperty(5)
     default_image = BooleanProperty(True)
     camera_activate = BooleanProperty(False)
+    count_down_start = BooleanProperty(False)
 
     NumberLineChoosedialog = None  #Dialog that prompt user for how many lines to draw both vertically and horizontally
     cancelconfirm = None      #Dialog that confirm user to remove the picture from the canvas
@@ -309,7 +323,8 @@ class MainApp(MDApp):
             ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['LeftShoulderTip'][self.state])),
             ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['RightShoulderTip'][self.state])),
             ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['Umbilicus'][self.state])),
-            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['ASIS'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['LASIS'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['RASIS'][self.state])),
             ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['LeftKneeCap'][self.state])),
             ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['RightKneeCap'][self.state])),
             ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['LeftAnkle'][self.state])),
@@ -320,9 +335,8 @@ class MainApp(MDApp):
             ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['EarCanal'][self.state])),
             ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['CornerOfEye'][self.state])),
             ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['TipOfShoulder'][self.state])),
-            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['CANCEL'][self.state])),
-            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['CANCEL'][self.state])),
-            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['CANCEL'][self.state]))
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['Trochanter'][self.state])),
+            ItemConfirm(text = '[font=Font/NotoSansSC-Regular.otf]{}[/font]'.format(langDict['lateralmalleolus'][self.state]))
         }
 
         if not self.ChooseBodyPartDialog:
@@ -422,13 +436,14 @@ class MainApp(MDApp):
                     self.clearAllLinePoints()
         self.DeleteBodyPartDialog.dismiss()
         self.DeleteBodyPartDialog = None
-        print(self.coordinateDict)
 
     def closeDeleteCoordinateDialog(self, inst):
         self.DeleteBodyPartDialog.dismiss()
         self.DeleteBodyPartDialog = None
 
     def changeBackScreenWithOutSave(self, inst):
+        if exists('PCCamera.PNG'):
+            remove('PCCamera.PNG')
         self.resetUserCoordinateChoice()
         self.image_source = "icons/no-camera.png"
         self.default_image = True
@@ -647,6 +662,7 @@ class MainApp(MDApp):
             self.errorDialog('ErrorOpeningMail')
 
     def pcCameraCapture(self):
+        self.count_down_start = True
         self.schedule = Clock.schedule_interval(self.countDown, 1)
         Clock.schedule_once(self.cancelInterval, 5)
 
@@ -661,6 +677,7 @@ class MainApp(MDApp):
             self.change_picture("PCCamera.PNG")
             self.TimeCountDown = 5
             self.schedule = None
+            self.count_down_start = False
 
     #Canvas update drawing function
     def drawPoints(self, objectname, pos1):

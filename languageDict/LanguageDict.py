@@ -127,9 +127,13 @@ langDict = {
         0: "umbilicus",
         1: "肚脐眼"
     },
-    "ASIS":{
-        0: "ASIS",
-        1: "髂前上棘"
+    "LASIS":{
+        0: "Left ASIS",
+        1: "左髂前上棘"
+    },
+    "RASIS":{
+        0: "Right ASIS",
+        1: "右髂前上棘"
     },
     "LeftKneeCap":{
         0: "Left middle knee cap",
@@ -296,6 +300,15 @@ langDict = {
     "SelectLangBelow":{
         0: "Please select language you want to change",
         1: "请选择你想切换的语言"
+    },
+    "Trochanter":{
+        0: "Trochanter",
+        1: "转子"
+    },
+    "lateralmalleolus":{
+        0: "lateral malleolus",
+        1: "外侧踝"
     }
+
 }
 

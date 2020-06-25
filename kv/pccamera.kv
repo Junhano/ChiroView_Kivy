@@ -30,4 +30,4 @@
 			pos_hint: {"center_x": 0.5, "center_y": 0.05}
 			user_font_size: "64sp"
 			on_release:
-				app.pcCameraCapture()
+				if not app.count_down_start: app.pcCameraCapture()
